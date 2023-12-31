@@ -7,5 +7,63 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("LOCALDB_URL")
+}
+
+model actionA3 {
+   id Int @id @default(autoincrement())
+   nombre String
+   descripcion String
+   fecha_inicio Date 
+   fecha_final Date
+   localidad String
+   nro_participantes Int
+   nro_mujeres Int
+   nro_pob_ind Int
+   nro_pob Int
+   nro_pob_lgbtiq Int
+   nro_talleres Int
+   nro_materiales_didacticos Int
+}
+
+model actionA2 {
+   id Int @id @default(autoincrement())
+   nombre String
+   descripcion String
+   fecha_inicio Date 
+   fecha_final Date
+   localidad String
+   nro_participantes Int
+   nro_mujeres Int
+   nro_pob_ind Int
+   nro_pob Int
+   nro_pob_lgbtiq Int
+}
+
+model actionA1 {
+   id Int @id @default(autoincrement())
+   nombre String
+   descripcion String
+   fecha_inicio Date 
+   fecha_final Date
+   localidad String
+   nro_participantes Int
+   nro_mujeres Int
+   nro_pob_ind Int
+   nro_pob Int
+   nro_pob_lgbtiq Int
+}
+
+model actionA4{
+   id Int @id @default(autoincrement())
+   nombre String
+   descripcion String
+   fecha_inicio Date 
+   fecha_final Date
+   localidad String
+   nro_participantes Int
+   nro_mujeres Int
+   nro_pob_ind Int
+   nro_pob Int
+   nro_pob_lgbtiq Int
 }
