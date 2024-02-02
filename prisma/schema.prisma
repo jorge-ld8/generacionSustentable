@@ -1,69 +1,70 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("LOCALDB_URL")
+  url      = env("DB_URL")
 }
 
 model actionA3 {
-   id Int @id @default(autoincrement())
-   nombre String
-   descripcion String
-   fecha_inicio Date 
-   fecha_final Date
-   localidad String
-   nro_participantes Int
-   nro_mujeres Int
-   nro_pob_ind Int
-   nro_pob Int
-   nro_pob_lgbtiq Int
-   nro_talleres Int
-   nro_materiales_didacticos Int
+  id                        Int      @id @default(autoincrement())
+  nombre                    String
+  descripcion               String
+  fecha_inicio              DateTime
+  fecha_final               DateTime
+  localidad                 String
+  nro_participantes         Int
+  nro_mujeres               Int
+  nro_pob_ind               Int
+  nro_pob                   Int
+  nro_pob_lgbtiq            Int
+  nro_talleres              Int
+  nro_materiales_didacticos Int
 }
 
 model actionA2 {
-   id Int @id @default(autoincrement())
-   nombre String
-   descripcion String
-   fecha_inicio Date 
-   fecha_final Date
-   localidad String
-   nro_participantes Int
-   nro_mujeres Int
-   nro_pob_ind Int
-   nro_pob Int
-   nro_pob_lgbtiq Int
+  id                Int      @id @default(autoincrement())
+  nombre            String
+  descripcion       String
+  fecha_inicio      DateTime
+  fecha_final       DateTime
+  localidad         String
+  nro_participantes Int
+  nro_mujeres       Int
+  nro_pob_ind       Int
+  nro_pob           Int
+  nro_pob_lgbtiq    Int
 }
 
 model actionA1 {
-   id Int @id @default(autoincrement())
-   nombre String
-   descripcion String
-   fecha_inicio Date 
-   fecha_final Date
-   localidad String
-   nro_participantes Int
-   nro_mujeres Int
-   nro_pob_ind Int
-   nro_pob Int
-   nro_pob_lgbtiq Int
+  id                Int      @id @default(autoincrement())
+  nombre            String
+  type              String
+  fecha_inicio      DateTime
+  fecha_final       DateTime
+  localidad         String
+  nro_participantes Int
+  nro_mujeres       Int
+  nro_pob_ind       Int?
+  nro_pob_lgbtiq    Int
+  nro_pob_rural     Int?
+  nro_pob_16_29     Int
+  organizacion      String
+  tipo_localidad    String
+  descripcion       String
 }
 
-model actionA4{
-   id Int @id @default(autoincrement())
-   nombre String
-   descripcion String
-   fecha_inicio Date 
-   fecha_final Date
-   localidad String
-   nro_participantes Int
-   nro_mujeres Int
-   nro_pob_ind Int
-   nro_pob Int
-   nro_pob_lgbtiq Int
+model actionA4 {
+  id                Int      @id @default(autoincrement())
+  nombre            String
+  descripcion       String
+  fecha_inicio      DateTime
+  fecha_final       DateTime
+  localidad         String
+  nro_participantes Int
+  nro_mujeres       Int
+  nro_pob_ind       Int
+  nro_pob           Int
+  nro_pob_lgbtiq    Int
 }

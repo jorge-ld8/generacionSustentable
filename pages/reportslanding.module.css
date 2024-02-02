@@ -1,0 +1,20 @@
+.anchor {
+    display: inline-block;
+    background-color: lightgray;
+    padding: 1.5em;
+    border-radius: 2px;
+    color: black;
+    text-decoration: none;
+}
+
+.anchor:hover{
+    background-color: #109F99;
+}
+
+.reportsbar {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 2em auto;
+    flex-direction: column;
+    gap: 1.75em;
+}

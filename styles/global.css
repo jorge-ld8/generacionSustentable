@@ -1,28 +1,48 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
-    Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  line-height: 1.6;
-  font-size: 18px;
-  background-color: aquamarine !important;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
+/* 1. Global Reset for Consistency */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
 }
 
-a {
-  color: #0070f3;
-  text-decoration: none;
+/* 2. Establish Overall Layout Structure */
+body {
+  width: 100%;
 }
 
-a:hover {
-  text-decoration: underline;
+.container{
+  position: relative;
+  display: flex;
 }
 
-img {
-  max-width: 100%;
-  display: block;
+/* 3. Style the Navbar */
+.left {
+  width: 25%;
+  background-color: #5F4091; /* Optional background color */
+  padding: 20px 0 20px 0;
+  min-height: 100vh;
+  text-align: center;
 }
+
+/* 4. Style the Main Content */
+main {
+  flex: 1 auto; /* Take up remaining space */
+  padding: 20px;
+}
+
+/* 5. Optional: Responsive Handling */
+@media (max-width: 768px) {
+  /* Stack the Navbar and Content vertically on smaller screens */
+  body {
+    flex-direction: column;
+  }
+
+  nav {
+    width: 100%; /* Full width on smaller screens */
+  }
+}
+
+

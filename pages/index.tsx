@@ -12,7 +12,7 @@ export default function Home() {
 
       <main>
         <h1 className={styles.title}>
-          Read the newly created <Link href="posts/first-post">page</Link>
+          Read the newly created <Link href="iniciativas">page</Link>
         </h1>
 
         <p className={styles.description}>
@@ -56,8 +56,6 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel" className={styles.logo} />
         </a>
       </footer>
 
