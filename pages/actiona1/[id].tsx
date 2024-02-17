@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 const Home: React.FC<actionA1> = (props) => {
     return (
       <>
-      <div style={{marginRight:'10px'}}>
+      <div style={{marginRight:'10px', textAlign:"justify"}}>
           <h2>{props.nombre.charAt(0).toUpperCase() + props.nombre.slice(1)}</h2>
           <p><b>Descripcion: </b>{props.descripcion}</p>
           <p><b>Tipo: </b>{props.type}</p>

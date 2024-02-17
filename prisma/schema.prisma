@@ -49,10 +49,19 @@ model actionA1 {
   nro_pob_ind       Int?
   nro_pob_lgbtiq    Int
   nro_pob_rural     Int?
-  nro_pob_16_29     Int
+  nro_pob_16_29     Int?
   organizacion      String
   tipo_localidad    String
   descripcion       String
+}
+
+model User {
+  id                Int @id @default(autoincrement())
+  username          String @unique
+  password          String
+  organizacion      String 
+  nombre            String
+  apellido          String
 }
 
 model actionA4 {

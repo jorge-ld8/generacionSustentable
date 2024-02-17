@@ -35,7 +35,7 @@ export default function Home({props}) {
     nro_participantes: 0,
     nro_mujeres: 0,
     nro_pob_ind: 0,
-    nro_pob: 0,
+    nro_pob_rural: 0,
     nro_pob_lgbtiq: 0
   });
 
@@ -151,8 +151,8 @@ export default function Home({props}) {
       <table style={{padding: '5px', marginTop: '12px', tableLayout: 'fixed', letterSpacing: '0.8px'}}>
         <thead>
           <tr style={{marginBottom: '5px'}} onClick={() => Router.push('\\actiona1\\[id]', `\\actiona1\\${action.id}`)}>
-            <th style={{minWidth:'3em'}}>ID</th>
-            <th>Nombre</th>
+            <th style={{minWidth:'9em'}}>Nombre</th>
+            <th style={{minWidth:'6em'}}>Organizacion</th>
             <th style={{minWidth:'9em'}}>Fecha Inicio</th>
             <th style={{minWidth:'9em'}}>Fecha Final</th>
             <th style={{minWidth:'9em'}}>Localidad</th>
@@ -161,8 +161,8 @@ export default function Home({props}) {
         <tbody>
           {actions.map((action: actionA1) => (
             <tr key={action.id} onClick={() => Router.push('\\actiona1\\[id]', `\\actiona1\\${action.id}`)}>
-              <td>{action.id}</td>
               <td>{action.nombre}</td>
+              <td>{action.organizacion}</td>
               <td>{(new Date(action.fecha_inicio)).toISOString().substring(0, 10)}</td>
               <td>{(new Date(action.fecha_final)).toISOString().substring(0, 10)}</td>
               <td>{action.localidad}</td>
@@ -195,6 +195,14 @@ export default function Home({props}) {
 
           table {
             border-spacing: 0;
+          }
+
+          tbody tr{
+            font-size: 0.9em;
+          }
+
+          th{
+            padding:1em;
           }
           `}</style>
     </div>

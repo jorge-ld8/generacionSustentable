@@ -24,7 +24,8 @@ const NewRole: React.FC = ()=>
             nro_mujeres: 0,
             nro_pob_ind: 0,
             nro_pob_rural: 0,
-            nro_pob_lgbtiq: 0
+            nro_pob_lgbtiq: 0,
+            nro_pob_16_29: 0
         },
         validationSchema: Yup.object(
           {
@@ -40,7 +41,8 @@ const NewRole: React.FC = ()=>
             nro_mujeres: Yup.number().required("Obligatorio"),
             nro_pob_ind: Yup.number().required("Obligatorio"),
             nro_pob_rural: Yup.number().required("Obligatorio"),
-            nro_pob_lgbtiq: Yup.number().required("Obligatorio")
+            nro_pob_lgbtiq: Yup.number().required("Obligatorio"),
+            nro_pob_16_29: Yup.number().required("Obligatorio")
           }
         ),
         onSubmit: values => {console.log(values);},
@@ -62,7 +64,8 @@ const NewRole: React.FC = ()=>
                 nro_mujeres: formik.values.nro_mujeres,
                 nro_pob_ind: formik.values.nro_pob_ind,
                 nro_pob_rural: formik.values.nro_pob_rural,
-                nro_pob_lgbtiq: formik.values.nro_pob_lgbtiq
+                nro_pob_lgbtiq: formik.values.nro_pob_lgbtiq,
+                nro_pob_16_29: formik.values.nro_pob_16_29
             })
         }).then(response =>{ 
           if(response.ok)
@@ -154,12 +157,17 @@ const NewRole: React.FC = ()=>
                       {...formik.getFieldProps("nro_pob_lgbtiq")}/>
                       <ErrorMessage touched={formik.touched.nro_pob_lgbtiq} errors={formik.errors.nro_pob_lgbtiq}/>
                   </li>
-
                   <li>
                       <label htmlFor="nro_mujeres">Numero de mujeres:</label>
                       <input type="number" id="nro_mujeres"
                       {...formik.getFieldProps("nro_mujeres")}/>
                       <ErrorMessage touched={formik.touched.nro_mujeres} errors={formik.errors.nro_mujeres}/>
+                  </li>
+                  <li>
+                      <label htmlFor="nro_pob_16_29">Numero pob. 16-29 años:</label>
+                      <input type="number" id="nro_pob_16_29"
+                      {...formik.getFieldProps("nro_pob_16_29")}/>
+                      <ErrorMessage touched={formik.touched.nro_pob_16_29} errors={formik.errors.nro_pob_16_29}/>
                   </li>
               </ul>
               <br />

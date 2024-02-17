@@ -31,7 +31,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
                 nro_mujeres: true,
                 nro_pob_ind: true,
                 nro_participantes: true,
-                nro_pob_rural: true
+                nro_pob_rural: true,
             },
             where:{
                 type:{

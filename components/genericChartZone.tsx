@@ -6,13 +6,13 @@ import Zonasnav from "./zonasnav";
 export default function GenChartZone({name, iniNum, total, totalActionTypes}){
     return (
             <div>
-                <h2>Localidad: {name}</h2>
+                <h3>Localidad: {name}</h3>
                 <Zonasnav/>
                 <p>
                     Número de iniciativas: {iniNum}
                 </p>
                 <br />
-                <h3>Resumen general</h3>
+                <h4>Resumen general</h4>
                 <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly'}}>
                 <div className="chart-container">
                     <Bar datasetIdKey='id' data={{
@@ -79,7 +79,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes}){
                 </div>
         </div>
                 <br />
-                <h3>Comparación General</h3>
+                <h4>Comparación General</h4>
                 <br />
                 <Bar datasetIdKey='id' data={{
                 labels: ['A1', 'A2', 'A3', 'A4'],

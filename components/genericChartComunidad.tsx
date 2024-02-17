@@ -8,7 +8,7 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
     
     return (
         <div>
-        <h2>Tipo de localidad: {name}</h2>
+        <h3>Tipo de localidad: {name}</h3>
         <Comunidadnav/>
         <p>
             Número de iniciativas: {iniNum}

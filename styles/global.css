@@ -33,6 +33,39 @@ main {
   padding: 20px;
 }
 
+.slick-slider {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.slick-list {
+  display: flex;
+  overflow: hidden;
+}
+
+.slick-slide {
+  padding: 0 10px;
+}
+
+.slick-dots {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.slick-dots li {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin: 0 5px;
+  border-radius: 50%;
+  background-color: #ccc;
+}
+
+.slick-dots li.slick-active {
+  background-color: #000;
+}
+
+
 /* 5. Optional: Responsive Handling */
 @media (max-width: 768px) {
   /* Stack the Navbar and Content vertically on smaller screens */

@@ -8,7 +8,7 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
     
     return (
         <div>
-        <h2>Tipo de accion: {name}</h2>
+        <h3>Tipo de accion: {name}</h3>
         <Typesnav/>
         <p>
             Número de iniciativas: {iniNum}
