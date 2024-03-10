@@ -44,7 +44,7 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                     data: finalArr["rural"],
                     },
                     {
-                    id: 5,
+                    id: 6,
                     label: 'participantes',
                     backgroundColor: YELLOW,
                     data: finalArr["participantes"],

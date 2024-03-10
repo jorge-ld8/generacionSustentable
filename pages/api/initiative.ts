@@ -10,6 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         let strfi : String  = JSON.parse(req.body)['fecha_final'];
         let action = {
             nombre: JSON.parse(req.body)['nombre'],
+            nombre_real: JSON.parse(req.body)['nombre_real'],
             descripcion: JSON.parse(req.body)['descripcion'],
             type: JSON.parse(req.body)['type'],
             fecha_inicio: new Date(Number(strin.substring(0, 4)), Number(strin.substring(5, 7)), Number(strin.substring(8, 10))), 
@@ -20,6 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             nro_pob_ind: JSON.parse(req.body)['nro_pob_ind'],
             nro_pob_rural: JSON.parse(req.body)['nro_pob_rural'],
             nro_pob_lgbtiq: JSON.parse(req.body)['nro_pob_lgbtiq'],
+            nro_pob_16_29: JSON.parse(req.body)['nro_pob_16_29'],
             organizacion: JSON.parse(req.body)['organizacion'],
             tipo_localidad: JSON.parse(req.body)['tipo_localidad']
         };

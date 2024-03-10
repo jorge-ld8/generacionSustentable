@@ -21,7 +21,7 @@ body {
 /* 3. Style the Navbar */
 .left {
   width: 25%;
-  background-color: #5F4091; /* Optional background color */
+  background-color: rgba(95, 84, 145, .96); /* Optional background color */
   padding: 20px 0 20px 0;
   min-height: 100vh;
   text-align: center;

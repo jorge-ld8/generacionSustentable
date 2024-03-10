@@ -5,6 +5,7 @@ import {CategoryScale} from 'chart.js';
 import { GetStaticProps } from 'next';
 import prisma from '../lib/prisma';
 import { actionA1 } from '@prisma/client';
+import { actionTypes } from '../lib/constants';
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const iniciativas = await prisma.actionA1.findMany();
@@ -58,7 +59,7 @@ export default function Home(props) {
       </div>
       <div className="charts">
         <Bar datasetIdKey='id' data={{
-              labels: ['A1', 'A2', 'A3', 'A4'],
+              labels: actionTypes,
               datasets:[{
                   id: 1,
                   backgroundColor: 'rgba(210, 0, 0, 0.5)',
@@ -90,7 +91,7 @@ export default function Home(props) {
             }
           }}} style={{display:"inline-block"}}/>
         <Bar datasetIdKey='id' data={{
-              labels: ['A1', 'A2', 'A3', 'A4'],
+              labels: actionTypes,
               datasets:[{
                   id: 2,
                   label: 'nro de mujeres',

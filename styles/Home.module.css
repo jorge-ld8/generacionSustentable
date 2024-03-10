@@ -84,6 +84,10 @@
   height: 1em;
 }
 
+.slick-slide {
+  width: calc(100% + 1px);
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;

@@ -1,7 +1,7 @@
 .anchor {
     display: inline-block;
     background-color: lightgray;
-    padding: 1.5em;
+    padding: 1.35em;
     border-radius: 2px;
     color: black;
     text-decoration: none;
@@ -16,5 +16,5 @@
     justify-content: space-evenly;
     margin: 2em auto;
     flex-direction: column;
-    gap: 1.75em;
+    gap: 1.5em;
 }

@@ -101,13 +101,13 @@ const NewRole: React.FC<actionA1> = (props)=>
                     </li>
                     <li>
                     <label htmlFor="type">Nombre: </label>
-                  {formik.values.type === "A1" ? 
+                  {formik.values.type === actionTypes[0] ? 
                       <DropDownList content={actionsA1} objType={"actiona1"} name={"nombre"} onChange={formik.handleChange} value={formik.values.nombre}/>
                   : 
-                   (formik.values.type === "A2" ?
+                   (formik.values.type === actionTypes[1] ?
                    <DropDownList content={actionsA2} objType={"actiona1"} name={"nombre"} onChange={formik.handleChange} value={formik.values.nombre}/>
                      :
-                     (formik.values. type === "A3" ? 
+                     (formik.values.type === actionTypes[2] ? 
                     <DropDownList content={actionsA3} objType={"actiona1"} name={"nombre"} onChange={formik.handleChange} value={formik.values.nombre}/>
                        :
                     <DropDownList content={actionsA4} objType={"actiona1"} name={"nombre"} onChange={formik.handleChange} value={formik.values.nombre}/>
@@ -184,7 +184,7 @@ const NewRole: React.FC<actionA1> = (props)=>
                       <ErrorMessage touched={formik.touched.nro_pob_16_29} errors={formik.errors.nro_pob_16_29}/>
                   </li>
                     <li className="Button">
-                        <Button type={"submit"} variant="contained" color={"success"} disabled={!(formik.isValid && formik.dirty)}>Crear</Button>
+                        <Button type={"submit"} variant="contained" color={"success"} disabled={!(formik.isValid && formik.dirty)}>Actualizar</Button>
                     </li>
                     <li>
   

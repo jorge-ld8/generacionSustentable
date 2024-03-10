@@ -6,8 +6,10 @@ import Zonasnav from "./zonasnav";
 export default function GenChartZone({name, iniNum, total, totalActionTypes}){
     return (
             <div>
-                <h3>Localidad: {name}</h3>
+                <h2>Apuestas Formativas</h2>
                 <Zonasnav/>
+                <h3>Localidad: {name}</h3>
+                <br />
                 <p>
                     Número de iniciativas: {iniNum}
                 </p>
@@ -59,22 +61,21 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes}){
                     }} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
                 </div>
                 <div className="chart-container">
-                    <Bar datasetIdKey='id' data={{
+                <Bar datasetIdKey='id' data={{
                     labels: actionTypes,
                     datasets:[{
                         id: 5,
                         label: 'pob rural',
                         backgroundColor: YELLOW,
                         data: total.totalRural,
-                        }]
-                    }} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
+                      }]}} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
                 </div>
                 <div className="chart-container">
                 <Doughnut data={{labels:actionTypes, datasets: [{
-                  id: 1,
-                  label: '# iniciativas',
-                  backgroundColor: [ORANGE, BLUE, GREEN, VIOLET],
-                  data: totalActionTypes,
+                        id: 1,
+                        label: '# iniciativas',
+                        backgroundColor: [ORANGE, BLUE, GREEN, VIOLET],
+                        data: totalActionTypes,
                 }]}} />
                 </div>
         </div>

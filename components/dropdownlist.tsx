@@ -8,12 +8,13 @@ export type DropDownListProps<ArbType extends Object> = {
     value: any
     multiple?: boolean
     message?: string  //en DropDownList no se usa pero en  DataList si :)
+    disabled?: boolean
 }
 
 const DropDownList: React.FC<DropDownListProps<any>> = (props)=>
 {
     return(
-        <select name={props.name} onChange={props.onChange} value={props.value} id={props.name} multiple={props.multiple} style={{width:'300px'}}>
+        <select name={props.name} onChange={props.onChange} value={props.value} id={props.name} multiple={props.multiple} style={{width:'300px'}} disabled={props.disabled}>
             <option value="">N/A</option>
             {props.content.map((option)=>{               
                 return (<option value={option}>{option}</option>);

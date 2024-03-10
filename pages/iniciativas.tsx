@@ -6,23 +6,24 @@ import axios from 'axios';
 import Router from 'next/router';
 import { IconButton } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
+import { getCookie } from 'cookies-next';
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-    const iniciativas = await prisma.actionA1.findMany();
+export async function getServerSideProps(context) {
+  const req = context.req
+  const res = context.res
+  let organizacion = getCookie('organizacion', { req, res });
+  let username = getCookie('username', { req, res });
+  if (organizacion == undefined){
+      organizacion = "";
+  }
+  if (username == undefined){
+     username = "";
+  }
+  const iniciativas = await prisma.actionA1.findMany();
+  return { props: {organizacion, username, iniciativas: JSON.parse(JSON.stringify(iniciativas))} };
+};
 
-    return {
-        props:{
-            iniciativas: JSON.parse(JSON.stringify(iniciativas)),
-        },
-        revalidate: 10,
-    }
-}
-
-type Props = {
-    iniciativas: actionA1[]
-}
-
-export default function Home({props}) {
+export default function Home(props) {
   const [actions, setActions] = useState<actionA1[]>([]);
   const [action, setAction] = useState<actionA1>({
     id: 0,
@@ -35,7 +36,7 @@ export default function Home({props}) {
     nro_participantes: 0,
     nro_mujeres: 0,
     nro_pob_ind: 0,
-    nro_pob_rural: 0,
+    nro_pob: 0,
     nro_pob_lgbtiq: 0
   });
 
@@ -135,6 +136,8 @@ export default function Home({props}) {
 
   return (
     <div style={{marginTop: "15px"}}>
+      <h2>Apuestas Formativas</h2>
+      <br />
       {/* <h1>Users</h1>
       <form>
         <input onChange={HandleChange} value={user.Login} type="text" name="Login" placeholder="Login" />
@@ -159,25 +162,33 @@ export default function Home({props}) {
           </tr>
         </thead>
         <tbody>
-          {actions.map((action: actionA1) => (
-            <tr key={action.id} onClick={() => Router.push('\\actiona1\\[id]', `\\actiona1\\${action.id}`)}>
-              <td>{action.nombre}</td>
-              <td>{action.organizacion}</td>
-              <td>{(new Date(action.fecha_inicio)).toISOString().substring(0, 10)}</td>
-              <td>{(new Date(action.fecha_final)).toISOString().substring(0, 10)}</td>
-              <td>{action.localidad}</td>
-              <td>
-                <IconButton aria-label="edit"  size="small" onClick={(e) => {e.stopPropagation();EditInitiative(action.id)}}>
-                    <Edit sx={{color:'black'}}/>
-                </IconButton>
-              </td>
-              <td>
-                <IconButton aria-label="delete"  size="small" onClick={(e) => {e.stopPropagation();DeleteInitiative(action.id)}}>
-                    <Delete sx={{color:'black'}}/>
-                </IconButton>
-              </td>
-            </tr>
-          ))}
+          {actions.map((action: actionA1) => {
+            return (
+              <tr key={action.id} onClick={() => Router.push('\\actiona1\\[id]', `\\actiona1\\${action.id}`)}>
+                <td>{action.nombre}</td>
+                <td>{action.organizacion}</td>
+                <td>{(new Date(action.fecha_inicio)).toISOString().substring(0, 10)}</td>
+                <td>{(new Date(action.fecha_final)).toISOString().substring(0, 10)}</td>
+                <td>{action.localidad}</td>
+                {props.organizacion === action.organizacion || props.username === "admin" ?
+                  <>
+                    <td>
+                      <IconButton aria-label="edit" size="small" onClick={(e) => { e.stopPropagation(); EditInitiative(action.id); } }>
+                        <Edit sx={{ color: 'black' }} />
+                      </IconButton>
+                    </td>
+                    <td>
+                      <IconButton aria-label="delete" size="small" onClick={(e) => { e.stopPropagation(); DeleteInitiative(action.id); } }>
+                        <Delete sx={{ color: 'black' }} />
+                     </IconButton>
+                    </td>
+                  </>
+                  :
+                  null
+                }
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <style jsx>{`

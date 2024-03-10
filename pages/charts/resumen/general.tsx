@@ -4,6 +4,7 @@ import Reportsnav from "../../../components/reportsnav";
 import {CategoryScale} from 'chart.js';
 import { Bar } from "react-chartjs-2";
 import prisma from "../../../lib/prisma";
+import { BLUE, GREEN, ORANGE, VIOLET, YELLOW, actionTypes } from "../../../lib/constants";
 
 
 function normalizeResults(inputArr, att){
@@ -53,35 +54,35 @@ export default function ChartFinal(props){
         <div>
             <Reportsnav/>
             <Bar datasetIdKey='id' data={{
-              labels: ['A1', 'A2', 'A3', 'A4'],
+              labels: actionTypes,
               datasets:[{
                   id: 1,
                   label: 'pob. LGBTIQ',
-                  backgroundColor: 'rgba(240, 144, 51, 0.75)',
+                  backgroundColor: ORANGE,
                   data: props.finalArr["lgbtiq"],
                 },
                 {
                   id: 2,
                   label: 'mujeres',
-                  backgroundColor: 'rgba(16, 159, 153, 0.75)',
+                  backgroundColor: BLUE,
                   data: props.finalArr["mujeres"],
                 },
                 {
                   id: 3,
                   label: 'pob. indígena',
-                  backgroundColor: 'rgba(167, 203, 69, 0.75)',
+                  backgroundColor: GREEN,
                   data: props.finalArr["indigena"],
                 },
                 {
                   id: 4,
                   label: 'pob. rural',
-                  backgroundColor: 'rgba(95, 64, 145, 0.75)',
+                  backgroundColor: VIOLET,
                   data: props.finalArr["rural"],
                 },
                 {
                   id: 5,
                   label: 'participantes',
-                  backgroundColor: 'rgba(246, 191, 0, 0.75)',
+                  backgroundColor: YELLOW,
                   data: props.finalArr["participantes"],
                 }
             ],

@@ -5,17 +5,30 @@ import * as Yup from 'yup';
 import ErrorMessage from "../components/errormessage";
 import Button from "@mui/material/Button";
 import DropDownList from "../components/dropdownlist";
+import { getCookie } from 'cookies-next';
 import { actionTypes, actionsA1, actionsA2, actionsA3, actionsA4, localidades, organizaciones, tipoComunidad } from "../lib/constants";
+import prisma from "../lib/prisma";
 
 
-const NewRole: React.FC = ()=>
+export async function getServerSideProps(context) {
+  const req = context.req
+  const res = context.res
+  let organizacion = getCookie('organizacion', { req, res });
+  if (organizacion == undefined){
+      organizacion = "";
+  }
+  return { props: {organizacion}};
+};
+
+const NewRole: React.FC<any> = (props)=>
 {
     const formik = useFormik({
         initialValues:{
             nombre: "",
+            nombre_real: "",
             descripcion: "",
             type: "",
-            organizacion: "",
+            organizacion: props.organizacion,
             tipo_localidad: "",
             fecha_inicio: new Date(),
             fecha_final: new  Date(),
@@ -30,6 +43,7 @@ const NewRole: React.FC = ()=>
         validationSchema: Yup.object(
           {
             nombre: Yup.string().required("Obligatorio"),
+            nombre_real: Yup.string().required("Obligatorio"),
             descripcion: Yup.string().required("Obligatorio"),
             type: Yup.string().required("Obligatorio"),
             fecha_inicio: Yup.date().required("Obligatorio"),
@@ -53,6 +67,7 @@ const NewRole: React.FC = ()=>
         const response = await fetch(`/api/initiative`,{method: 'POST', 
         body: JSON.stringify({
                 "nombre": formik.values.nombre,
+                "nombre_real": formik.values.nombre_real,
                 "descripcion": formik.values.descripcion,
                 "type": formik.values.type,
                 "fecha_inicio": String(formik.values.fecha_inicio),
@@ -79,21 +94,28 @@ const NewRole: React.FC = ()=>
 
     return (
       <div>
+          <h2>Apuestas Formativas</h2>
           <form  onSubmit={handleSubmit} >
               <ul style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)'}}>
+                  <li>
+                      <label htmlFor="nombre_real">Nombre :</label>
+                      <input type="text" id="nombre_real"
+                      {...formik.getFieldProps('nombre_real')}/>
+                      <ErrorMessage touched={formik.touched.nombre_real} errors={formik.errors.nombre_real}/>
+                  </li>
                   <li>
                       <label htmlFor="type">Tipo: </label>
                       <DropDownList content={actionTypes} objType={"actiona1"} name={"type"} onChange={formik.handleChange} value={formik.values.type}/>
                   </li>
                   <li>
-                    <label htmlFor="type">Nombre: </label>
-                  {formik.values.type === "A1" ? 
+                    <label htmlFor="type">Clasificacion: </label>
+                  {formik.values.type === actionTypes[0] ? 
                       <DropDownList content={actionsA1} objType={"actiona1"} name={"nombre"} onChange={formik.handleChange} value={formik.values.nombre}/>
                   : 
-                   (formik.values.type === "A2" ?
+                   (formik.values.type === actionTypes[1] ?
                    <DropDownList content={actionsA2} objType={"actiona1"} name={"nombre"} onChange={formik.handleChange} value={formik.values.nombre}/>
                      :
-                     (formik.values. type === "A3" ? 
+                     (formik.values. type === actionTypes[2] ? 
                     <DropDownList content={actionsA3} objType={"actiona1"} name={"nombre"} onChange={formik.handleChange} value={formik.values.nombre}/>
                        :
                     <DropDownList content={actionsA4} objType={"actiona1"} name={"nombre"} onChange={formik.handleChange} value={formik.values.nombre}/>
@@ -109,7 +131,7 @@ const NewRole: React.FC = ()=>
                   </li>
                   <li>
                       <label htmlFor="organizacion">Organizacion:</label>
-                      <DropDownList content={organizaciones} objType={"organizacion"} name={"organizacion"} onChange={formik.handleChange} value={formik.values.organizacion}/>
+                      <DropDownList content={organizaciones} objType={"organizacion"} name={"organizacion"} onChange={formik.handleChange} value={formik.values.organizacion} disabled={true}/>
                   </li>
                   <li>
                       <label htmlFor="fecha_inicio">Fecha Inicio:</label>

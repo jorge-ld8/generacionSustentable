@@ -1,11 +1,10 @@
 import { jsx } from "@emotion/react";
 import { GetServerSideProps } from "next";
-import prisma from "../../lib/prisma";
-import { actionA1 } from "@prisma/client";
 import React from 'react';
 import IconButton from "@mui/material/IconButton";
 import { ArrowBack } from "@mui/icons-material";
 import Router from "next/router";
+import prisma from "../../lib/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const action = await prisma.actionA1.findUnique({
@@ -22,7 +21,7 @@ const Home: React.FC<actionA1> = (props) => {
     return (
       <>
       <div style={{marginRight:'10px', textAlign:"justify"}}>
-          <h2>{props.nombre.charAt(0).toUpperCase() + props.nombre.slice(1)}</h2>
+          <h2>{props.nombre_real.charAt(0).toUpperCase() + props.nombre_real.slice(1)}</h2>
           <p><b>Descripcion: </b>{props.descripcion}</p>
           <p><b>Tipo: </b>{props.type}</p>
           <p><b>Fecha de inicio: </b>{String(props.fecha_inicio).substring(0,10)}</p>
@@ -34,6 +33,7 @@ const Home: React.FC<actionA1> = (props) => {
           <p><b>Nro. poblacion indigena: </b>{props.nro_pob_ind}</p>
           <p><b>Nro. poblacion rural: </b>{props.nro_pob_rural}</p>
           <p><b>Nro. poblacion LGBTIQ: </b>{props.nro_pob_lgbtiq}</p>
+          <p><b>Nro. poblacion 16-29: </b>{props.nro_pob_16_29}</p>
           <p><b>Organizacion: </b>{props.organizacion}</p>
           <IconButton aria-label="delete"  size="small" onClick={() => {Router.push("/iniciativas")}}>
                     <ArrowBack sx={{color:'red'}}/>

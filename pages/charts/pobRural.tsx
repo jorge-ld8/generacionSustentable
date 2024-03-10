@@ -4,6 +4,7 @@ import Reportsnav from "../../components/reportsnav";
 import {CategoryScale} from 'chart.js';
 import prisma from "../../lib/prisma";
 import { Bar } from "react-chartjs-2";
+import { VIOLET, actionTypes } from "../../lib/constants";
 
 function normalizeResults(inputArr){
     let finalArr = new Array(4).fill(0);
@@ -40,11 +41,11 @@ export default function ChartFinal(props){
         <div>
             <Reportsnav/>
             <Bar datasetIdKey='id' data={{
-              labels: ['A1', 'A2', 'A3', 'A4'],
+              labels: actionTypes,
               datasets:[{
                   id: 2,
                   label: 'nro poblacion rural',
-                  backgroundColor: 'rgba(0, 0, 255, 0.75)',
+                  backgroundColor: VIOLET,
                   data: props.totalP,
                 }]
           }} style={{display:"inline-block"}} />

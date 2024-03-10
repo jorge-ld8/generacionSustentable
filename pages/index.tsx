@@ -1,18 +1,21 @@
 import ImageCarousel from '../components/imagecarousel';
 import styles from '../styles/Home.module.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import stylesIndex from './index.module.css';
 
 
 const images = [
-  { id: 1, url: '/plantas1.jpg', alt: 'Planta 1' },
-  { id: 2, url: '/plantas2.jpeg', alt: 'Planta 2' },
-  { id: 3, url: '/plantas3.jpg', alt: 'Planta 3' },
-  { id: 4, url: '/plantas4.jpg', alt: 'Planta 4' },
+  { id: 1, url: '/foto1.jpeg', alt: 'Foto 1' },
+  { id: 2, url: '/foto2.jpeg', alt: 'Foto 2' },
+  { id: 3, url: '/foto3.jpeg', alt: 'Foto 3' },
+  { id: 4, url: '/foto4.jpeg', alt: 'Foto 4' },
 ];
 
 export default function Home() {
   return (
     <div className={styles.container}>
-      <h2>Sistema de gestión para el proyecto Generación Sustentable</h2>
+      <h2>Sistema de gestión de indicadores para el proyecto Generación Sustentable</h2>
       <br />
       <ImageCarousel images={images} />
       {/* <style jsx>{`
@@ -81,6 +84,13 @@ export default function Home() {
           box-sizing: border-box;
         }
       `}</style> */}
+      <style jsx>{`
+      .slick-slide {
+        width: calc(100% + 1px);
+      }
+      `
+      }
+      </style>
     </div>
   );
 }
