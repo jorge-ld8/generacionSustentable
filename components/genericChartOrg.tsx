@@ -1,5 +1,5 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN } from "../lib/constants";
+import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN, PINK } from "../lib/constants";
 import Zonasnav from "./zonasnav";
 
 
@@ -44,10 +44,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
   };
     return (
             <div>
-                <h2>Apuestas Formativas</h2>
-                <Zonasnav/>
-                <h3>Localidad: {name}</h3>
-                <br />
+                <h3>Resumen {name}</h3>
                 <p>
                     Número de iniciativas: {iniNum}
                 </p>
@@ -99,29 +96,29 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                     }} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
                 </div>
                 <div className="chart-container">
-                <Bar datasetIdKey='id' data={{
+                    <Bar datasetIdKey='id' data={{
                     labels: actionTypes,
                     datasets:[{
                         // id: 5,
                         label: 'pob rural',
                         backgroundColor: YELLOW,
                         data: total.totalRural,
-                      }]}} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
+                        }]
+                    }} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
                 </div>
                 <div className="chart-container">
                 <Doughnut data={{labels:actionTypes, datasets: [{
-                        // id: 1,
-                        label: '# iniciativas',
-                        backgroundColor: [ORANGE, BLUE, GREEN, VIOLET],
-                        data: totalActionTypes,
-                }]}} options={options} />
+                  // id: 1,
+                  label: '# iniciativas',
+                  backgroundColor: [ORANGE, BLUE, GREEN, VIOLET],
+                  data: totalActionTypes,
+                }]}} />
                 </div>
                 <div className="chart-container">
-                <h4>Resumen por genero</h4>
                 <Doughnut data={{labels:["mujeres", "hombres", "NB", "NI"], datasets: [{
                         // id: 1,
                         label: '# participantes',
-                        backgroundColor: [VIOLET, BLUE, ORANGE, GREEN],
+                        backgroundColor: [PINK, BLUE, ORANGE, GREEN],
                         data: totalGenders,
                 }]}} options={options} />
                 </div>

@@ -1,8 +1,8 @@
-import ImageCarousel from '../components/imagecarousel';
 import styles from '../styles/Home.module.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import stylesIndex from './index.module.css';
+import ImageCarousel from '../components/imagencarousel';
 
 
 const images = [

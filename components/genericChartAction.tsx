@@ -2,10 +2,46 @@ import { Bar, Doughnut } from "react-chartjs-2";
 import { BLUE, GREEN, ORANGE, VIOLET, YELLOW, localidades, tipoComunidad } from "../lib/constants";
 import Typesnav from "./typesnav";
 
-export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr}){
+export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders}){
 
-    console.log(totalLocTypes);
-    
+    let options = {
+        tooltips: {
+            enabled: false,
+            callbacks: {
+              label: function(tooltipItem, data) {
+                const dataset = data.datasets[tooltipItem.datasetIndex];
+                const total = dataset.data.reduce((a, b) => a + b, 0);
+                const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                const percentage = Math.floor((value / total) * 100);
+        
+                return `${dataset.label}: ${percentage}%`;
+              }
+            }
+        },
+        plugins: {
+            datalabels: {
+                formatter: (value, ctx) => {
+                    console.log(ctx);
+                    const datapoints = ctx.chart.data.datasets[0].data
+                    const total = datapoints.reduce((total, datapoint) => total + datapoint, 0)
+                    const percentage = value / total * 100
+                    if (percentage < 5){
+                      return percentage > 0 ?  " "+percentage.toFixed(0)+"%" : null;
+                    }
+                    return percentage > 0 ? percentage.toFixed(1) + "%" : null;
+                },
+                color: '#fff',
+                backgroundColor: "#000",
+                labels: {
+                  title: {
+                    font: {
+                      weight: 'bold'
+                    }
+                  }
+              }
+            }
+        }
+      };
     return (
         <div>
         <h3>Tipo de accion: {name}</h3>
@@ -84,6 +120,15 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                     data: totalComunidad
                     }]}} style={{display:"inline-block"}}/>
             </div>
+            <div className="chart-container" style={{width:"48%", display:"inline-block"}}>
+                <h4>Resumen por genero</h4>
+                <Doughnut data={{labels:["mujeres", "hombres", "NB", "NI"], datasets: [{
+                        // id: 1,
+                        label: '# participantes',
+                        backgroundColor: [VIOLET, BLUE, ORANGE, GREEN],
+                        data: totalGenders,
+                }]}} options={options} />
+                </div>
         </div>
     </div>
     );

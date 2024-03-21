@@ -23,7 +23,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             nro_pob_lgbtiq: JSON.parse(req.body)['nro_pob_lgbtiq'],
             nro_pob_16_29: JSON.parse(req.body)['nro_pob_16_29'],
             organizacion: JSON.parse(req.body)['organizacion'],
-            tipo_localidad: JSON.parse(req.body)['tipo_localidad']
+            tipo_localidad: JSON.parse(req.body)['tipo_localidad'],
+            nro_nobin: JSON.parse(req.body)['nro_nobin'],
+            nro_noid: JSON. parse(req.body)['nro_noid'],
+            imgUrl: JSON.parse(req.body)['imgurl']
         };
         response = await prisma.actionA1.create({ data: action});
         res.json(response);

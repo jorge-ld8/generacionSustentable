@@ -24,6 +24,7 @@ model actionA1 {
   tipo_localidad    String
   descripcion       String
   nombre_real       String
+  imgUrl            String
 }
 
 model User {

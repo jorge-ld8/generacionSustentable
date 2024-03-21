@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Router from "next/router";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import DropDownList from "../components/dropdownlist";
 import { getCookie } from 'cookies-next';
 import { actionTypes, actionsA1, actionsA2, actionsA3, actionsA4, localidades, organizaciones, tipoComunidad } from "../lib/constants";
-import prisma from "../lib/prisma";
+import { UploadButton } from "../lib/uploadthing";
 
 
 export async function getServerSideProps(context) {
@@ -22,6 +22,7 @@ export async function getServerSideProps(context) {
 
 const NewRole: React.FC<any> = (props)=>
 {
+    const [selectedImage, setSelectedImage] = useState(null);
     const formik = useFormik({
         initialValues:{
             nombre: "",
@@ -34,11 +35,14 @@ const NewRole: React.FC<any> = (props)=>
             fecha_final: new  Date(),
             localidad: "",
             nro_participantes: 0,
+            nro_noid: 0,
+            nro_nobin: 0,
             nro_mujeres: 0,
             nro_pob_ind: 0,
             nro_pob_rural: 0,
             nro_pob_lgbtiq: 0,
-            nro_pob_16_29: 0
+            nro_pob_16_29: 0,
+            imgUrl: ""
         },
         validationSchema: Yup.object(
           {
@@ -52,11 +56,13 @@ const NewRole: React.FC<any> = (props)=>
             organizacion: Yup.string().required("Obligatorio"),
             tipo_localidad: Yup.string().required("Obligatorio"),
             nro_participantes: Yup.number().required("Obligatorio"),
+            nro_noid: Yup.number().required("Obligatorio"),
+            nro_nobin: Yup.number().required("Obligatorio"),
             nro_mujeres: Yup.number().required("Obligatorio"),
             nro_pob_ind: Yup.number().required("Obligatorio"),
             nro_pob_rural: Yup.number().required("Obligatorio"),
             nro_pob_lgbtiq: Yup.number().required("Obligatorio"),
-            nro_pob_16_29: Yup.number().required("Obligatorio")
+            nro_pob_16_29: Yup.number().required("Obligatorio"),
           }
         ),
         onSubmit: values => {console.log(values);},
@@ -76,25 +82,53 @@ const NewRole: React.FC<any> = (props)=>
                 tipo_localidad: formik.values.tipo_localidad,
                 localidad: formik.values.localidad,
                 nro_participantes: formik.values.nro_participantes,
+                nro_noid: formik.values.nro_noid,
+                nro_nobin: formik.values.nro_nobin,
                 nro_mujeres: formik.values.nro_mujeres,
                 nro_pob_ind: formik.values.nro_pob_ind,
                 nro_pob_rural: formik.values.nro_pob_rural,
                 nro_pob_lgbtiq: formik.values.nro_pob_lgbtiq,
-                nro_pob_16_29: formik.values.nro_pob_16_29
+                nro_pob_16_29: formik.values.nro_pob_16_29,
+                imgurl: formik.values.imgUrl
             })
-        }).then(response =>{ 
+        }).then(async response =>{ 
           if(response.ok)
             return response.json()
           }
         ).catch(e => console.error(e))
         console.log(response);
+        console.log("holaaa" + JSON.stringify({
+          "nombre": formik.values.nombre,
+          "nombre_real": formik.values.nombre_real,
+          "descripcion": formik.values.descripcion,
+          "type": formik.values.type,
+          "fecha_inicio": String(formik.values.fecha_inicio),
+          "fecha_final": String(formik.values.fecha_final),
+          organizacion: formik.values.organizacion,
+          tipo_localidad: formik.values.tipo_localidad,
+          localidad: formik.values.localidad,
+          nro_participantes: formik.values.nro_participantes,
+          nro_noid: formik.values.nro_noid,
+          nro_nobin: formik.values.nro_nobin,
+          nro_mujeres: formik.values.nro_mujeres,
+          nro_pob_ind: formik.values.nro_pob_ind,
+          nro_pob_rural: formik.values.nro_pob_rural,
+          nro_pob_lgbtiq: formik.values.nro_pob_lgbtiq,
+          nro_pob_16_29: formik.values.nro_pob_16_29,
+          imgurl: formik.values.imgUrl
+      }))
         Router.push("/iniciativas");
       }
-  
+
+      const handleImageChange = (event) => {
+        setSelectedImage(event.target.files[0]);
+      };
+
 
     return (
       <div>
           <h2>Apuestas Formativas</h2>
+          <br />
           <form  onSubmit={handleSubmit} >
               <ul style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)'}}>
                   <li>
@@ -157,6 +191,24 @@ const NewRole: React.FC<any> = (props)=>
                       {...formik.getFieldProps("nro_participantes")}/>
                       <ErrorMessage touched={formik.touched.nro_participantes} errors={formik.errors.nro_participantes}/>
                   </li>
+                  <li>
+                      <label htmlFor="nro_mujeres">Mujeres:</label>
+                      <input type="number" id="nro_mujeres"
+                      {...formik.getFieldProps("nro_mujeres")}/>
+                      <ErrorMessage touched={formik.touched.nro_mujeres} errors={formik.errors.nro_mujeres}/>
+                  </li>
+                  <li>
+                      <label htmlFor="nro_nobin">No Binarios:</label>
+                      <input type="number" id="nro_nobin"
+                      {...formik.getFieldProps("nro_nobin")}/>
+                      <ErrorMessage touched={formik.touched.nro_nobin} errors={formik.errors.nro_nobin}/>
+                  </li>
+                  <li>
+                      <label htmlFor="nro_noid">No se identifica:</label>
+                      <input type="number" id="nro_noid"
+                      {...formik.getFieldProps("nro_noid")}/>
+                      <ErrorMessage touched={formik.touched.nro_noid} errors={formik.errors.nro_noid}/>
+                  </li>
                   {(formik.values.tipo_localidad === "Rural") ?
                   <li>
                       <label htmlFor="nro_pob_rural">Numero de pob. rural:</label>
@@ -179,19 +231,34 @@ const NewRole: React.FC<any> = (props)=>
                       {...formik.getFieldProps("nro_pob_lgbtiq")}/>
                       <ErrorMessage touched={formik.touched.nro_pob_lgbtiq} errors={formik.errors.nro_pob_lgbtiq}/>
                   </li>
-                  <li>
-                      <label htmlFor="nro_mujeres">Numero de mujeres:</label>
-                      <input type="number" id="nro_mujeres"
-                      {...formik.getFieldProps("nro_mujeres")}/>
-                      <ErrorMessage touched={formik.touched.nro_mujeres} errors={formik.errors.nro_mujeres}/>
-                  </li>
+
                   <li>
                       <label htmlFor="nro_pob_16_29">Numero pob. 16-29 años:</label>
                       <input type="number" id="nro_pob_16_29"
                       {...formik.getFieldProps("nro_pob_16_29")}/>
                       <ErrorMessage touched={formik.touched.nro_pob_16_29} errors={formik.errors.nro_pob_16_29}/>
                   </li>
+                  <li>
+                  {selectedImage ? 
+                  null 
+                  :
+                  <UploadButton
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res:any) => {
+                    formik.values.imgUrl = res[0].url;
+                    setSelectedImage(res[0]);
+                    console.log("Files: ", res);
+                    alert("Upload Completed");
+                  }}
+                  onUploadError={(error: Error) => {
+                    // Do something with the error.
+                    alert(`ERROR! ${error.message}`);
+                  }}/>
+                  }
+
+                  </li>
               </ul>
+              
               <br />
               <div className="Button" style={{margin:"auto"}}>
                       <Button type={"submit"} variant="contained" color={"success"} disabled={!(formik.isValid && formik.dirty)}>Crear</Button>
@@ -232,8 +299,9 @@ const NewRole: React.FC<any> = (props)=>
 
             /*Form Styling*/
             form{
-              margin: 0.1em auto;
+              margin: 0.25em auto;
               padding: 1em;
+              box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2) inset, 5px 5px 10px rgba(0, 0, 0, 0.2);
             }
 
             form ul{
