@@ -4,8 +4,8 @@ import {CategoryScale} from 'chart.js';
 import { ORANGE, actionTypes, actionsA1, localidades, tipoComunidad } from "../../../lib/constants";
 import { getCookie } from 'cookies-next';
 import { actionsA2, actionsA3, actionsA4 } from "../../../lib/constants";
-import prisma from "../../../lib/prisma";
 import GenChartAction from "../../../components/genericChartAction";
+import prisma from "../../../lib/prisma";
 
 function normalizeResults(inputArr, type, att, initialValues, op){
     const keys = initialValues;
@@ -80,8 +80,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         {
             _sum:{
                 nro_mujeres: true,
-                nro_nobin: true,
                 nro_noid: true,
+                nro_nobin: true,
                 nro_participantes: true,
             },
             where:{
