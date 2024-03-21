@@ -1,5 +1,5 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, GREEN, ORANGE, VIOLET, YELLOW, actionTypes, localidades, tipoComunidad } from "../lib/constants";
+import { BLUE, GREEN, ORANGE, VIOLET, YELLOW, actionTypes, localidades} from "../lib/constants";
 import Comunidadnav from "./comunnav";
 
 export default function GenChartComunidad({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders}){
@@ -31,13 +31,6 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
                 },
                 color: '#fff',
                 backgroundColor: "#000",
-                labels: {
-                  title: {
-                    font: {
-                      weight: 'bold'
-                    }
-                  }
-              }
             }
         }
       };    

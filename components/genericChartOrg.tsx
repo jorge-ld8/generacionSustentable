@@ -1,6 +1,5 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN, PINK } from "../lib/constants";
-import Zonasnav from "./zonasnav";
+import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN} from "../lib/constants";
 
 
 export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders}){
@@ -32,13 +31,6 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
             },
             color: '#fff',
             backgroundColor: "#000",
-            labels: {
-              title: {
-                font: {
-                  weight: 'bold'
-                }
-              }
-          }
         }
     }
   };
@@ -118,7 +110,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 <Doughnut data={{labels:["mujeres", "hombres", "NB", "NI"], datasets: [{
                         // id: 1,
                         label: '# participantes',
-                        backgroundColor: [PINK, BLUE, ORANGE, GREEN],
+                        backgroundColor: [VIOLET, BLUE, ORANGE, GREEN],
                         data: totalGenders,
                 }]}} options={options} />
                 </div>

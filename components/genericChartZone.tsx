@@ -32,13 +32,6 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
             },
             color: '#fff',
             backgroundColor: "#000",
-            labels: {
-              title: {
-                font: {
-                  weight: 'bold'
-                }
-              }
-          }
         }
     }
   };

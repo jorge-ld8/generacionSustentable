@@ -32,13 +32,6 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                 },
                 color: '#fff',
                 backgroundColor: "#000",
-                labels: {
-                  title: {
-                    font: {
-                      weight: 'bold'
-                    }
-                  }
-              }
             }
         }
       };
