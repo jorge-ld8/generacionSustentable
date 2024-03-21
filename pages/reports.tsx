@@ -40,11 +40,6 @@ export default function Home(props) {
     indList.push(props.iniciativas.reduce((sum, action: actionA1) => (action.type === type) ? sum + action.nro_pob_ind : sum, 0))
   }
 
-  // Calculando numero de poblacion rural
-  for (let type of ["A1", "A2", "A3", "A4"]){
-    console.log(type);
-    rurList.push(props.iniciativas.reduce((sum, action: actionA1) => (action.type === type) ? sum + action.nro_pob : sum, 0))
-  }
 
   console.log(partList);
   return (
