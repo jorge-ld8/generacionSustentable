@@ -55,31 +55,31 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
                 <Bar datasetIdKey='id' data={{
                 labels: labels,
                 datasets:[{
-                    id: 1,
+                    // id: 1,
                     label: 'pob. LGBTIQ',
                     backgroundColor: ORANGE,
                     data: finalArr["lgbtiq"],
                     },
                     {
-                    id: 2,
+                    // id: 2,
                     label: 'mujeres',
                     backgroundColor: BLUE,
                     data: finalArr["mujeres"],
                     },
                     {
-                    id: 3,
+                    // id: 3,
                     label: 'pob. indígena',
                     backgroundColor: GREEN,
                     data: finalArr["indigena"],
                     },
                     {
-                    id: 4,
+                    // id: 4,
                     label: 'pob. rural',
                     backgroundColor: VIOLET,
                     data: finalArr["rural"],
                     },
                     {
-                    id: 5,
+                    // id: 5,
                     label: 'participantes',
                     backgroundColor: YELLOW,
                     data: finalArr["participantes"],
@@ -93,7 +93,7 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
                 <Bar datasetIdKey='id' data={{
                     labels: labels,
                     datasets:[{
-                        id: 1,
+                        // id: 1,
                         label: '# iniciativas',
                         backgroundColor: color,
                         data: totals,
@@ -104,7 +104,7 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
             <div className="chart-container" style={{width:"45%", display:"inline-block"}} >
             <h4>Resumen por localidad</h4>
             <Doughnut data={{labels:localidades, datasets: [{
-                    id: 1,
+                    // id: 1,
                     label: '# iniciativas',
                     backgroundColor: [ORANGE, BLUE, GREEN],
                     data: totalLocTypes
@@ -113,7 +113,7 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
             <div className="chart-container" style={{width:"45%", display:"inline-block"}}>
             <h4>Resumen por accion</h4>
             <Doughnut data={{labels:actionTypes, datasets: [{
-                    id: 1,
+                    // id: 1,
                     label: '# iniciativas',
                     backgroundColor: [VIOLET, BLUE, YELLOW],
                     data: totalComunidad
