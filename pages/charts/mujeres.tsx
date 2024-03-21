@@ -45,7 +45,7 @@ export default function ChartFinal(props){
             <Bar datasetIdKey='id' data={{
               labels: actionTypes,
               datasets:[{
-                  id: 2,
+                //   id: 2,
                   label: 'nro de mujeres',
                   backgroundColor: BLUE,
                   data: props.totalMujeres,

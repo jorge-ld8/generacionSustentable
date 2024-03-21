@@ -5,7 +5,7 @@ import React from 'react';
 import IconButton from "@mui/material/IconButton";
 import { ArrowBack } from "@mui/icons-material";
 import Router from "next/router";
-import prisma from "../../lib/prisma";
+import prisma from "../../../lib/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const action = await prisma.actionA1.findUnique({

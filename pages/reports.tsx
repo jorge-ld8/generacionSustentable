@@ -1,6 +1,6 @@
 import styles from '../styles/Home.module.css';
 import {Chart } from 'chart.js/auto';
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar} from 'react-chartjs-2';
 import {CategoryScale} from 'chart.js';
 import { GetStaticProps } from 'next';
 import prisma from '../lib/prisma';
@@ -61,25 +61,25 @@ export default function Home(props) {
         <Bar datasetIdKey='id' data={{
               labels: actionTypes,
               datasets:[{
-                  id: 1,
+                  // id: 1,
                   backgroundColor: 'rgba(210, 0, 0, 0.5)',
                   label: 'nro de participantes',
                   data: partList,
                 },
                 {
-                  id: 2,
+                  // id: 2,
                   label: 'nro de mujeres',
                   backgroundColor: 'rgba(0, 0, 255, 0.5)',
                   data: mujList,
                 },
                 {
-                  id: 3,
+                  // id: 3,
                   label: 'nro indigenas',
                   backgroundColor: 'rgba(0, 255, 20, 0.5)',
                   data: indList,
                 },
                 {
-                  id: 4,
+                  // id: 4,
                   label: 'nro poblacion rural',
                   backgroundColor: 'rgba(0, 50, 180, 0.5)',
                   data: rurList,
@@ -93,7 +93,7 @@ export default function Home(props) {
         <Bar datasetIdKey='id' data={{
               labels: actionTypes,
               datasets:[{
-                  id: 2,
+                  // id: 2,
                   label: 'nro de mujeres',
                   backgroundColor: 'rgba(0, 0, 255, 0.5)',
                   data: mujList,

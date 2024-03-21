@@ -1,6 +1,5 @@
 import Button from '@mui/material/Button';
 import { getCookie } from 'cookies-next';
-import Link from 'next/link'
 import Router from 'next/router';
 import { VIOLET } from '../lib/constants';
 

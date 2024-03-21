@@ -56,52 +56,36 @@ export default function ChartFinal(props){
             <Bar datasetIdKey='id' data={{
               labels: actionTypes,
               datasets:[{
-                  id: 1,
+                  // id: 1,
                   label: 'pob. LGBTIQ',
                   backgroundColor: ORANGE,
                   data: props.finalArr["lgbtiq"],
                 },
                 {
-                  id: 2,
+                  // id: 2,
                   label: 'mujeres',
                   backgroundColor: BLUE,
                   data: props.finalArr["mujeres"],
                 },
                 {
-                  id: 3,
+                  // id: 3,
                   label: 'pob. indígena',
                   backgroundColor: GREEN,
                   data: props.finalArr["indigena"],
                 },
                 {
-                  id: 4,
+                  // id: 4,
                   label: 'pob. rural',
                   backgroundColor: VIOLET,
                   data: props.finalArr["rural"],
                 },
                 {
-                  id: 5,
+                  // id: 5,
                   label: 'participantes',
                   backgroundColor: YELLOW,
                   data: props.finalArr["participantes"],
                 }
-            ],
-            options: {
-                    scales: {
-                      y: {
-                        title: {
-                          display: true,
-                          text: 'My y axis its fine '
-                        }
-                      },
-                      x: {
-                        title: {
-                          display: true,
-                          text: 'My x axis its fine'
-                        }
-                      },
-                    }     
-            }
+            ]
           }} style={{display:"inline-block"}} />
         </div>
     );

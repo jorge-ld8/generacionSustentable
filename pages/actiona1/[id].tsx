@@ -1,11 +1,9 @@
-import { jsx } from "@emotion/react";
 import { GetServerSideProps } from "next";
 import React from 'react';
 import IconButton from "@mui/material/IconButton";
 import { ArrowBack } from "@mui/icons-material";
 import Router from "next/router";
 import prisma from "../../lib/prisma";
-import Image from 'next/image'
 
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -19,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     }
   }
 
-const Home: React.FC<actionA1> = (props) => {
+const Home: React.FC<any> = (props) => {
     return (
       <>
       <div style={{marginRight:'10px', textAlign:"justify"}}>

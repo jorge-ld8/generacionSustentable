@@ -1,6 +1,4 @@
 import { useFormik } from 'formik';
-import Link from 'next/link';
-import * as Yup from 'yup';
 import { useRouter } from 'next/router'
 import ErrorMessage from '../components/errormessage';
 import DropDownList from '../components/dropdownlist';
@@ -13,7 +11,6 @@ import { useState } from 'react';
 
 export default function SignupPage( {username} ) {
     const router = useRouter()
-    const { msg } = router.query
     const [isVisible, setIsVisible] = useState(false);
     const [isVisible2, setIsVisible2] = useState(false);
     const formik = useFormik({

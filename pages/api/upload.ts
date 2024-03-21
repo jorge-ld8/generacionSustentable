@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import multer from 'multer'; // multer for handling file uploads
 import fs from 'fs'; // file system module
-import prisma from '../../lib/prisma';
 
 const upload = multer({ dest: '/public/uploads' }); // Upload to 'public/uploads' folder
 
@@ -28,12 +27,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       fs.renameSync(uploadData.path, `public/uploads/${newFilename}`);
 
       // Create a new image record in Prisma
-      const newImage = await prisma.image.create({
-        data: {
-          url:`/images/${newFilename}`, // Relative path to the image
-          filename: uploadData.originalname,
-        },
-      });
+    //   const newImage = await prisma.image.create({
+    //     data: {
+    //       url:`/images/${newFilename}`, // Relative path to the image
+    //       filename: uploadData.originalname,
+    //     },
+    //   });
 
       res.status(200).json({ message: 'Image uploaded successfully!', image: newImage });
     } catch (error) {

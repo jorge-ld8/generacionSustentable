@@ -89,7 +89,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function ChartFinal(props){
     Chart.register(CategoryScale);
-    const [activeItem, setActiveItem] = useState('');
     const total = {"totalLGBT": props.totalLGBT, 
                    "totalMujeres": props.totalMujeres, 
                    "totalInd": props.totalInd, 

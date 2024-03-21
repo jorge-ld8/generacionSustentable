@@ -1,7 +1,6 @@
-import { GetStaticProps } from 'next';
 import prisma from '../lib/prisma';
 import { actionA1 } from "@prisma/client";
-import React, { SyntheticEvent, useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
 import { IconButton } from '@mui/material';
@@ -36,8 +35,15 @@ export default function Home(props) {
     nro_participantes: 0,
     nro_mujeres: 0,
     nro_pob_ind: 0,
-    nro_pob: 0,
-    nro_pob_lgbtiq: 0
+    nro_pob_lgbtiq: 0,
+    nro_pob_rural: 0,
+    nro_nobin: 0,
+    nro_noid: 0,
+    nro_pob_16_29: 0,
+    nombre_real: "",
+    imgUrl: "",
+    organizacion: "",
+    tipo_localidad: ""
   });
 
   const GetActions = async () => {

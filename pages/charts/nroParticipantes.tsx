@@ -4,7 +4,7 @@ import Reportsnav from "../../components/reportsnav";
 import {CategoryScale} from 'chart.js';
 import prisma from "../../lib/prisma";
 import { Bar } from "react-chartjs-2";
-import { DARKBLUE, YELLOW, actionTypes } from "../../lib/constants";
+import {YELLOW, actionTypes } from "../../lib/constants";
 
 
 function normalizeResults(inputArr){
@@ -44,7 +44,7 @@ export default function ChartFinal(props){
             <Bar datasetIdKey='id' data={{
               labels: actionTypes,
               datasets:[{
-                  id: 2,
+                //   id: 2,
                   label: 'nro de participantes',
                   backgroundColor: YELLOW,
                   data: props.totalP,
