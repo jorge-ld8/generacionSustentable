@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     //     },
     //   });
 
-      res.status(200).json({ message: 'Image uploaded successfully!', image: newImage });
+      res.status(200).json({ message: 'Image uploaded successfully!'});
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error uploading image' });
