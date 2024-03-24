@@ -250,6 +250,9 @@ const NewRole: React.FC<any> = (props)=>
                     console.log("Files: ", res);
                     alert("Upload Completed");
                   }}
+                  onUploadProgress={(p:any)=>{
+                    console.log("IN PROGRESS");
+                  }}
                   onUploadError={(error: Error) => {
                     // Do something with the error.
                     alert(`ERROR! ${error.message}`);

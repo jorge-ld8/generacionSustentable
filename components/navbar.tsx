@@ -24,7 +24,7 @@ export default function Navbar({username}){
     return (
         <nav className={styles.mainav} style={{position:"fixed"}}>
             <Link href={"/"}>
-                <Image src="/generacion_sustentable_nobg.png" alt={''} width={380} height={170} unoptimized/>
+                <Image src="/generacion_sustentable_nobg.png" alt={''} width={300} height={170} unoptimized/>
             </Link>
             <div className={styles.user}>
                 <span style={{color: "white", fontWeight: "bold"}}>
