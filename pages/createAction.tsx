@@ -248,7 +248,6 @@ const NewRole: React.FC<any> = (props)=>
                     formik.values.imgUrl = res[0].url;
                     setSelectedImage(res[0]);
                     console.log("Files: ", res);
-                    alert("Upload Completed");
                   }}
                   onUploadProgress={(p:any)=>{
                     console.log("IN PROGRESS");
