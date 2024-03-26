@@ -57,6 +57,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             }
         }
     );
+
+
+    const totalPob = await prisma.actionA1.aggregate(
+        {
+            _sum:{
+                nro_participantes: true,
+                nro_pob_ind: true,
+                nro_pob_rural: true
+            },
+            where:{
+                localidad:{
+                    equals: String(ctx.params?.id)
+                }
+            }
+        }
+    );
     console.log(`total:`);
     console.log(totalLGBT);
     const countIni = await prisma.actionA1.aggregate(
@@ -82,7 +98,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             totalActionTypes: normalizeResults(totalLGBT, "id", "_count"),
             countIni,
             localidad: String(ctx.params?.id),
-            totalGenders: [totalGenres._sum.nro_mujeres, totalGenres._sum.nro_participantes - totalGenres._sum.nro_nobin - totalGenres._sum.nro_noid - totalGenres._sum.nro_mujeres, totalGenres._sum.nro_nobin, totalGenres._sum.nro_noid]
+            totalGenders: [totalGenres._sum.nro_mujeres, totalGenres._sum.nro_participantes - totalGenres._sum.nro_nobin - totalGenres._sum.nro_noid - totalGenres._sum.nro_mujeres, totalGenres._sum.nro_nobin, totalGenres._sum.nro_noid],
+            totalPobs:[totalPob._sum.nro_participantes-totalPob._sum.nro_pob_ind-totalPob._sum.nro_pob_rural, totalPob._sum.nro_pob_ind, totalPob._sum.nro_pob_rural]
         },
     }
   }
@@ -97,6 +114,6 @@ export default function ChartFinal(props){
                 };
 
     return (
-        <GenChartZone name={props.localidad} iniNum={props.countIni._count.id} total={total} totalActionTypes={props.totalActionTypes} totalGenders={props.totalGenders}/>
+        <GenChartZone name={props.localidad} iniNum={props.countIni._count.id} total={total} totalActionTypes={props.totalActionTypes} totalGenders={props.totalGenders} totalPobs={props.totalPobs}/>
     );
 }

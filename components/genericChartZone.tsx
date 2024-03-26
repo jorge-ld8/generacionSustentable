@@ -3,7 +3,7 @@ import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN } from "../lib/constan
 import Zonasnav from "./zonasnav";
 
 
-export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders}){
+export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders,totalPobs}){
   let options = {
     tooltips: {
         enabled: false,
@@ -118,6 +118,15 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                         data: totalGenders,
                 }]}} options={options} />
                 </div>
+                <div className="chart-container">
+                <h4>Resumen por tipo de poblacion</h4>
+                <Doughnut data={{labels:["urbana", "indígena", "rural"], datasets: [{
+                        // id: 1,
+                        label: '# participantes',
+                        backgroundColor: [BLUE, ORANGE, GREEN],
+                        data: totalPobs,
+                }]}} options={options} />
+            </div>
         </div>
                 <br />
                 <h4>Comparación General</h4>

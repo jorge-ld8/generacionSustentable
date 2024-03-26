@@ -2,7 +2,7 @@ import { Bar, Doughnut } from "react-chartjs-2";
 import { BLUE, GREEN, ORANGE, VIOLET, YELLOW, localidades, tipoComunidad } from "../lib/constants";
 import Typesnav from "./typesnav";
 
-export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders}){
+export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders, totalPobs}){
 
     let options = {
         tooltips: {
@@ -122,6 +122,15 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                         data: totalGenders,
                 }]}} options={options} />
                 </div>
+                <div className="chart-container" style={{width:"48%", display:"inline-block"}}>
+                <h4>Resumen por tipo de poblacion</h4>
+                <Doughnut data={{labels:["urbana", "indígena", "rural"], datasets: [{
+                        // id: 1,
+                        label: '# participantes',
+                        backgroundColor: [BLUE, ORANGE, GREEN],
+                        data: totalPobs,
+                }]}} options={options} />
+            </div>
         </div>
     </div>
     );

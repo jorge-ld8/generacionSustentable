@@ -92,6 +92,21 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         }
     );
 
+    const totalPob = await prisma.actionA1.aggregate(
+        {
+            _sum:{
+                nro_participantes: true,
+                nro_pob_ind: true,
+                nro_pob_rural: true
+            },
+            where:{
+                type:{
+                    equals: String(ctx.params?.id)
+                }
+            }
+        }
+    );
+
     const countIni = await prisma.actionA1.aggregate(
         {
             _count:{
@@ -131,7 +146,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             countIni,
             actionType: String(ctx.params?.id),
             actionsArr,
-            totalGenders: [totalGenres._sum.nro_mujeres, totalGenres._sum.nro_participantes - totalGenres._sum.nro_nobin - totalGenres._sum.nro_noid - totalGenres._sum.nro_mujeres, totalGenres._sum.nro_nobin, totalGenres._sum.nro_noid]
+            totalGenders: [totalGenres._sum.nro_mujeres, totalGenres._sum.nro_participantes - totalGenres._sum.nro_nobin - totalGenres._sum.nro_noid - totalGenres._sum.nro_mujeres, totalGenres._sum.nro_nobin, totalGenres._sum.nro_noid],
+            totalPobs:[totalPob._sum.nro_participantes-totalPob._sum.nro_pob_ind-totalPob._sum.nro_pob_rural, totalPob._sum.nro_pob_ind, totalPob._sum.nro_pob_rural]
         }
     }
   }
@@ -140,6 +156,6 @@ export default function ChartFinal(props){
     Chart.register(CategoryScale);
     console.log(props)
     return (
-        <GenChartAction name={props.actionType} iniNum={props.countIni._count.id} totals={props.totalnames} labels={props.actionsArr} color={ORANGE} totalLocTypes={props.totalActTypes} totalComunidad={props.totalComunidad} finalArr={props.finalArr} totalGenders={props.totalGenders}/>
+        <GenChartAction name={props.actionType} iniNum={props.countIni._count.id} totals={props.totalnames} labels={props.actionsArr} color={ORANGE} totalLocTypes={props.totalActTypes} totalComunidad={props.totalComunidad} finalArr={props.finalArr} totalGenders={props.totalGenders} totalPobs={props.totalPobs}/>
     );
 }

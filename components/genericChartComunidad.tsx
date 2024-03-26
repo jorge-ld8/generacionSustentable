@@ -2,7 +2,7 @@ import { Bar, Doughnut } from "react-chartjs-2";
 import { BLUE, GREEN, ORANGE, VIOLET, YELLOW, actionTypes, localidades} from "../lib/constants";
 import Comunidadnav from "./comunnav";
 
-export default function GenChartComunidad({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders}){
+export default function GenChartComunidad({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders, totalPobs}){
     let options = {
         tooltips: {
             enabled: false,
@@ -112,7 +112,7 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
                     data: totalComunidad
                     }]}} style={{display:"inline-block"}}/>
             </div>
-            <div className="chart-container">
+            <div className="chart-container" style={{width:"48%", display:"inline-block"}}>
                 <h4>Resumen por genero</h4>
                 <Doughnut data={{labels:["mujeres", "hombres", "NB", "NI"], datasets: [{
                         // id: 1,
@@ -120,7 +120,16 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
                         backgroundColor: [VIOLET, BLUE, ORANGE, GREEN],
                         data: totalGenders,
                 }]}} options={options} />
-                </div>
+            </div>
+            <div className="chart-container" style={{width:"48%", display:"inline-block"}}>
+                <h4>Resumen por tipo de poblacion</h4>
+                <Doughnut data={{labels:["urbana", "indígena", "rural"], datasets: [{
+                        // id: 1,
+                        label: '# participantes',
+                        backgroundColor: [BLUE, ORANGE, GREEN],
+                        data: totalPobs,
+                }]}} options={options} />
+            </div>
         </div>
     </div>
     );
