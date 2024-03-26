@@ -63,6 +63,7 @@ const NewRole: React.FC<any> = (props)=>
             nro_pob_rural: Yup.number().required("Obligatorio"),
             nro_pob_lgbtiq: Yup.number().required("Obligatorio"),
             nro_pob_16_29: Yup.number().required("Obligatorio"),
+            imgUrl: Yup.string().required()
           }
         ),
         onSubmit: values => {console.log(values);},
