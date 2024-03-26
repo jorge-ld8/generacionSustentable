@@ -245,6 +245,7 @@ const NewRole: React.FC<any> = (props)=>
                   <UploadButton
                   endpoint="imageUploader"
                   onClientUploadComplete={(res:any) => {
+                    console.log(res);
                     formik.values.imgUrl = res[0].url;
                     setSelectedImage(res[0]);
                     console.log("Files: ", res);
