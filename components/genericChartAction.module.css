@@ -1,0 +1,14 @@
+.progressBar {
+    position: relative;
+  }
+  
+  .progressBar::after {
+    content: 'Completed: XX%'; /* Replace XX with desired format */
+    position: absolute;
+    right: 5px; /* Adjust positioning as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #333;
+  }
+  

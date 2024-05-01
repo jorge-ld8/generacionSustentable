@@ -1,6 +1,7 @@
 import { Bar, Doughnut } from "react-chartjs-2";
 import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN, PINK } from "../lib/constants";
 import Zonasnav from "./zonasnav";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 
 export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders,totalPobs}){
@@ -35,6 +36,22 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
         }
     }
   };
+          // create a variable for the sum and initialize it
+          let sumP = 0;
+
+          // calculate sum using forEach() method
+          total.totalParticipantes.forEach( num => {
+              sumP += num;
+          })
+  
+          // create a variable for the sum and initialize it
+          let sum16_29 = 0;
+  
+          // calculate sum using forEach() method
+          total.total1629.forEach( num => {
+              sum16_29 += num;
+          });
+
     return (
             <div>
                 <h2>Apuestas Formativas</h2>
@@ -44,6 +61,19 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 <p>
                     Número de iniciativas: {iniNum}
                 </p>
+                <br />
+                <h4>
+                    Número de jovenes 16-29 años
+                </h4>
+                <br />
+                <ProgressBar 
+                    completed= {`${sum16_29}`}
+                    bgColor="#a7cb45"
+                    labelAlignment="center"
+                    labelColor="#ffffff"
+                    labelSize="16px"
+                    maxCompleted={sumP}
+                />
                 <br />
                 <h4>Resumen general</h4>
                 <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly'}}>

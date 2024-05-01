@@ -6,6 +6,7 @@ import { getCookie } from 'cookies-next';
 import { actionsA2, actionsA3, actionsA4 } from "../../../lib/constants";
 import GenChartAction from "../../../components/genericChartAction";
 import prisma from "../../../lib/prisma";
+import { CleaningServices } from "@mui/icons-material";
 
 function normalizeResults(inputArr, type, att, initialValues, op){
     const keys = initialValues;
@@ -132,8 +133,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     else if (ctx.params?.id === actionTypes[3]){
         actionsArr = actionsA4;
     }
-    console.log(actionsArr);
-    console.log(totalGral)
+
     return {
         props:{
             totalnames: normalizeResults(totalGral, "id", "nombre", actionsArr, "_count"),
@@ -147,6 +147,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 "rural": normalizeResults(totalGral, "nro_pob_rural", "nombre", actionsArr, "_sum"),
                 "nobin": normalizeResults(totalGral, "nro_nobin", "nombre", actionsArr, "_sum"),
                 "noid": normalizeResults(totalGral, "nro_noid", "nombre", actionsArr, "_sum"),
+                "pob_16_29": normalizeResults(totalGral, "nro_pob_16_29", "nombre", actionsArr, "_sum"),
             },
             countIni,
             actionType: String(ctx.params?.id),

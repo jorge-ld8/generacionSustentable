@@ -130,6 +130,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 "rural": normalizeResults(totalGral, "nro_pob_rural", "type", actionTypes, "_sum"),
                 "nobin": normalizeResults(totalGral, "nro_nobin", "type", actionTypes, "_sum"),
                 "noid": normalizeResults(totalGral, "nro_noid", "type", actionTypes, "_sum"),
+                "pob_16_29": normalizeResults(totalGral, "nro_pob_16_29", "type", actionTypes, "_sum"),
             },
             countIni,
             comunidad: String(ctx.params?.id),

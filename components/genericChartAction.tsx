@@ -1,6 +1,10 @@
 import { Bar, Doughnut } from "react-chartjs-2";
 import { BLUE, GREEN, ORANGE, PINK, VIOLET, YELLOW, localidades, tipoComunidad } from "../lib/constants";
 import Typesnav from "./typesnav";
+import ProgressBar from "@ramonak/react-progress-bar";
+import { CleaningServices } from "@mui/icons-material";
+import styles from './genericChartAction.module.css';
+
 
 export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders, totalPobs}){
 
@@ -35,6 +39,23 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
             }
         }
       };
+
+        // create a variable for the sum and initialize it
+        let sumP = 0;
+
+        // calculate sum using forEach() method
+        finalArr["participantes"].forEach( num => {
+            sumP += num;
+        })
+
+        // create a variable for the sum and initialize it
+        let sum16_29 = 0;
+
+        // calculate sum using forEach() method
+        finalArr["pob_16_29"].forEach( num => {
+            sum16_29 += num;
+        });
+
     return (
         <div>
         <h3>Tipo de accion: {name}</h3>
@@ -42,6 +63,19 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
         <p>
             Número de iniciativas: {iniNum}
         </p>
+        <br />
+        <h4>
+            Numero de jovenes 16-29 años
+        </h4>
+        <br />
+        <ProgressBar 
+            completed= {`${sum16_29}`}
+            bgColor="#a7cb45"
+            labelAlignment="center"
+            labelColor="#ffffff"
+            labelSize="16px"
+            maxCompleted={sumP}
+        />
         <br />
         <div style={{margin:"auto"}}>
             <h4>Resumen General por tipo de actividad</h4>
