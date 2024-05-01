@@ -1,5 +1,5 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN } from "../lib/constants";
+import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN, PINK } from "../lib/constants";
 import Zonasnav from "./zonasnav";
 
 
@@ -126,7 +126,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                         backgroundColor: [BLUE, ORANGE, GREEN],
                         data: totalPobs,
                 }]}} options={options} />
-            </div>
+                </div>
         </div>
                 <br />
                 <h4>Comparación General</h4>
@@ -140,12 +140,6 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                   data: total.totalLGBT,
                 },
                 {
-                  // id: 2,
-                  label: 'mujeres',
-                  backgroundColor: BLUE,
-                  data: total.totalMujeres,
-                },
-                {
                   // id: 3,
                   label: 'pob. indígena',
                   backgroundColor: GREEN,
@@ -156,6 +150,18 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                   label: 'pob. rural',
                   backgroundColor: VIOLET,
                   data: total.totalRural,
+                },
+                {
+                  // id: 2,
+                  label: 'mujeres',
+                  backgroundColor: PINK,
+                  data: total.totalMujeres,
+                },
+                {
+                  // id: 2
+                  label: 'hombres',
+                  backgroundColor: BLUE,
+                  data: total.totalParticipantes.map((x, index)=>{return x-total.totalMujeres[index]-total.totalNoBin[index]-total.totalNoId[index]}),
                 },
                 {
                   // id: 5,

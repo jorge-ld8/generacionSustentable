@@ -30,7 +30,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 nro_mujeres: true,
                 nro_pob_ind: true,
                 nro_participantes: true,
-                nro_pob_rural: true
+                nro_pob_rural: true,
+                nro_nobin: true,
+                nro_noid: true,
+                nro_pob_16_29: true
             },
             _count:{
                 id: true
@@ -92,6 +95,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         props:{
             totalLGBT: normalizeResults(totalLGBT, "nro_pob_lgbtiq", "_sum"),
             totalMujeres: normalizeResults(totalLGBT, "nro_mujeres", "_sum"),
+            totalNoBin: normalizeResults(totalLGBT,"nro_nobin", "_sum"),
+            totalNoId: normalizeResults(totalLGBT, "nro_noid", "_sum"),
             totalInd: normalizeResults(totalLGBT, "nro_pob_ind", "_sum"),
             totalParticipantes: normalizeResults(totalLGBT, "nro_participantes", "_sum"),
             totalRural: normalizeResults(totalLGBT, "nro_pob_rural", "_sum"),
@@ -110,7 +115,9 @@ export default function ChartFinal(props){
                    "totalMujeres": props.totalMujeres, 
                    "totalInd": props.totalInd, 
                    "totalParticipantes": props.totalParticipantes, 
-                   "totalRural": props.totalRural, 
+                   "totalRural": props.totalRural,
+                   "totalNoBin": props.totalNoBin,
+                   "totalNoId": props.totalNoId 
                 };
 
     return (

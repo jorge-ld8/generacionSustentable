@@ -34,7 +34,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 nro_mujeres: true,
                 nro_pob_ind: true,
                 nro_participantes: true,
-                nro_pob_rural: true
+                nro_pob_rural: true,
+                nro_nobin: true,
+                nro_noid: true,
+                nro_pob_16_29: true
             },
             where:{
                 tipo_localidad: {
@@ -124,7 +127,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 "mujeres": normalizeResults(totalGral, "nro_mujeres","type", actionTypes, "_sum"),
                 "indigena": normalizeResults(totalGral, "nro_pob_ind", "type", actionTypes, "_sum"),
                 "participantes": normalizeResults(totalGral, "nro_participantes", "type", actionTypes, "_sum"),
-                "rural": normalizeResults(totalGral, "nro_pob_rural", "type", actionTypes, "_sum")
+                "rural": normalizeResults(totalGral, "nro_pob_rural", "type", actionTypes, "_sum"),
+                "nobin": normalizeResults(totalGral, "nro_nobin", "type", actionTypes, "_sum"),
+                "noid": normalizeResults(totalGral, "nro_noid", "type", actionTypes, "_sum"),
             },
             countIni,
             comunidad: String(ctx.params?.id),

@@ -12,4 +12,5 @@ export const GREEN = 'rgba(167, 203, 69, 0.6)';
 export const BLUE = 'rgba(16, 159, 153, 0.6)';
 export const ORANGE = 'rgba(240, 144, 51, 0.6)';
 export const DARKBLUE = 'rgba(0, 0, 245, 0.6)';
+export const PINK = 'rgba(244, 194, 194, 0.6)';
 export const datosImp = ["nro_participantes","nro_pob_lgbtiq", "nro_mujeres", "nro_pob_ind","nro_pob_rural"];

@@ -41,9 +41,9 @@ export default function Navbar({username}){
             </div>
             {username ?
             <div className={styles.navbar}>
-                <Link href={"/iniciativas"}>Ver Iniciativas</Link>
-                <Link href={"/createAction"}>Introducir iniciativa</Link>
-                <Link href={"/reportslanding"}>Ver Reportes</Link>
+                <Link href={"/iniciativas"}>Ver Actividades Realizadas</Link>
+                <Link href={"/createAction"}>Introducir actividad</Link>
+                <Link href={"/reportslanding"}>Ver Reportes de indicadores</Link>
                 <IconButton aria-label="edit"  size="small" onClick={(e) => {e.stopPropagation();router.back()}}>
                     <ArrowBack sx={{color:'white'}}/>
                 </IconButton>

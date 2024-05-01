@@ -127,7 +127,7 @@ const NewRole: React.FC<any> = (props)=>
 
     return (
       <div>
-          <h2>Apuestas Formativas</h2>
+          <h2>Actividad realizada</h2>
           <br />
           <form  onSubmit={handleSubmit} >
               <ul style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)'}}>

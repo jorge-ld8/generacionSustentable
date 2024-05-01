@@ -1,5 +1,5 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, GREEN, ORANGE, VIOLET, YELLOW, localidades, tipoComunidad } from "../lib/constants";
+import { BLUE, GREEN, ORANGE, PINK, VIOLET, YELLOW, localidades, tipoComunidad } from "../lib/constants";
 import Typesnav from "./typesnav";
 
 export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders, totalPobs}){
@@ -55,12 +55,6 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                     data: finalArr["lgbtiq"],
                     },
                     {
-                    // id: 2,
-                    label: 'mujeres',
-                    backgroundColor: BLUE,
-                    data: finalArr["mujeres"],
-                    },
-                    {
                     // id: 3,
                     label: 'pob. indígena',
                     backgroundColor: GREEN,
@@ -71,6 +65,18 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                     label: 'pob. rural',
                     backgroundColor: VIOLET,
                     data: finalArr["rural"],
+                    },
+                    {
+                    // id: 2,
+                    label: 'mujeres',
+                    backgroundColor: PINK,
+                    data: finalArr["mujeres"],
+                    },
+                    {
+                    // id: 2
+                    label: 'hombres',
+                    backgroundColor: BLUE,
+                    data: finalArr["participantes"].map((x, index)=>{return x-finalArr["mujeres"][index]-finalArr["nobin"][index]-finalArr["noid"][index]}),
                     },
                     {
                     // id: 6,

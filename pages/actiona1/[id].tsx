@@ -35,10 +35,11 @@ const Home: React.FC<any> = (props) => {
           <p><b>Nro. participantes: </b>{props.nro_participantes}</p>
           <p><b>Nro. poblacion indigena: </b>{props.nro_pob_ind}</p>
           <p><b>Nro. poblacion rural: </b>{props.nro_pob_rural}</p>
+          <p><b>Nro. poblacion LGBTIQ: </b>{props.nro_pob_lgbtiq}</p>
+          <p><b>Nro. poblacion 16-29 años: </b>{props.nro_pob_16_29}</p>
           <br style={{border:"1px solid black"}}/>
           <h4>POR GENERO</h4>
           <p><b>Nro. mujeres: </b>{props.nro_mujeres}</p>
-          <p><b>Nro. poblacion LGBTIQ: </b>{props.nro_pob_lgbtiq}</p>
           <p><b>Nro. poblacion No Binario: </b>{props.nro_nobin}</p>
           <p><b>Nro. poblacion No Identifica: </b>{props.nro_noid}</p>
           <IconButton aria-label="delete"  size="small" onClick={() => {Router.push("/iniciativas")}}>
