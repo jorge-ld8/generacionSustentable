@@ -1,5 +1,5 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, GREEN, ORANGE, PINK, VIOLET, YELLOW, actionTypes, localidades} from "../lib/constants";
+import { BLUE, GREEN, LIGHTBLUE, LIGHTVIOLET, ORANGE, PINK, ULTRALIGHTBLUE, ULTRALIGHTVIOLET, VIOLET, YELLOW, actionTypes, localidades} from "../lib/constants";
 import Comunidadnav from "./comunnav";
 import ProgressBar from "@ramonak/react-progress-bar";
 
@@ -61,7 +61,7 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
         </p>
         <br />
         <h4>
-            Numero de jovenes 16-29 años
+            Número de jóvenes 16-29 años
         </h4>
         <br />
         <ProgressBar 
@@ -73,44 +73,51 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
             maxCompleted={sumP}
         />
         <br />
+        <br />
         <div style={{margin:"auto"}}>
         <h3>Resumen General por tipo de actividad</h3>
             <div>
                 <Bar datasetIdKey='id' data={{
                 labels: labels,
-                datasets:[{
-                    // id: 1,
-                    label: 'pob. LGBTIQ',
-                    backgroundColor: ORANGE,
-                    data: finalArr["lgbtiq"],
-                    },
+                datasets:[
                     {
                     // id: 3,
-                    label: 'pob. indígena',
-                    backgroundColor: GREEN,
+                    label: 'Indígena',
+                    backgroundColor: ULTRALIGHTBLUE,
                     data: finalArr["indigena"],
                     },
                     {
                     // id: 4,
-                    label: 'pob. rural',
-                    backgroundColor: VIOLET,
+                    label: 'Rural',
+                    backgroundColor: LIGHTBLUE,
                     data: finalArr["rural"],
                     },
                     {
+                    label: 'Urbana',
+                    backgroundColor: BLUE,
+                    data: finalArr["participantes"].map((x, index)=>{return x-finalArr["rural"][index]-finalArr["indigena"][index]})
+                    },
+                    {
+                    // id: 1,
+                    label: 'LGBTIQ',
+                    backgroundColor: ULTRALIGHTVIOLET,
+                    data: finalArr["lgbtiq"],
+                    },
+                    {
                     // id: 2,
-                    label: 'mujeres',
-                    backgroundColor: PINK,
+                    label: 'Mujeres',
+                    backgroundColor: LIGHTVIOLET,
                     data: finalArr["mujeres"],
                     },
                     {
                     // id: 2
-                    label: 'hombres',
-                    backgroundColor: BLUE,
-                    data: finalArr["participantes"].map((x, index)=>{return x-finalArr["mujeres"][index]-finalArr["nobin"][index]-finalArr["noid"][index]}),
+                    label: 'Hombres',
+                    backgroundColor: VIOLET,
+                    data: finalArr["participantes"].map((x, index)=>{return x-finalArr["mujeres"][index]-finalArr["noid"][index]-finalArr["lgbtiq"][index]}),
                     },
                     {
                     // id: 5,
-                    label: 'participantes',
+                    label: 'Participantes',
                     backgroundColor: YELLOW,
                     data: finalArr["participantes"],
                     }
@@ -118,7 +125,8 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
                 }} style={{display:"inline-block"}} />
             </div>
             <br />
-            <h3>Iniciativas por tipo de accion</h3>
+            <br />
+            <h3>Iniciativas por tipo de acción</h3>
             <div className="chart-container">
                 <Bar datasetIdKey='id' data={{
                     labels: labels,
@@ -131,6 +139,7 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
                     }} style={{display:"inline-block"}} options={{ maintainAspectRatio: true }}/>
             </div>
             <br />
+            <br />
             <div className="chart-container" style={{width:"45%", display:"inline-block"}} >
             <h4>Resumen por localidad</h4>
             <Doughnut data={{labels:localidades, datasets: [{
@@ -141,7 +150,7 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
                     }]}} style={{display:"inline-block"}}/>
             </div>
             <div className="chart-container" style={{width:"45%", display:"inline-block"}}>
-            <h4>Resumen por accion</h4>
+            <h4>Resumen por acción</h4>
             <Doughnut data={{labels:actionTypes, datasets: [{
                     // id: 1,
                     label: '# iniciativas',
@@ -149,17 +158,20 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
                     data: totalComunidad
                     }]}} style={{display:"inline-block"}}/>
             </div>
+            <br />
+            <br />
+            <br />
             <div className="chart-container" style={{width:"48%", display:"inline-block"}}>
-                <h4>Resumen por genero</h4>
-                <Doughnut data={{labels:["mujeres", "hombres", "NB", "NI"], datasets: [{
+                <h4>Resumen por género</h4>
+                <Doughnut data={{labels:["mujeres", "hombres", "LGBTIQ+", "NI"], datasets: [{
                         // id: 1,
                         label: '# participantes',
-                        backgroundColor: [VIOLET, BLUE, ORANGE, GREEN],
+                        backgroundColor: [VIOLET, BLUE, GREEN, ORANGE],
                         data: totalGenders,
                 }]}} options={options} />
             </div>
             <div className="chart-container" style={{width:"48%", display:"inline-block"}}>
-                <h4>Resumen por tipo de poblacion</h4>
+                <h4>Resumen por tipo de población</h4>
                 <Doughnut data={{labels:["urbana", "indígena", "rural"], datasets: [{
                         // id: 1,
                         label: '# participantes',

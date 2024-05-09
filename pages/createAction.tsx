@@ -36,7 +36,6 @@ const NewRole: React.FC<any> = (props)=>
             localidad: "",
             nro_participantes: 0,
             nro_noid: 0,
-            nro_nobin: 0,
             nro_mujeres: 0,
             nro_pob_ind: 0,
             nro_pob_rural: 0,
@@ -57,7 +56,6 @@ const NewRole: React.FC<any> = (props)=>
             tipo_localidad: Yup.string().required("Obligatorio"),
             nro_participantes: Yup.number().required("Obligatorio"),
             nro_noid: Yup.number().required("Obligatorio"),
-            nro_nobin: Yup.number().required("Obligatorio"),
             nro_mujeres: Yup.number().required("Obligatorio"),
             nro_pob_ind: Yup.number().required("Obligatorio"),
             nro_pob_rural: Yup.number().required("Obligatorio"),
@@ -83,7 +81,6 @@ const NewRole: React.FC<any> = (props)=>
                 localidad: formik.values.localidad,
                 nro_participantes: formik.values.nro_participantes,
                 nro_noid: formik.values.nro_noid,
-                nro_nobin: formik.values.nro_nobin,
                 nro_mujeres: formik.values.nro_mujeres,
                 nro_pob_ind: formik.values.nro_pob_ind,
                 nro_pob_rural: formik.values.nro_pob_rural,
@@ -109,7 +106,6 @@ const NewRole: React.FC<any> = (props)=>
           localidad: formik.values.localidad,
           nro_participantes: formik.values.nro_participantes,
           nro_noid: formik.values.nro_noid,
-          nro_nobin: formik.values.nro_nobin,
           nro_mujeres: formik.values.nro_mujeres,
           nro_pob_ind: formik.values.nro_pob_ind,
           nro_pob_rural: formik.values.nro_pob_rural,
@@ -198,10 +194,10 @@ const NewRole: React.FC<any> = (props)=>
                       <ErrorMessage touched={formik.touched.nro_mujeres} errors={formik.errors.nro_mujeres}/>
                   </li>
                   <li>
-                      <label htmlFor="nro_nobin">No Binarios:</label>
-                      <input type="number" id="nro_nobin"
-                      {...formik.getFieldProps("nro_nobin")}/>
-                      <ErrorMessage touched={formik.touched.nro_nobin} errors={formik.errors.nro_nobin}/>
+                      <label htmlFor="nro_pob_lgbtiq">Numero de pob. LGBTIQ+:</label>
+                      <input type="number" id="nro_pob_lgbtiq"
+                      {...formik.getFieldProps("nro_pob_lgbtiq")}/>
+                      <ErrorMessage touched={formik.touched.nro_pob_lgbtiq} errors={formik.errors.nro_pob_lgbtiq}/>
                   </li>
                   <li>
                       <label htmlFor="nro_noid">No se identifica:</label>
@@ -225,13 +221,6 @@ const NewRole: React.FC<any> = (props)=>
                     <ErrorMessage touched={formik.touched.nro_pob_ind} errors={formik.errors.nro_pob_ind}/>
                   </li>
                   }
-                  <li>
-                      <label htmlFor="nro_pob_lgbtiq">Numero de pob. LGBTIQ+:</label>
-                      <input type="number" id="nro_pob_lgbtiq"
-                      {...formik.getFieldProps("nro_pob_lgbtiq")}/>
-                      <ErrorMessage touched={formik.touched.nro_pob_lgbtiq} errors={formik.errors.nro_pob_lgbtiq}/>
-                  </li>
-
                   <li>
                       <label htmlFor="nro_pob_16_29">Numero pob. 16-29 años:</label>
                       <input type="number" id="nro_pob_16_29"

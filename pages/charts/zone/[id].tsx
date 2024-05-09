@@ -31,7 +31,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 nro_pob_ind: true,
                 nro_participantes: true,
                 nro_pob_rural: true,
-                nro_nobin: true,
                 nro_noid: true,
                 nro_pob_16_29: true
             },
@@ -49,9 +48,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         {
             _sum:{
                 nro_mujeres: true,
-                nro_nobin: true,
                 nro_noid: true,
                 nro_participantes: true,
+                nro_pob_lgbtiq: true
             },
             where:{
                 localidad:{
@@ -67,7 +66,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             _sum:{
                 nro_participantes: true,
                 nro_pob_ind: true,
-                nro_pob_rural: true
+                nro_pob_rural: true,
             },
             where:{
                 localidad:{
@@ -95,7 +94,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         props:{
             totalLGBT: normalizeResults(totalLGBT, "nro_pob_lgbtiq", "_sum"),
             totalMujeres: normalizeResults(totalLGBT, "nro_mujeres", "_sum"),
-            totalNoBin: normalizeResults(totalLGBT,"nro_nobin", "_sum"),
             totalNoId: normalizeResults(totalLGBT, "nro_noid", "_sum"),
             total1629: normalizeResults(totalLGBT, "nro_pob_16_29", "_sum"),
             totalInd: normalizeResults(totalLGBT, "nro_pob_ind", "_sum"),
@@ -104,7 +102,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             totalActionTypes: normalizeResults(totalLGBT, "id", "_count"),
             countIni,
             localidad: String(ctx.params?.id),
-            totalGenders: [totalGenres._sum.nro_mujeres, totalGenres._sum.nro_participantes - totalGenres._sum.nro_nobin - totalGenres._sum.nro_noid - totalGenres._sum.nro_mujeres, totalGenres._sum.nro_nobin, totalGenres._sum.nro_noid],
+            totalGenders: [totalGenres._sum.nro_mujeres, totalGenres._sum.nro_participantes  - totalGenres._sum.nro_noid - totalGenres._sum.nro_mujeres, totalGenres._sum.nro_pob_lgbtiq, totalGenres._sum.nro_noid],
             totalPobs:[totalPob._sum.nro_participantes-totalPob._sum.nro_pob_ind-totalPob._sum.nro_pob_rural, totalPob._sum.nro_pob_ind, totalPob._sum.nro_pob_rural]
         },
     }
@@ -117,7 +115,6 @@ export default function ChartFinal(props){
                    "totalInd": props.totalInd, 
                    "totalParticipantes": props.totalParticipantes, 
                    "totalRural": props.totalRural,
-                   "totalNoBin": props.totalNoBin,
                    "totalNoId": props.totalNoId,
                    "total1629": props.total1629,
                 };

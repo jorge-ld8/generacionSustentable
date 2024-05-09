@@ -1,9 +1,10 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, GREEN, ORANGE, PINK, VIOLET, YELLOW, localidades, tipoComunidad } from "../lib/constants";
+import { BLUE, GREEN, LIGHTBLUE, LIGHTVIOLET, ORANGE, PINK, ULTRALIGHTBLUE, ULTRALIGHTVIOLET, VIOLET, YELLOW, localidades, tipoComunidad } from "../lib/constants";
 import Typesnav from "./typesnav";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { CleaningServices } from "@mui/icons-material";
 import styles from './genericChartAction.module.css';
+import { scales } from "chart.js";
 
 
 export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders, totalPobs}){
@@ -58,14 +59,14 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
 
     return (
         <div>
-        <h3>Tipo de accion: {name}</h3>
+        <h3>Tipo de acción: {name}</h3>
         <Typesnav/>
         <p>
             Número de iniciativas: {iniNum}
         </p>
         <br />
         <h4>
-            Numero de jovenes 16-29 años
+            Número de jóvenes 16-29 años
         </h4>
         <br />
         <ProgressBar 
@@ -77,50 +78,58 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
             maxCompleted={sumP}
         />
         <br />
+        <br />
         <div style={{margin:"auto"}}>
             <h4>Resumen General por tipo de actividad</h4>
             <div>
                 <Bar datasetIdKey='id' data={{
                 labels: labels,
-                datasets:[{
-                    // id: 1,
-                    label: 'pob. LGBTIQ',
-                    backgroundColor: ORANGE,
-                    data: finalArr["lgbtiq"],
-                    },
+                datasets:[
                     {
                     // id: 3,
-                    label: 'pob. indígena',
-                    backgroundColor: GREEN,
+                    label: 'Indígena',
+                    backgroundColor: ULTRALIGHTBLUE,
                     data: finalArr["indigena"],
                     },
                     {
                     // id: 4,
-                    label: 'pob. rural',
-                    backgroundColor: VIOLET,
+                    label: 'Rural',
+                    backgroundColor: LIGHTBLUE,
                     data: finalArr["rural"],
                     },
                     {
-                    // id: 2,
-                    label: 'mujeres',
-                    backgroundColor: PINK,
+                    label: 'Urbana',
+                    backgroundColor: BLUE,
+                    data: finalArr["participantes"].map((x, index)=>{return x-finalArr["rural"][index]-finalArr["indigena"][index]}),
+                    },
+                    {
+                    // id: ,
+                    label: 'LGBTIQ',
+                    backgroundColor: ULTRALIGHTVIOLET,
+                    data: finalArr["lgbtiq"],
+                    },
+                    {
+                    // id: 5,
+                    label: 'Mujeres',
+                    backgroundColor: LIGHTVIOLET,
                     data: finalArr["mujeres"],
                     },
                     {
                     // id: 2
-                    label: 'hombres',
-                    backgroundColor: BLUE,
-                    data: finalArr["participantes"].map((x, index)=>{return x-finalArr["mujeres"][index]-finalArr["nobin"][index]-finalArr["noid"][index]}),
+                    label: 'Hombres',
+                    backgroundColor: VIOLET,
+                    data: finalArr["participantes"].map((x, index)=>{return x-finalArr["mujeres"][index]-finalArr["noid"][index]-finalArr["lgbtiq"][index]}),
                     },
                     {
                     // id: 6,
-                    label: 'participantes',
+                    label: 'Participantes',
                     backgroundColor: YELLOW,
                     data: finalArr["participantes"],
                     }
                 ]
                 }} style={{display:"inline-block"}} />
             </div>
+            <br />
             <br />
             <h4>Iniciativas por tipo de actividad</h4>
             <div className="chart-container">
@@ -134,6 +143,7 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                         }]
                     }} style={{display:"inline-block"}} options={{ maintainAspectRatio: true }}/>
             </div>
+            <br />
             <br />
             <div className="chart-container" style={{width:"45%", display:"inline-block"}} >
             <h4>Resumen por localidad</h4>
@@ -153,17 +163,20 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                     data: totalComunidad
                     }]}} style={{display:"inline-block"}}/>
             </div>
+            <br />
+            <br />
+            <br />
             <div className="chart-container" style={{width:"48%", display:"inline-block"}}>
-                <h4>Resumen por genero</h4>
-                <Doughnut data={{labels:["mujeres", "hombres", "NB", "NI"], datasets: [{
+                <h4>Resumen por género</h4>
+                <Doughnut data={{labels:["mujeres", "hombres", "LGBTIQ+" ,"NI"], datasets: [{
                         // id: 1,
                         label: '# participantes',
-                        backgroundColor: [VIOLET, BLUE, ORANGE, GREEN],
+                        backgroundColor: [VIOLET, BLUE, GREEN, ORANGE],
                         data: totalGenders,
                 }]}} options={options} />
                 </div>
                 <div className="chart-container" style={{width:"48%", display:"inline-block"}}>
-                <h4>Resumen por tipo de poblacion</h4>
+                <h4>Resumen por tipo de población</h4>
                 <Doughnut data={{labels:["urbana", "indígena", "rural"], datasets: [{
                         // id: 1,
                         label: '# participantes',

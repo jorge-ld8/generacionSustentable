@@ -16,7 +16,6 @@ model actionA1 {
   localidad         String
   nro_participantes Int
   nro_mujeres       Int
-  nro_nobin         Int
   nro_noid          Int
   nro_pob_ind       Int?
   nro_pob_lgbtiq    Int

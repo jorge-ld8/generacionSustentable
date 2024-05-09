@@ -40,7 +40,6 @@ const NewRole: React.FC<actionA1> = (props)=>
             nro_pob_rural: props.nro_pob_rural,
             nro_pob_lgbtiq: props.nro_pob_lgbtiq,
             nro_pob_16_29: props.nro_pob_16_29,
-            nro_nobin: props.nro_nobin,
             nro_noid: props.nro_noid
         },
         validationSchema: Yup.object(
@@ -59,7 +58,6 @@ const NewRole: React.FC<actionA1> = (props)=>
             nro_pob_rural: Yup.number().required("Obligatorio"),
             nro_pob_lgbtiq: Yup.number().required("Obligatorio"),
             nro_pob_16_29: Yup.number().required("Obligatorio"),
-            nro_nobin: Yup.number().required("Obligatorio"),
             nro_noid: Yup.number().required("Obligatorio")
           }
         ),
@@ -84,7 +82,6 @@ const NewRole: React.FC<actionA1> = (props)=>
                 nro_pob_rural: formik.values.nro_pob_rural,
                 nro_pob_lgbtiq: formik.values.nro_pob_lgbtiq,
                 nro_pob_16_29: formik.values.nro_pob_16_29,
-                nro_nobin: formik.values.nro_nobin,
                 nro_noid: formik.values.nro_noid
             })
         }).then(response =>{ 
@@ -172,29 +169,23 @@ const NewRole: React.FC<actionA1> = (props)=>
                   </li>
                   }
                     <li>
-                        <label htmlFor="nro_pob_lgbtiq">Numero de pob. LGBTIQ+:</label>
-                        <input type="number" id="nro_pob_lgbtiq"
-                        {...formik.getFieldProps("nro_pob_lgbtiq")}/>
-                        <ErrorMessage touched={formik.touched.nro_pob_lgbtiq} errors={formik.errors.nro_pob_lgbtiq}/>
-                    </li>
-                    <li>
                         <label htmlFor="nro_mujeres">Numero de mujeres:</label>
                         <input type="number" id="nro_mujeres"
                         {...formik.getFieldProps("nro_mujeres")}/>
                         <ErrorMessage touched={formik.touched.nro_mujeres} errors={formik.errors.nro_mujeres}/>
                     </li>
-                    <li>
-                      <label htmlFor="nro_nobin">No Binarios:</label>
-                      <input type="number" id="nro_nobin"
-                      {...formik.getFieldProps("nro_nobin")}/>
-                      <ErrorMessage touched={formik.touched.nro_nobin} errors={formik.errors.nro_nobin}/>
-                  </li>
                   <li>
                       <label htmlFor="nro_noid">No se identifica:</label>
                       <input type="number" id="nro_noid"
                       {...formik.getFieldProps("nro_noid")}/>
                       <ErrorMessage touched={formik.touched.nro_noid} errors={formik.errors.nro_noid}/>
-                  </li>s
+                  </li>
+                  <li>
+                        <label htmlFor="nro_pob_lgbtiq">Numero de pob. LGBTIQ+:</label>
+                        <input type="number" id="nro_pob_lgbtiq"
+                        {...formik.getFieldProps("nro_pob_lgbtiq")}/>
+                        <ErrorMessage touched={formik.touched.nro_pob_lgbtiq} errors={formik.errors.nro_pob_lgbtiq}/>
+                    </li>
                     <li>
                       <label htmlFor="nro_pob_16_29">Numero pob. 16-29 años:</label>
                       <input type="number" id="nro_pob_16_29"

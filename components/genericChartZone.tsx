@@ -63,7 +63,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 </p>
                 <br />
                 <h4>
-                    Número de jovenes 16-29 años
+                    Número de jóvenes 16-29 años
                 </h4>
                 <br />
                 <ProgressBar 
@@ -82,7 +82,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                         labels: actionTypes,
                         datasets:[{
                             // id: 1,
-                            label: 'pob LGBTIQ',
+                            label: 'LGBTIQ',
                             backgroundColor: ORANGE,
                             data: total.totalLGBT,
                             }]
@@ -93,7 +93,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                     labels: actionTypes,
                     datasets:[{
                         // id: 2,
-                        label: 'mujeres',
+                        label: 'Mujeres',
                         backgroundColor: BLUE,
                         data: total.totalMujeres,
                         }]
@@ -104,7 +104,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                     labels: actionTypes,
                     datasets:[{
                         // id: 3,
-                        label: 'pob indigena',
+                        label: 'Indigena',
                         backgroundColor: GREEN,
                         data: total.totalInd,
                         }]
@@ -115,7 +115,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                     labels: actionTypes,
                     datasets:[{
                         // id: 4,
-                        label: 'participantes',
+                        label: 'Participantes',
                         backgroundColor: VIOLET,
                         data: total.totalParticipantes,
                         }]
@@ -126,7 +126,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                     labels: actionTypes,
                     datasets:[{
                         // id: 5,
-                        label: 'pob rural',
+                        label: 'Rural',
                         backgroundColor: YELLOW,
                         data: total.totalRural,
                       }]}} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
@@ -140,11 +140,11 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 }]}} options={options} />
                 </div>
                 <div className="chart-container">
-                <h4>Resumen por genero</h4>
-                <Doughnut data={{labels:["mujeres", "hombres", "NB", "NI"], datasets: [{
+                <h4>Resumen por género</h4>
+                <Doughnut data={{labels:["mujeres", "hombres", "LGBTIQ+", "NI"], datasets: [{
                         // id: 1,
                         label: '# participantes',
-                        backgroundColor: [VIOLET, BLUE, ORANGE, GREEN],
+                        backgroundColor: [VIOLET, BLUE, GREEN, ORANGE],
                         data: totalGenders,
                 }]}} options={options} />
                 </div>
@@ -165,37 +165,37 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 labels: ['A1', 'A2', 'A3', 'A4'],
                 datasets:[{
                   // id: 1,
-                  label: 'pob. LGBTIQ',
+                  label: 'LGBTIQ',
                   backgroundColor: ORANGE,
                   data: total.totalLGBT,
                 },
                 {
                   // id: 3,
-                  label: 'pob. indígena',
+                  label: 'Indígena',
                   backgroundColor: GREEN,
                   data: total.totalInd,
                 },
                 {
                   // id: 4,
-                  label: 'pob. rural',
+                  label: 'Rural',
                   backgroundColor: VIOLET,
                   data: total.totalRural,
                 },
                 {
                   // id: 2,
-                  label: 'mujeres',
+                  label: 'Mujeres',
                   backgroundColor: PINK,
                   data: total.totalMujeres,
                 },
                 {
                   // id: 2
-                  label: 'hombres',
+                  label: 'Hombres',
                   backgroundColor: BLUE,
-                  data: total.totalParticipantes.map((x, index)=>{return x-total.totalMujeres[index]-total.totalNoBin[index]-total.totalNoId[index]}),
+                  data: total.totalParticipantes.map((x, index)=>{return x-total.totalMujeres[index]-total.totalNoId[index]-total.totalLGBT[index]}),
                 },
                 {
                   // id: 5,
-                  label: 'participantes',
+                  label: 'Participantes',
                   backgroundColor: YELLOW,
                   data: total.totalParticipantes,
                 }

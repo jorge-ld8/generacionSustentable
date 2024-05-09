@@ -40,7 +40,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 nro_pob_ind: true,
                 nro_participantes: true,
                 nro_pob_rural: true,
-                nro_nobin: true,
                 nro_noid: true,
                 nro_pob_16_29: true
             },
@@ -85,8 +84,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             _sum:{
                 nro_mujeres: true,
                 nro_noid: true,
-                nro_nobin: true,
                 nro_participantes: true,
+                nro_pob_lgbtiq: true
             },
             where:{
                 type:{
@@ -101,7 +100,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             _sum:{
                 nro_participantes: true,
                 nro_pob_ind: true,
-                nro_pob_rural: true
+                nro_pob_rural: true,
             },
             where:{
                 type:{
@@ -145,14 +144,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 "indigena": normalizeResults(totalGral, "nro_pob_ind", "nombre", actionsArr, "_sum"),
                 "participantes": normalizeResults(totalGral, "nro_participantes", "nombre", actionsArr, "_sum"),
                 "rural": normalizeResults(totalGral, "nro_pob_rural", "nombre", actionsArr, "_sum"),
-                "nobin": normalizeResults(totalGral, "nro_nobin", "nombre", actionsArr, "_sum"),
                 "noid": normalizeResults(totalGral, "nro_noid", "nombre", actionsArr, "_sum"),
                 "pob_16_29": normalizeResults(totalGral, "nro_pob_16_29", "nombre", actionsArr, "_sum"),
             },
             countIni,
             actionType: String(ctx.params?.id),
             actionsArr,
-            totalGenders: [totalGenres._sum.nro_mujeres, totalGenres._sum.nro_participantes - totalGenres._sum.nro_nobin - totalGenres._sum.nro_noid - totalGenres._sum.nro_mujeres, totalGenres._sum.nro_nobin, totalGenres._sum.nro_noid],
+            totalGenders: [totalGenres._sum.nro_mujeres, totalGenres._sum.nro_participantes - totalGenres._sum.nro_noid - totalGenres._sum.nro_mujeres, totalGenres._sum.nro_pob_lgbtiq, totalGenres._sum.nro_noid],
             totalPobs:[totalPob._sum.nro_participantes-totalPob._sum.nro_pob_ind-totalPob._sum.nro_pob_rural, totalPob._sum.nro_pob_ind, totalPob._sum.nro_pob_rural]
         }
     }
