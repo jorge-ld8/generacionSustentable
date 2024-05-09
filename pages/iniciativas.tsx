@@ -24,7 +24,7 @@ export async function getServerSideProps(context) {
 
 export default function Home(props) {
   const [actions, setActions] = useState<actionA1[]>([]);
-  const [action, setAction] = useState<actionA1>({
+  const [action, setAction] = useState<any>({
     id: 0,
     nombre: "",
     descripcion: "",
@@ -37,7 +37,6 @@ export default function Home(props) {
     nro_pob_ind: 0,
     nro_pob_lgbtiq: 0,
     nro_pob_rural: 0,
-    nro_nobin: 0,
     nro_noid: 0,
     nro_pob_16_29: 0,
     nombre_real: "",
