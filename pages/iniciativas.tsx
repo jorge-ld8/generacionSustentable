@@ -23,6 +23,7 @@ export async function getServerSideProps(context) {
 };
 
 export default function Home(props) {
+  const [searchTerm, setSearchTerm] = useState('');
   const [actions, setActions] = useState<actionA1[]>([]);
   const [action, setAction] = useState<any>({
     id: 0,
@@ -89,13 +90,28 @@ export default function Home(props) {
     }
   };
 
-  // Update specific input field
-//   const HandleChange = (e: ChangeEvent<HTMLInputElement>) =>
-//     setUser(prevState => ({ ...prevState, [e.target.name]: e.target.value }))
+  const filteredActions = actions.filter((action) => {
+    const searchRegex = new RegExp(searchTerm.toLowerCase(), 'i'); // Case-insensitive search
+    return (
+      searchRegex.test(action.nombre_real) ||
+      searchRegex.test(action.organizacion) ||
+      searchRegex.test(action.localidad) // Search in relevant fields
+    );
+  });
 
   return (
     <div style={{marginTop: "15px"}}>
       <h2>Apuestas Formativas</h2>
+      <br />
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <input type="text" placeholder="Ingrese texto para filtrar..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}         
+        style={{
+          borderRadius: '5px', // Add border radius
+          fontSize: '14px', // Adjust font size
+          padding: '8px 12px', // Adjust padding
+          border: '1px solid #ccc' // Add a thin border
+        }} />
+      </div>
       <br />
       <table style={{padding: '5px', marginTop: '12px', tableLayout: 'fixed', letterSpacing: '0.8px'}}>
         <thead>
@@ -108,7 +124,7 @@ export default function Home(props) {
           </tr>
         </thead>
         <tbody>
-          {actions.map((action: actionA1) => {
+          {filteredActions.map((action: actionA1) => {
             return (
               <tr key={action.id} onClick={() => Router.push('\\actiona1\\[id]', `\\actiona1\\${action.id}`)}>
                 <td>{action.nombre_real}</td>
