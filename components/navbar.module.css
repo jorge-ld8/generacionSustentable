@@ -28,3 +28,12 @@
 .mainav {
     color: white;
 }
+
+@media screen and (max-width: 1350px) {
+    .mainav{
+        font-size: 12px;
+    }
+    .mainav img {
+        width: 280px;
+    }
+}

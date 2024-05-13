@@ -22,9 +22,9 @@ export default function Navbar({username}){
     const {data: session } = useSession();
     console.log("Re render");
     return (
-        <nav className={styles.mainav} style={{position:"fixed"}}>
+        <nav className={styles.mainav} style={{position:"sticky"}}>
             <Link href={"/"}>
-                <Image src="/generacion_sustentable_nobg.png" alt={''} width={380} height={170} unoptimized/>
+                <Image src="/generacion_sustentable_nobg.png" alt={''} width={380} height={170} unoptimized sizes="(max-width: 1400px) 290px"/>
             </Link>
             <div className={styles.user}>
                 <span style={{color: "white", fontWeight: "bold"}}>

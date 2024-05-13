@@ -10,17 +10,33 @@ const settings = {
   speed: 400,
   slidesToShow: 1,
   slidesToScroll: 1,
-  draggable: false
+  draggable: false,
+  arrows: true
 };
 
 const ImageCarousel = ({ images }) => {
   return (
     <Slider {...settings}>
       {images.map((image) => (
-        <div key={image.id} style={{width:"100%", height:"100%", padding: "1px"}}>
-          <Image src={image.url} alt={image.alt} width={800} height={440} style={{padding:"1px"}} unoptimized/>
+        <div key={image.id} style={{padding: "1px", textAlign:"center"}}>
+          <Image src={image.url} alt={image.alt} width={800} height={440} style={{padding:"1px", margin: "0 auto"}} unoptimized/>
         </div>
       ))}
+      <style jsx>{`
+          .slick-slide {
+            width: calc(100% + 1px);
+          }
+          .slick-active {
+            text-align: center;
+            margin: 0 auto;
+          }
+          .slick-list{
+            display: flex;
+            justify-content: center;
+          }
+          `
+          }
+      </style>
     </Slider>
   );
 };

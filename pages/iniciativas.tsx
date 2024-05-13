@@ -113,46 +113,48 @@ export default function Home(props) {
         }} />
       </div>
       <br />
-      <table style={{padding: '5px', marginTop: '12px', tableLayout: 'fixed', letterSpacing: '0.8px'}}>
-        <thead>
-          <tr style={{marginBottom: '5px'}} onClick={() => Router.push('\\actiona1\\[id]', `\\actiona1\\${action.id}`)}>
-            <th style={{minWidth:'9em'}}>Nombre</th>
-            <th style={{minWidth:'6em'}}>Organizacion</th>
-            <th style={{minWidth:'9em'}}>Fecha Inicio</th>
-            <th style={{minWidth:'9em'}}>Fecha Final</th>
-            <th style={{minWidth:'9em'}}>Localidad</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredActions.map((action: actionA1) => {
-            return (
-              <tr key={action.id} onClick={() => Router.push('\\actiona1\\[id]', `\\actiona1\\${action.id}`)}>
-                <td>{action.nombre_real}</td>
-                <td>{action.organizacion}</td>
-                <td>{(new Date(action.fecha_inicio)).toISOString().substring(0, 10)}</td>
-                <td>{(new Date(action.fecha_final)).toISOString().substring(0, 10)}</td>
-                <td>{action.localidad}</td>
-                {props.organizacion === action.organizacion || props.username === "admin" ?
-                  <>
-                    <td>
-                      <IconButton aria-label="edit" size="small" onClick={(e) => { e.stopPropagation(); EditInitiative(action.id); } }>
-                        <Edit sx={{ color: 'black' }} />
+      <div style={{display: 'flex', justifyContent: 'center'}}>
+        <table style={{padding: '5px', marginTop: '12px', tableLayout: 'fixed', letterSpacing: '0.8px'}}>
+          <thead>
+            <tr style={{marginBottom: '5px'}} onClick={() => Router.push('\\actiona1\\[id]', `\\actiona1\\${action.id}`)}>
+              <th style={{minWidth:'9em'}}>Nombre</th>
+              <th style={{minWidth:'6em'}}>Organización</th>
+              <th style={{minWidth:'9em'}}>Fecha Inicio</th>
+              <th style={{minWidth:'9em'}}>Fecha Final</th>
+              <th style={{minWidth:'9em'}}>Localidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredActions.map((action: actionA1) => {
+              return (
+                <tr key={action.id} onClick={() => Router.push('\\actiona1\\[id]', `\\actiona1\\${action.id}`)}>
+                  <td>{action.nombre_real}</td>
+                  <td>{action.organizacion}</td>
+                  <td>{(new Date(action.fecha_inicio)).toISOString().substring(0, 10)}</td>
+                  <td>{(new Date(action.fecha_final)).toISOString().substring(0, 10)}</td>
+                  <td>{action.localidad}</td>
+                  {props.organizacion === action.organizacion || props.username === "admin" ?
+                    <>
+                      <td>
+                        <IconButton aria-label="edit" size="small" onClick={(e) => { e.stopPropagation(); EditInitiative(action.id); } }>
+                          <Edit sx={{ color: 'black' }} />
+                        </IconButton>
+                      </td>
+                      <td>
+                        <IconButton aria-label="delete" size="small" onClick={(e) => { e.stopPropagation(); DeleteInitiative(action.id); handleDeleteClick(action.id);} }>
+                          <Delete sx={{ color: 'red' }} />
                       </IconButton>
-                    </td>
-                    <td>
-                      <IconButton aria-label="delete" size="small" onClick={(e) => { e.stopPropagation(); DeleteInitiative(action.id); handleDeleteClick(action.id);} }>
-                        <Delete sx={{ color: 'red' }} />
-                     </IconButton>
-                    </td>
-                  </>
-                  :
-                  null
-                }
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                      </td>
+                    </>
+                    :
+                    null
+                  }
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       <style jsx>{`
           table td{
             word-wrap: break-word;

@@ -53,7 +53,7 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
         });
 
     return (
-        <div>
+        <div style={{padding: "0 60px"}}>
         <h3>Tipo de localidad: {name}</h3>
         <Comunidadnav/>
         <p>

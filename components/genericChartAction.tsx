@@ -58,7 +58,7 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
         });
 
     return (
-        <div>
+        <div style={{padding: "0 60px"}}>
         <h3>Tipo de acción: {name}</h3>
         <Typesnav/>
         <p>
@@ -166,7 +166,7 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
             <br />
             <br />
             <br />
-            <div className="chart-container" style={{width:"48%", display:"inline-block"}}>
+            <div className="chart-container" style={{width:"45%", display:"inline-block"}}>
                 <h4>Resumen por género</h4>
                 <Doughnut data={{labels:["mujeres", "hombres", "LGBTIQ+" ,"NI"], datasets: [{
                         // id: 1,
@@ -175,7 +175,7 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                         data: totalGenders,
                 }]}} options={options} />
                 </div>
-                <div className="chart-container" style={{width:"48%", display:"inline-block"}}>
+                <div className="chart-container" style={{width:"45%", display:"inline-block"}}>
                 <h4>Resumen por tipo de población</h4>
                 <Doughnut data={{labels:["urbana", "indígena", "rural"], datasets: [{
                         // id: 1,

@@ -1,5 +1,5 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN, PINK } from "../lib/constants";
+import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN, PINK, ULTRALIGHTBLUE, LIGHTBLUE, ULTRALIGHTVIOLET, LIGHTVIOLET } from "../lib/constants";
 import Zonasnav from "./zonasnav";
 import ProgressBar from "@ramonak/react-progress-bar";
 
@@ -53,7 +53,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
           });
 
     return (
-            <div>
+            <div style={{padding: "0 60px"}}>
                 <h2>Apuestas Formativas</h2>
                 <Zonasnav/>
                 <h3>Localidad: {name}</h3>
@@ -163,34 +163,40 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 <br />
                 <Bar datasetIdKey='id' data={{
                 labels: ['A1', 'A2', 'A3', 'A4'],
-                datasets:[{
+                datasets:[
+                  {
+                    // id: 3,
+                    label: 'Indígena',
+                    backgroundColor: ULTRALIGHTBLUE,
+                    data: total.totalInd,
+                  },
+                  {
+                    // id: 4,
+                    label: 'Rural',
+                    backgroundColor: LIGHTBLUE,
+                    data: total.totalRural,
+                  },
+                  {
+                    label: 'Urbana',
+                    backgroundColor: BLUE,
+                    data: total.totalParticipantes.map((x, index)=>{return x-total.totalRural[index]-total.totalInd[index]}),
+                  },
+                  { 
                   // id: 1,
                   label: 'LGBTIQ',
-                  backgroundColor: ORANGE,
+                  backgroundColor: ULTRALIGHTVIOLET,
                   data: total.totalLGBT,
-                },
-                {
-                  // id: 3,
-                  label: 'Indígena',
-                  backgroundColor: GREEN,
-                  data: total.totalInd,
-                },
-                {
-                  // id: 4,
-                  label: 'Rural',
-                  backgroundColor: VIOLET,
-                  data: total.totalRural,
-                },
+                  },
                 {
                   // id: 2,
                   label: 'Mujeres',
-                  backgroundColor: PINK,
+                  backgroundColor: LIGHTVIOLET,
                   data: total.totalMujeres,
                 },
                 {
                   // id: 2
                   label: 'Hombres',
-                  backgroundColor: BLUE,
+                  backgroundColor: VIOLET,
                   data: total.totalParticipantes.map((x, index)=>{return x-total.totalMujeres[index]-total.totalNoId[index]-total.totalLGBT[index]}),
                 },
                 {
