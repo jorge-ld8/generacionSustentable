@@ -4,7 +4,7 @@ import React, {useEffect, useState } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
 import { IconButton } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
+import { CleaningServices, Delete, Edit } from '@mui/icons-material';
 import { getCookie } from 'cookies-next';
 
 export async function getServerSideProps(context) {
@@ -71,7 +71,8 @@ export default function Home(props) {
   }
 
   const handleDeleteClick = async (actionId: number) => {
-    const confirmed = window.confirm("Are you sure you want to delete this initiative?");
+    const confirmed = window.confirm("¿Está seguro que desea eliminar esta iniciativa?");
+    console.log(`Confirmed value: ${confirmed}`)
     if (confirmed) {
       await DeleteInitiative(actionId);
     }
@@ -141,7 +142,7 @@ export default function Home(props) {
                         </IconButton>
                       </td>
                       <td>
-                        <IconButton aria-label="delete" size="small" onClick={(e) => { e.stopPropagation(); DeleteInitiative(action.id); handleDeleteClick(action.id);} }>
+                        <IconButton aria-label="delete" size="small" onClick={(e) => { e.stopPropagation(); handleDeleteClick(action.id);} }>
                           <Delete sx={{ color: 'red' }} />
                       </IconButton>
                       </td>

@@ -119,13 +119,13 @@ const NewRole: React.FC<actionA1> = (props)=>
                   }
                   </li>
                     <li>
-                        <label htmlFor="descripcion">Decripcion:</label>
+                        <label htmlFor="descripcion">Decripción:</label>
                         <input type="text" id="descripcion"
                         {...formik.getFieldProps('descripcion')}/>
                         <ErrorMessage touched={formik.touched.descripcion} errors={formik.errors.descripcion}/>
                     </li>
                     <li>
-                      <label htmlFor="organizacion">Organizacion:</label>
+                      <label htmlFor="organizacion">Organización:</label>
                       <DropDownList content={organizaciones} objType={"organizacion"} name={"organizacion"} onChange={formik.handleChange} value={formik.values.organizacion}/>
                   </li>
                     <li>
@@ -147,14 +147,14 @@ const NewRole: React.FC<actionA1> = (props)=>
                       <DropDownList content={tipoComunidad} objType={"tipo_localidad"} name={"tipo_localidad"} onChange={formik.handleChange} value={formik.values.tipo_localidad}/>
                   </li>
                     <li>
-                        <label htmlFor="nro_participantes">Numero de participantes:</label>
+                        <label htmlFor="nro_participantes">Número de participantes:</label>
                         <input type="number" id="nro_participantes"
                         {...formik.getFieldProps("nro_participantes")}/>
                         <ErrorMessage touched={formik.touched.nro_participantes} errors={formik.errors.nro_participantes}/>
                     </li>
                     {(formik.values.tipo_localidad === "Rural") ?
                   <li>
-                      <label htmlFor="nro_pob_rural">Numero de pob. rural:</label>
+                      <label htmlFor="nro_pob_rural">Número de pob. rural:</label>
                       <input type="number" id="nro_pob_rural"
                       {...formik.getFieldProps("nro_pob_rural")}/>
                       <ErrorMessage touched={formik.touched.nro_pob_rural} errors={formik.errors.nro_pob_rural}/>
@@ -181,23 +181,21 @@ const NewRole: React.FC<actionA1> = (props)=>
                       <ErrorMessage touched={formik.touched.nro_noid} errors={formik.errors.nro_noid}/>
                   </li>
                   <li>
-                        <label htmlFor="nro_pob_lgbtiq">Numero de pob. LGBTIQ+:</label>
+                        <label htmlFor="nro_pob_lgbtiq">Número de pob. LGBTIQ+:</label>
                         <input type="number" id="nro_pob_lgbtiq"
                         {...formik.getFieldProps("nro_pob_lgbtiq")}/>
                         <ErrorMessage touched={formik.touched.nro_pob_lgbtiq} errors={formik.errors.nro_pob_lgbtiq}/>
                     </li>
                     <li>
-                      <label htmlFor="nro_pob_16_29">Numero pob. 16-29 años:</label>
+                      <label htmlFor="nro_pob_16_29">Número pob. 16-29 años:</label>
                       <input type="number" id="nro_pob_16_29"
                       {...formik.getFieldProps("nro_pob_16_29")}/>
                       <ErrorMessage touched={formik.touched.nro_pob_16_29} errors={formik.errors.nro_pob_16_29}/>
                   </li>
-                    <li className="Button">
-                        <Button type={"submit"} variant="contained" color={"success"} disabled={!(formik.isValid && formik.dirty)}>Actualizar</Button>
-                    </li>
-                    <li>
-  
-                    </li>
+                  <br />
+                <div className="Button" style={{margin:"auto"}}>
+                  <Button type={"submit"} variant="contained" color={"success"} disabled={!(formik.isValid && formik.dirty)}>Actualizar</Button>
+                </div>
                 </ul>
             </form>
             <style jsx>{`
@@ -230,13 +228,16 @@ const NewRole: React.FC<actionA1> = (props)=>
             }
 
             form li{
-                padding: .5em;
+                display: flex;
+                flex-direction: column;
+                padding: 0.5em;
             }
 
             /*Form Styling*/
             form{
-              margin: 0.1em auto;
+              margin: 0.25em auto;
               padding: 1em;
+              box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2) inset, 5px 5px 10px rgba(0, 0, 0, 0.2);
             }
 
             form ul{
@@ -249,13 +250,14 @@ const NewRole: React.FC<actionA1> = (props)=>
             label{
               display: inline-block;
               width: 100px;
-              text-align: right;
+              text-align: left;
               margin-right: .5em;
               font-weight: bold;
               font-size: 0.90em;
               overflow: clip;
               white-space: nowrap;
               overflow: visible;
+              margin-bottom: .4em;
             }
     
             input,
@@ -267,14 +269,14 @@ const NewRole: React.FC<actionA1> = (props)=>
               font: 1em sans-serif;
     
               /* Uniform text field size */
-              width: 300px;
+              width: 100%;
               box-sizing: border-box;
               
               border-radius: .5em;
 
               /* Match form field borders */
               border: 1px solid #999;
-              padding: 0.2em;
+              padding: 0.5em;
             }
             `}</style>
           </main>

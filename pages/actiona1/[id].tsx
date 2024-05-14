@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 const Home: React.FC<any> = (props) => {
     return (
       <>
-      <div style={{marginRight:'10px', textAlign:"justify"}}>
+      <div style={{marginRight:'1.5em', marginLeft:'3em', textAlign:"justify"}}>
         <h2>{props.nombre_real.charAt(0).toUpperCase() + props.nombre_real.slice(1)}</h2>
           <img src={props.imgUrl} alt="image" width={300} style={{float:'right', borderRadius:'12px'}}/>
           <p><b>Descripción: </b>{props.descripcion}</p>

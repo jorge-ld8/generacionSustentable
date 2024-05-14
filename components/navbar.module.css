@@ -15,7 +15,7 @@
 .navbar a{
     display: inline-block;
     color: white;
-    padding: 2em 15px;
+    padding: 2.5em 15px;
     text-decoration: none;
     width: 100%;
     text-align: center;
@@ -27,6 +27,10 @@
 
 .mainav {
     color: white;
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Or any height that makes the content scrollable */
+    overflow-y: scroll; /* Allow vertical scrolling */
 }
 
 @media screen and (max-width: 1350px) {
