@@ -17,13 +17,11 @@
 }
 
 .left{
-  /* width: 100%; */
   flex: 0 0 25%; 
   background-color: rgba(95, 84, 145, .96); /* Optional background color */
   padding: 20px 0 20px 0;
   min-height: 100vh;
   text-align: center;
-  position: relative
 }
 @media screen and (max-width: 1350px) {
   .container{

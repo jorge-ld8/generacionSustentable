@@ -39,7 +39,7 @@ export default function Navbar({username}){
                     <Person sx={{color:'white'}}/>
                 </IconButton>
             </div>
-            <div style={{position: "absolute", bottom: 6, left: 10, textAlign: "center", color: "rgba(250,250,250,.9)", fontSize: ".75em"}}>Made by <a href="https://github.com/jorge-ld8">Jorge León</a></div>
+            <div style={{position: "fixed", bottom: 6, left: 10, textAlign: "center", color: "rgba(250,250,250,.9)", fontSize: ".75em"}}>Made by <a href="https://github.com/jorge-ld8">Jorge León</a></div>
             {username ?
             <div className={styles.navbar}>
                 <Link href={"/iniciativas"}>Ver Actividades Realizadas</Link>

@@ -35,11 +35,11 @@
 
 .mainav {
     color: white;
-    /* width: 100%; */
+    width: 100%;
     height: 100vh; /* Or any height that makes the content scrollable */
-    position: fixed;
+    /* position: fixed;
     left: 0;
-    top: 0;
+    top: 0; */
 }
 
 @media screen and (max-width: 1350px) {

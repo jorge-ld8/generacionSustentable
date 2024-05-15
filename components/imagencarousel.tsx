@@ -10,7 +10,6 @@ const settings = {
   speed: 400,
   slidesToShow: 1,
   slidesToScroll: 1,
-  centerMode: true
 };
 
 const ImageCarousel = ({ images }) => {
