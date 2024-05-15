@@ -4,7 +4,7 @@ import Reportsnav from "../../../components/reportsnav";
 import {CategoryScale} from 'chart.js';
 import { Bar } from "react-chartjs-2";
 import prisma from "../../../lib/prisma";
-import { BLUE, GREEN, ORANGE, VIOLET, YELLOW, actionTypes } from "../../../lib/constants";
+import { BLUE, GREEN, LIGHTBLUE, LIGHTVIOLET, ORANGE, ULTRALIGHTBLUE, ULTRALIGHTVIOLET, VIOLET, YELLOW, actionTypes } from "../../../lib/constants";
 
 
 function normalizeResults(inputArr, att){
@@ -28,7 +28,8 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
                 nro_mujeres: true,
                 nro_pob_ind: true,
                 nro_participantes: true,
-                nro_pob_rural: true
+                nro_pob_rural: true,
+                nro_noid: true
             }
         }
     )
@@ -40,6 +41,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
                 "mujeres": normalizeResults(totalGral, "nro_mujeres"),
                 "indigena": normalizeResults(totalGral, "nro_pob_ind"),
                 "participantes": normalizeResults(totalGral, "nro_participantes"),
+                "noid": normalizeResults(totalGral, "nro_noid"),
                 "rural": normalizeResults(totalGral, "nro_pob_rural")
             },
         },
@@ -55,29 +57,41 @@ export default function ChartFinal(props){
             <Reportsnav/>
             <Bar datasetIdKey='id' data={{
               labels: actionTypes,
-              datasets:[{
-                  // id: 1,
-                  label: 'pob. LGBTIQ',
-                  backgroundColor: ORANGE,
-                  data: props.finalArr["lgbtiq"],
-                },
-                {
-                  // id: 2,
-                  label: 'mujeres',
-                  backgroundColor: BLUE,
-                  data: props.finalArr["mujeres"],
-                },
+              datasets:[
                 {
                   // id: 3,
-                  label: 'pob. indígena',
-                  backgroundColor: GREEN,
+                  label: 'Indígena',
+                  backgroundColor: ULTRALIGHTBLUE,
                   data: props.finalArr["indigena"],
                 },
                 {
                   // id: 4,
-                  label: 'pob. rural',
-                  backgroundColor: VIOLET,
+                  label: 'Rural',
+                  backgroundColor: LIGHTBLUE,
                   data: props.finalArr["rural"],
+                },
+                {
+                  label: 'Urbana',
+                  backgroundColor: BLUE,
+                  data: props.finalArr["participantes"].map((x, index)=>{return x-props.finalArr["rural"][index]-props.finalArr["indigena"][index]}),
+                },
+                {
+                  // id: 1,
+                  label: 'LGBTIQ+',
+                  backgroundColor: ULTRALIGHTVIOLET,
+                  data: props.finalArr["lgbtiq"],
+                },
+                {
+                  // id: 2,
+                  label: 'Mujeres',
+                  backgroundColor: LIGHTVIOLET,
+                  data: props.finalArr["mujeres"],
+                },
+                {
+                  // id: 1,
+                  label: 'Hombres',
+                  backgroundColor: VIOLET,
+                  data: props.finalArr["participantes"].map((x, index)=>{return x-props.finalArr["mujeres"][index]-props.finalArr["noid"][index]-props.finalArr["lgbtiq"][index]}),
                 },
                 {
                   // id: 5,

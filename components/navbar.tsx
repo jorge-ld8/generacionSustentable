@@ -6,6 +6,7 @@ import { ArrowBack, Person } from "@mui/icons-material";
 import Router, { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { getCookie } from "cookies-next";
+import Button from "@mui/material/Button";
 
 export async function getServerSideProps(context) {
     const req = context.req
@@ -22,7 +23,7 @@ export default function Navbar({username}){
     const {data: session } = useSession();
     console.log("Re render");
     return (
-        <nav className={styles.mainav} style={{position:"relative"}}>
+        <nav className={styles.mainav}>
             <Link href={"/"}>
                 <Image src="/generacion_sustentable_nobg.png" alt={''} width={380} height={170} unoptimized sizes="(max-width: 1400px) 290px"/>
             </Link>
@@ -39,11 +40,13 @@ export default function Navbar({username}){
                     <Person sx={{color:'white'}}/>
                 </IconButton>
             </div>
+            <div style={{position: "absolute", bottom: 6, left: 10, textAlign: "center", color: "rgba(250,250,250,.9)", fontSize: ".75em"}}>Made by Jorge León</div>
             {username ?
             <div className={styles.navbar}>
                 <Link href={"/iniciativas"}>Ver Actividades Realizadas</Link>
                 <Link href={"/createAction"}>Introducir actividad</Link>
                 <Link href={"/reportslanding"}>Ver Reportes de indicadores</Link>
+                <Button onClick={()=>{Router.push("/api/logout");Router.push("/")}} variant='contained' style={{backgroundColor: "red", margin: ".75em"}}>Cerrar sesion</Button>
                 <IconButton aria-label="edit"  size="small" onClick={(e) => {e.stopPropagation();router.back()}}>
                     <ArrowBack sx={{color:'white'}}/>
                 </IconButton>

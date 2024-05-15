@@ -16,6 +16,8 @@ export default function Home() {
     <div className={styles.container}>
       <h2>Sistema de gestión de indicadores para el proyecto Generación Sustentable</h2>
       <br />
+      <br />
+      <br />
       <ImageCarousel images={images} />
     </div>
   );

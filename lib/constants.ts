@@ -1,11 +1,11 @@
 export const actionTypes = ['A1-Ciclos Formativos', 'A2-Acciones Socioambientales', 'A3-Emprendimientos', 'A4-Redes y eventos'];
 export const actionsA1 = ["Ciclos formativos en acción socioambiental /ciberactivismo","Salidas de campo / actividades al aire libre"];
-export const actionsA2 = ["Acciones en áreas públicas","Festival, desfiles, marchas, rodadas, campañas de arte", "Reforestacion / restauracion", "Reuniones con autoridades locales"];
+export const actionsA2 = ["Acciones en áreas públicas","Festival, desfiles, marchas, rodadas, campañas de arte", "Reforestación / restauración", "Reuniones con autoridades locales"];
 export const actionsA3 = ["Ciclo formativo moda sustentable", "Ciclo formativo reuso productivo", "Ciclo formativo ecoturismo", "Ferias de emprendimiento sostenbile"];
-export const actionsA4 = ["Formacion y trabajo en redes","Monitoreo equipos locales", "Campañas de ciberactivismo", "Encuentros juveniles"];
+export const actionsA4 = ["Formación y trabajo en redes","Monitoreo equipos locales", "Campañas de ciberactivismo", "Encuentros juveniles"];
 export const localidades = ["Delta Amacuro", "Carabobo", "Distrito Capital"];
 export const tipoComunidad = ["Rural","Indígena", "Urbana"];
-export const organizaciones = ["Es baratao", "Redsoc", "Fundacion Tierra Viva", "Fundacion Impronta", "Todos por el futuro", "Reusamas", "Ciudad Lab"];
+export const organizaciones = ["Es baratao", "Redsoc", "Fundación Tierra Viva", "Fundación Impronta", "Todos por el futuro", "Reusamas", "Ciudad Lab"];
 export const VIOLET = 'rgba(143, 77, 250, 0.6)';
 export const LIGHTVIOLET = 'rgba(186, 135, 250, 0.6)'
 export const ULTRALIGHTVIOLET = 'rgba(219, 190, 251, 0.6)'
