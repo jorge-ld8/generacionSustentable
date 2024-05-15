@@ -35,12 +35,11 @@ export default function Navbar({username}){
                  `No ha iniciado sesión`
                 }
                 </span>
-                {/* <span style={{color: "white", fontWeight: "bold"}}>User: {username}</span> */}
                 <IconButton aria-label="user"  size="large" onClick={() => Router.push("/userInfo")}>
                     <Person sx={{color:'white'}}/>
                 </IconButton>
             </div>
-            <div style={{position: "absolute", bottom: 6, left: 10, textAlign: "center", color: "rgba(250,250,250,.9)", fontSize: ".75em"}}>Made by Jorge León</div>
+            <div style={{position: "absolute", bottom: 6, left: 10, textAlign: "center", color: "rgba(250,250,250,.9)", fontSize: ".75em"}}>Made by <a href="https://github.com/jorge-ld8">Jorge León</a></div>
             {username ?
             <div className={styles.navbar}>
                 <Link href={"/iniciativas"}>Ver Actividades Realizadas</Link>
@@ -56,7 +55,12 @@ export default function Navbar({username}){
                 <Link href={"/login"}>Iniciar Sesion</Link>
             </div>
             }
-
+        <style jsx>{`
+        a:visited{
+            color: inherit;
+            text-decoration: none;
+        }
+          `}</style>
         </nav>
     );
 }

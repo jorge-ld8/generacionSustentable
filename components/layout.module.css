@@ -1,12 +1,5 @@
 .container {
-  /* max-width: 44rem; */
-  /* padding: 0 0.25rem; */
-  /* margin: 3rem auto 6rem; */
-  /* max-width: 75%; */
-  /* flex: 0 0 25%;  */
   text-align: center;
-  /* flex: 1; */
-  /* flex: min-content; */
   flex: 1 1 auto;
   justify-content: center;
   align-items: center;
