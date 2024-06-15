@@ -21,6 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             nro_pob_rural: JSON.parse(req.body)['nro_pob_rural'],
             nro_pob_lgbtiq: JSON.parse(req.body)['nro_pob_lgbtiq'],
             nro_pob_16_29: JSON.parse(req.body)['nro_pob_16_29'],
+            nro_lid_pob_16_29: JSON.parse(req.body)['nro_lid_pob_16_29'],
             organizacion: JSON.parse(req.body)['organizacion'],
             tipo_localidad: JSON.parse(req.body)['tipo_localidad'],
             nro_nobin: JSON.parse(req.body)['nro_nobin'],
