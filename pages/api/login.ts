@@ -21,10 +21,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log(`response.password: ${response.password}`)
     if (guess_hash == response.password){
         const cookies = new Cookies(req, res)
-        cookies.set('username', username);
-        cookies.set('nombre', response.nombre);
-        cookies.set('apellido', response.apellido);
-        cookies.set('organizacion', response.organizacion);
+        cookies.set('username', username, {httpOnly: true});
+        cookies.set('nombre', response.nombre, {httpOnly: true});
+        cookies.set('apellido', response.apellido, {httpOnly: true});
+        cookies.set('organizacion', response.organizacion, {httpOnly: true});
         res.json("succesful login");
     } else {
         res.status(500).json("wrong login");
