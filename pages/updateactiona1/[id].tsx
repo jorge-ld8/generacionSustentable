@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     }
   }
 
-const NewRole: React.FC<actionA1> = (props)=>
+const NewRole: React.FC<any> = (props)=>
 {
     console.log(String(props.fecha_inicio));
     const formik = useFormik({
