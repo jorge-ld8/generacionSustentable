@@ -40,6 +40,7 @@ const NewRole: React.FC<actionA1> = (props)=>
             nro_pob_rural: props.nro_pob_rural,
             nro_pob_lgbtiq: props.nro_pob_lgbtiq,
             nro_pob_16_29: props.nro_pob_16_29,
+            nro_lid_pob_16_29: props.nro_lid_pob_16_29,
             nro_noid: props.nro_noid
         },
         validationSchema: Yup.object(
@@ -58,6 +59,7 @@ const NewRole: React.FC<actionA1> = (props)=>
             nro_pob_rural: Yup.number().required("Obligatorio"),
             nro_pob_lgbtiq: Yup.number().required("Obligatorio"),
             nro_pob_16_29: Yup.number().required("Obligatorio"),
+            nro_lid_pob_16_29: Yup.number().required("Obligatorio"),
             nro_noid: Yup.number().required("Obligatorio")
           }
         ),
@@ -82,6 +84,7 @@ const NewRole: React.FC<actionA1> = (props)=>
                 nro_pob_rural: formik.values.nro_pob_rural,
                 nro_pob_lgbtiq: formik.values.nro_pob_lgbtiq,
                 nro_pob_16_29: formik.values.nro_pob_16_29,
+                nro_lid_pob_16_29: formik.values.nro_lid_pob_16_29,
                 nro_noid: formik.values.nro_noid
             })
         }).then(response =>{ 
@@ -191,6 +194,12 @@ const NewRole: React.FC<actionA1> = (props)=>
                       <input type="number" id="nro_pob_16_29"
                       {...formik.getFieldProps("nro_pob_16_29")}/>
                       <ErrorMessage touched={formik.touched.nro_pob_16_29} errors={formik.errors.nro_pob_16_29}/>
+                  </li>
+                  <li>
+                      <label htmlFor="nro_lid_pob_16_29">Número líderes pob. 16-29 años:</label>
+                      <input type="number" id="nro_lid__pob_16_29"
+                      {...formik.getFieldProps("nro_lid_pob_16_29")}/>
+                      <ErrorMessage touched={formik.touched.nro_lid_pob_16_29} errors={formik.errors.nro_lid_pob_16_29}/>
                   </li>
                   <br />
                 <div className="Button" style={{margin:"auto"}}>

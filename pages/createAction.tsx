@@ -41,6 +41,7 @@ const NewRole: React.FC<any> = (props)=>
             nro_pob_rural: 0,
             nro_pob_lgbtiq: 0,
             nro_pob_16_29: 0,
+            nro_lid_pob_16_29: 0,
             imgUrl: ""
         },
         validationSchema: Yup.object(
@@ -61,6 +62,7 @@ const NewRole: React.FC<any> = (props)=>
             nro_pob_rural: Yup.number().required("Obligatorio"),
             nro_pob_lgbtiq: Yup.number().required("Obligatorio"),
             nro_pob_16_29: Yup.number().required("Obligatorio"),
+            nro_lid_pob_16_29: Yup.number().required("Obligatorio")
           }
         ),
         onSubmit: values => {console.log(values);},
@@ -86,6 +88,7 @@ const NewRole: React.FC<any> = (props)=>
                 nro_pob_rural: formik.values.nro_pob_rural,
                 nro_pob_lgbtiq: formik.values.nro_pob_lgbtiq,
                 nro_pob_16_29: formik.values.nro_pob_16_29,
+                nro_lid_pob_16_29: formik.values.nro_lid_pob_16_29,
                 imgurl: formik.values.imgUrl
             })
         }).then(async response =>{ 
@@ -111,6 +114,7 @@ const NewRole: React.FC<any> = (props)=>
           nro_pob_rural: formik.values.nro_pob_rural,
           nro_pob_lgbtiq: formik.values.nro_pob_lgbtiq,
           nro_pob_16_29: formik.values.nro_pob_16_29,
+          nro_lid_pob_16_29: formik.values.nro_lid_pob_16_29,
           imgurl: formik.values.imgUrl
       }))
         Router.push("/iniciativas");
@@ -225,6 +229,12 @@ const NewRole: React.FC<any> = (props)=>
                       <label htmlFor="nro_pob_16_29">Número pob. 16-29 años:</label>
                       <input type="number" id="nro_pob_16_29"
                       {...formik.getFieldProps("nro_pob_16_29")}/>
+                      <ErrorMessage touched={formik.touched.nro_pob_16_29} errors={formik.errors.nro_pob_16_29}/>
+                  </li>
+                  <li>
+                      <label htmlFor="nro_lid_pob_16_29">Número líderes pob. 16-29 años:</label>
+                      <input type="number" id="nro_lid__pob_16_29"
+                      {...formik.getFieldProps("nro_lid_pob_16_29")}/>
                       <ErrorMessage touched={formik.touched.nro_pob_16_29} errors={formik.errors.nro_pob_16_29}/>
                   </li>
                   <li>
