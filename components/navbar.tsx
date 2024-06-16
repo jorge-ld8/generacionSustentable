@@ -35,9 +35,13 @@ export default function Navbar({username}){
                  `No ha iniciado sesión`
                 }
                 </span>
+                {username ? 
                 <IconButton aria-label="user"  size="large" onClick={() => Router.push("/userInfo")}>
                     <Person sx={{color:'white'}}/>
                 </IconButton>
+                :
+                null
+                }
             </div>
             <div style={{position: "fixed", bottom: 6, left: 10, textAlign: "center", color: "rgba(250,250,250,.9)", fontSize: ".75em"}}>Made by <a href="https://github.com/jorge-ld8">Jorge León</a></div>
             {username ?

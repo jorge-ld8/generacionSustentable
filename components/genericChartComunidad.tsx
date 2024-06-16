@@ -52,6 +52,14 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
             sum16_29 += num;
         });
 
+        // create a variable for the sum and initialize it
+        let sum_lid_16_29 = 0;
+
+        // calculate sum using forEach() method
+        finalArr["lid_pob_16_29"].forEach( num => {
+            sum_lid_16_29 += num;
+        });
+
     return (
         <div style={{padding: "0 60px"}}>
         <h3>Tipo de localidad: {name}</h3>
@@ -71,6 +79,19 @@ export default function GenChartComunidad({name, iniNum, totals, labels, color, 
             labelColor="#ffffff"
             labelSize="16px"
             maxCompleted={sumP}
+        />
+        <br />
+        <h4>
+            Número de líderes jóvenes 16-29 años
+        </h4>
+        <br />
+        <ProgressBar 
+            completed= {`${sum_lid_16_29}`}
+            bgColor="#f4c2c2"
+            labelAlignment="center"
+            labelColor="#ffffff"
+            labelSize="14px"
+            maxCompleted={sum16_29}
         />
         <br />
         <br />

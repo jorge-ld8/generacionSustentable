@@ -6,6 +6,7 @@ import { ORANGE, actionTypes, localidades, tipoComunidad } from "../../../lib/co
 import GenChartComunidad from "../../../components/genericChartComunidad";
 import { getCookie } from 'cookies-next';
 
+
 function normalizeResults(inputArr, type, att, initialValues, op){
     const keys = initialValues;
     const myDict = Object.fromEntries(keys.map(key => [key, 0]));
@@ -36,7 +37,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 nro_participantes: true,
                 nro_pob_rural: true,
                 nro_noid: true,
-                nro_pob_16_29: true
+                nro_lid_pob_16_29: true,
+                nro_pob_16_29: true,
             },
             where:{
                 tipo_localidad: {
@@ -129,6 +131,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 "rural": normalizeResults(totalGral, "nro_pob_rural", "type", actionTypes, "_sum"),
                 "noid": normalizeResults(totalGral, "nro_noid", "type", actionTypes, "_sum"),
                 "pob_16_29": normalizeResults(totalGral, "nro_pob_16_29", "type", actionTypes, "_sum"),
+                "lid_pob_16_29": normalizeResults(totalGral, "nro_lid_pob_16_29", "type", actionTypes, "_sum"),
             },
             countIni,
             comunidad: String(ctx.params?.id),

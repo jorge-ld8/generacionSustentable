@@ -41,7 +41,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 nro_participantes: true,
                 nro_pob_rural: true,
                 nro_noid: true,
-                nro_pob_16_29: true
+                nro_pob_16_29: true,
+                nro_lid_pob_16_29: true,
             },
             where:{
                 type:{
@@ -146,6 +147,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 "rural": normalizeResults(totalGral, "nro_pob_rural", "nombre", actionsArr, "_sum"),
                 "noid": normalizeResults(totalGral, "nro_noid", "nombre", actionsArr, "_sum"),
                 "pob_16_29": normalizeResults(totalGral, "nro_pob_16_29", "nombre", actionsArr, "_sum"),
+                "lid_pob_16_29": normalizeResults(totalGral, "nro_lid_pob_16_29", "nombre", actionsArr, "_sum"),
             },
             countIni,
             actionType: String(ctx.params?.id),
