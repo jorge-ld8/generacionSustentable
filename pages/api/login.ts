@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         cookies.set('apellido', response.apellido);
         cookies.set('organizacion', response.organizacion);
         console.log(res.getHeaders());
-        res.json("succesful login");
+        res.status(200).json(response);
     } else {
         res.status(500).json("wrong login");
     }
