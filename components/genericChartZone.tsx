@@ -173,7 +173,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 }]}} options={options} />
                 </div>
                 <div className="chart-container">
-                <h4>Resumen por tipo de poblacion</h4>
+                <h4>Resumen por tipo de población</h4>
                 <Doughnut data={{labels:["urbana", "indígena", "rural"], datasets: [{
                         // id: 1,
                         label: '# participantes',
