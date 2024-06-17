@@ -161,6 +161,8 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                         data: totalActionTypes,
                 }]}} options={options} />
                 </div>
+                <br />
+                <br />
                 <div className="chart-container">
                 <h4>Resumen por género</h4>
                 <Doughnut data={{labels:["mujeres", "hombres", "LGBTIQ+", "NI"], datasets: [{
@@ -184,7 +186,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 <h4>Comparación General</h4>
                 <br />
                 <Bar datasetIdKey='id' data={{
-                labels: ['A1', 'A2', 'A3', 'A4'],
+                labels: actionTypes,
                 datasets:[
                   {
                     // id: 3,
