@@ -22,8 +22,8 @@ const Home: React.FC<any> = (props) => {
       <>
       <div style={{marginRight:'1.5em', marginLeft:'3em', textAlign:"justify"}}>
         <h2>{props.nombre_real.charAt(0).toUpperCase() + props.nombre_real.slice(1)}</h2>
-          <img src={props.imgUrl} alt="image" width={300} style={{float:'right', borderRadius:'12px'}}/>
-          <p><b>Descripción: </b>{props.descripcion}</p>
+          <img src={props.imgUrl} alt="image" width={300} style={{float:'right', borderRadius:'12px', marginLeft: '2.5em'}}/>
+          <p style={{overflow:'hidden'}}><b>Descripción: </b>{props.descripcion}</p>
           <p><b>Tipo: </b>{props.type}</p>
           <p><b>Organización: </b>{props.organizacion}</p>
           <p><b>Fecha de inicio: </b>{String(props.fecha_inicio).substring(0,10)}</p>

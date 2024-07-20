@@ -13,6 +13,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.json(response);
     }
     else if(req.method === "POST"){
+        let strin : String  = JSON.parse(req.body)['fecha_inicio'];
+        let strfi : String  = JSON.parse(req.body)['fecha_final'];
         const response = await prisma.actionA1.update({
             where:{
                 id: Number(id)
@@ -21,6 +23,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 nombre: JSON.parse(req.body)['nombre'],
                 descripcion: JSON.parse(req.body)['descripcion'],
                 type: JSON.parse(req.body)['type'],
+                fecha_inicio: new Date(Number(strin.substring(0, 4)), Number(strin.substring(5, 7))-1, Number(strin.substring(8, 10))), 
+                fecha_final: new Date(Number(strfi.substring(0, 4)), Number(strfi.substring(5, 7))-1, Number(strfi.substring(8, 10))),
                 localidad: JSON.parse(req.body)['localidad'],
                 nro_participantes: JSON.parse(req.body)['nro_participantes'],
                 nro_mujeres: JSON.parse(req.body)['nro_mujeres'],

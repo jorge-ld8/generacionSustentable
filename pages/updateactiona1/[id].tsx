@@ -9,6 +9,7 @@ import { actionA1 } from "@prisma/client";
 import ErrorMessage from "../../components/errormessage";
 import DropDownList from "../../components/dropdownlist";
 import { actionTypes, actionsA1, actionsA2, actionsA3, actionsA4, localidades, organizaciones, tipoComunidad } from "../../lib/constants";
+import { CleaningServices } from "@mui/icons-material";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const action = await prisma.actionA1.findUnique({
@@ -23,6 +24,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 const NewRole: React.FC<actionA1> = (props)=>
 {
+    console.log(props)
+    console.log(new Date(props.fecha_inicio))
+    console.log(new Date(props.fecha_final))
     console.log(String(props.fecha_inicio));
     const formik = useFormik({
         initialValues:{
@@ -31,8 +35,8 @@ const NewRole: React.FC<actionA1> = (props)=>
             type: props.type,
             organizacion: props.organizacion,
             tipo_localidad: props.tipo_localidad,
-            fecha_inicio:  new Date(props.fecha_inicio),
-            fecha_final: new Date(props.fecha_final),
+            fecha_inicio: props.fecha_inicio,
+            fecha_final: props.fecha_final,
             localidad: props.localidad,
             nro_participantes: props.nro_participantes,
             nro_mujeres: props.nro_mujeres,
@@ -51,16 +55,37 @@ const NewRole: React.FC<actionA1> = (props)=>
             organizacion: Yup.string().required("Obligatorio"),
             tipo_localidad: Yup.string().required("Obligatorio"),
             fecha_inicio: Yup.date().required("Obligatorio"),
-            fecha_final: Yup.date().required("Obligatorio"),
+            fecha_final: Yup.date().required("Obligatorio").test(
+              "date_check",
+              "la fecha final no puede ser antes que la fecha de inicio",
+              function(value){
+                const {fecha_inicio} = this.parent;
+                return value >= fecha_inicio;
+              }
+            ),
             localidad: Yup.string().required("Obligatorio"),
-            nro_participantes: Yup.number().required("Obligatorio"),
             nro_mujeres: Yup.number().required("Obligatorio"),
             nro_pob_ind: Yup.number().required("Obligatorio"),
             nro_pob_rural: Yup.number().required("Obligatorio"),
             nro_pob_lgbtiq: Yup.number().required("Obligatorio"),
             nro_pob_16_29: Yup.number().required("Obligatorio"),
-            nro_lid_pob_16_29: Yup.number().required("Obligatorio"),
-            nro_noid: Yup.number().required("Obligatorio")
+            nro_noid: Yup.number().required("Obligatorio"),
+            nro_lid_pob_16_29: Yup.number().required("Obligatorio").test(
+              "nro_lideres_check",
+              "El número de líderes no puede ser mayor que la población de 16-29 años",
+              function(value) {
+                const {nro_pob_16_29} = this.parent;
+                return nro_pob_16_29 - value >= 0;
+              }
+            ),
+            nro_participantes: Yup.number().required("Obligatorio").test(
+              "nro_participantes_check",
+              "El número de participantes debe ser mayor o igual que la suma del número de mujeres, no identificados y lgbtiq+",
+              function (value) {
+                const { nro_mujeres, nro_noid, nro_pob_lgbtiq } = this.parent;
+                return value - nro_mujeres - nro_noid - nro_pob_lgbtiq >= 0;
+              }
+            ),
           }
         ),
         onSubmit: values => {console.log(values);},
@@ -68,6 +93,8 @@ const NewRole: React.FC<actionA1> = (props)=>
   
       async function handleSubmit(e){
         e.preventDefault();
+        console.log(`fecha_inicio: ${String(formik.values.fecha_inicio)}`)
+        console.log(`fecha_final: ${String(formik.values.fecha_final)}`)
         const response = await fetch(`/api/actiona1/${props.id}`,{method: 'POST', 
         body: JSON.stringify({
                 "nombre": formik.values.nombre,
@@ -129,7 +156,7 @@ const NewRole: React.FC<actionA1> = (props)=>
                     </li>
                     <li>
                       <label htmlFor="organizacion">Organización:</label>
-                      <DropDownList content={organizaciones} objType={"organizacion"} name={"organizacion"} onChange={formik.handleChange} value={formik.values.organizacion}/>
+                      <DropDownList content={organizaciones} objType={"organizacion"} name={"organizacion"} onChange={formik.handleChange} value={formik.values.organizacion} disabled={props.organizacion == "N/A"}/>
                   </li>
                     <li>
                         <label htmlFor="fecha_inicio">Fecha Inicio:</label>

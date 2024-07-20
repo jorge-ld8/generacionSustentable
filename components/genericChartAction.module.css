@@ -3,7 +3,7 @@
   }
   
   .progressBar::after {
-    content: 'Completed: XX%'; /* Replace XX with desired format */
+    content: 'XX%'; /* Replace XX with desired format */
     position: absolute;
     right: 5px; /* Adjust positioning as needed */
     top: 50%;

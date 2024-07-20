@@ -1,5 +1,6 @@
 import { Bar, Doughnut } from "react-chartjs-2";
 import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN} from "../lib/constants";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 
 export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders}){
