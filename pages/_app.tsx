@@ -20,7 +20,6 @@ export async function getServerSideProps(context) {
 };
 export default function App({ Component, pageProps, username}) {
     Chart.register(ChartDataLabels);
-    // hola testing auto-deployment
     const [user, setUser] = useState("");
     return (
         <SessionProvider session={pageProps.session}>
