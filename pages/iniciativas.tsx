@@ -47,7 +47,7 @@ export default function Home(props) {
   });
 
   const GetActions = async () => {
-    const res = await axios.get('/api/initiative')
+    const res = await axios.get('/api/actions')
       .catch((error) => {
         console.log('catch: ', error.message);
       });
@@ -79,7 +79,8 @@ export default function Home(props) {
   };
 
   const DeleteInitiative = async (actionId: number) => {
-    const resp = await axios.delete("/api/initiative", {
+    console.log(`new delete action`);
+    const resp = await axios.delete(`/api/actions/${actionId}`, {
       params: {id: actionId }
     }).catch((error) => {
       console.log("catch: ", error.message);

@@ -58,11 +58,11 @@ async function updateAction(id: number, req: NextApiRequest, res: NextApiRespons
 // Delete an action
 async function deleteAction(id: number, res: NextApiResponse) {
   try {
-    await prisma.actionA1.delete({
+    const response = await prisma.actionA1.delete({
       where: { id }
     });
     
-    return res.status(204).end();
+    return res.status(200).json(response);
   } catch (error) {
     console.error('Error deleting action:', error);
     return res.status(500).json({ message: 'Error deleting action' });
