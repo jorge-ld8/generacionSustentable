@@ -5,6 +5,7 @@ import prisma from "../../../lib/prisma";
 import GenChartZone from "../../../components/genericChartZone";
 import { getCookie } from 'cookies-next';
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 function normalizeResults(inputArr, type, att){
     let finalArr = new Array(4).fill(0);
@@ -22,6 +23,28 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const res = ctx.res;
     let org = getCookie('organizacion', { req, res });
      // Calculando numero de poblacion rural
+
+    // Get filter from query params
+    // could be Beneficiarios directos o Beneficiarios indirectos
+    const filter = ctx.query.filter;
+
+    const actsBeneficiariosDir = ["Ciclos formativos en acción socioambiental /ciberactivismo","Salidas de campo / actividades al aire libre",
+        "Ciclo formativo moda sustentable", "Ciclo formativo reuso productivo", "Ciclo formativo ecoturismo", "Monitoreo equipos locales",
+        "Encuentros juveniles"
+    ];
+
+    const actsBeneficiariosInd = ["Acciones en áreas públicas","Festival, desfiles, marchas, rodadas, campañas de arte", 
+        "Reforestación / restauración", "Reuniones con autoridades locales", "Ferias de emprendimiento sostenbile",
+        "Campañas de ciberactivismo", "Formación y trabajo en redes"
+    ]
+
+    const allBeneficiarios = actsBeneficiariosDir.concat(actsBeneficiariosInd);
+
+    const beneficiariosList = filter === "Beneficiarios directos" ? actsBeneficiariosDir : filter === "Beneficiarios indirectos" ? actsBeneficiariosInd : allBeneficiarios;
+
+    console.log(filter);
+    console.log(beneficiariosList);
+
     const totalLGBT = await prisma.actionA1.groupBy(
         {
             by:['type'],
@@ -41,6 +64,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             where:{
                 localidad:{
                     equals: String(ctx.params?.id)
+                },
+                nombre:{
+                    in: beneficiariosList
                 }
             }
         }
@@ -56,6 +82,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             where:{
                 localidad:{
                     equals: String(ctx.params?.id)
+                },
+                nombre:{
+                    in: beneficiariosList
                 }
             }
         }
@@ -72,12 +101,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             where:{
                 localidad:{
                     equals: String(ctx.params?.id)
+                },
+                nombre:{
+                    in: beneficiariosList
                 }
             }
         }
     );
-    console.log(`total:`);
-    console.log(totalLGBT);
+    // console.log(`total:`);
+    // console.log(totalLGBT);
     const countIni = await prisma.actionA1.aggregate(
         {
             _count:{
@@ -86,6 +118,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             where:{
                 localidad: {
                     equals: String(ctx.params?.id)
+                },
+                nombre:{
+                    in: beneficiariosList
                 }
             }
         }
@@ -112,6 +147,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function ChartFinal(props){
     Chart.register(CategoryScale);
+    const [filter, setFilter] = useState('Todos');
+    const router = useRouter();
     const total = {"totalLGBT": props.totalLGBT, 
                    "totalMujeres": props.totalMujeres, 
                    "totalInd": props.totalInd, 
@@ -122,7 +159,25 @@ export default function ChartFinal(props){
                    "totallid1629": props.totallid1629
                 };
 
+    const handleFilterChange = (newFilter) => {
+        setFilter(newFilter);
+        console.log(`Filter: ${newFilter}`);
+        
+        // This will trigger a new getServerSideProps call
+        router.push({
+            pathname: router.pathname,
+            query: { ...router.query, filter: newFilter }
+        });
+    };
+
     return (
-        <GenChartZone name={props.localidad} iniNum={props.countIni._count.id} total={total} totalActionTypes={props.totalActionTypes} totalGenders={props.totalGenders} totalPobs={props.totalPobs}/>
+        <>
+            <GenChartZone 
+                name={props.localidad} iniNum={props.countIni._count.id} 
+                total={total} totalActionTypes={props.totalActionTypes} 
+                totalGenders={props.totalGenders} totalPobs={props.totalPobs}
+                setFilter={handleFilterChange}
+            />
+        </>
     );
 }

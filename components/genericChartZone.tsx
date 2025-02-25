@@ -4,7 +4,7 @@ import Zonasnav from "./zonasnav";
 import ProgressBar from "@ramonak/react-progress-bar";
 
 
-export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders,totalPobs}){
+export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders,totalPobs, setFilter}){
   let options = {
     tooltips: {
         enabled: false,
@@ -22,7 +22,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
     plugins: {
         datalabels: {
             formatter: (value, ctx) => {
-                console.log(ctx);
+                // console.log(ctx);
                 const datapoints = ctx.chart.data.datasets[0].data
                 const total = datapoints.reduce((total, datapoint) => total + datapoint, 0)
                 const percentage = value / total * 100
@@ -65,6 +65,15 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 <h2>Apuestas Formativas</h2>
                 <Zonasnav/>
                 <h3>Localidad: {name}</h3>
+                <br />
+                <select 
+                  className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                  onChange={(e) => setFilter(e.target.value)}>
+                  <option value="Todos">Todos</option>
+                  <option value="Beneficiarios directos">Beneficiarios directos</option>
+                  <option value="Beneficiarios indirectos">Beneficiarios indirectos</option>
+                </select>
+                <br />
                 <br />
                 <p>
                     Número de iniciativas: {iniNum}
@@ -231,6 +240,28 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 }
             ]
           }} style={{display:"inline-block"}} />
+          <style jsx>{`
+            select {
+              padding: 8px 16px;
+              border-radius: 8px;
+              border: 1px solid #ccc;
+              font-size: 16px;
+              background-color: white;
+              cursor: pointer;
+              min-width: 200px;
+            }
+
+            select:hover {
+              border-color: #666;
+            }
+
+            select:focus {
+              outline: none;
+              border-color: #a7cb45;
+              box-shadow: 0 0 0 2px rgba(167, 203, 69, 0.2);
+            }
+          `}
+         </style>
     </div>
     );
 }

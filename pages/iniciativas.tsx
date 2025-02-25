@@ -15,7 +15,7 @@ export async function getServerSideProps(context) {
   if (organizacion == undefined){
       organizacion = "";
   }
-  if (username == undefined){
+  if (username == undefined){ 
      username = "";
   }
   const iniciativas = await prisma.actionA1.findMany();
