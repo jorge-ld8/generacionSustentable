@@ -3,7 +3,9 @@
   "scripts": {
     "build": "prisma generate && next build",
     "dev": "next dev",
-    "start": "next start"
+    "start": "next start",
+    "prisma:dev:deploy": "prisma migrate deploy",
+    "prisma:prod:deploy": "dotenv -e .env.production -- prisma migrate deploy"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -50,6 +52,7 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.3",
     "prisma": "^6.3.0",
+    "supabase": "^2.15.8",
     "tailwindcss": "^4.0.8",
     "typescript": "5.3.3"
   }

@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from "../../../lib/prisma";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse){
@@ -13,6 +13,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.json(response);
     }
     else if(req.method === "POST"){
+        console.log(JSON.parse(req.body));
+        
         let strin : String  = JSON.parse(req.body)['fecha_inicio'];
         let strfi : String  = JSON.parse(req.body)['fecha_final'];
         const response = await prisma.actionA1.update({
@@ -32,7 +34,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 nro_pob_rural: JSON.parse(req.body)['nro_pob_rural'],
                 nro_pob_lgbtiq: JSON.parse(req.body)['nro_pob_lgbtiq'],
                 organizacion: JSON.parse(req.body)['organizacion'],
-                tipo_localidad: JSON.parse(req.body)['tipo_localidad']
+                tipo_localidad: JSON.parse(req.body)['tipo_localidad'],
+                nro_lid_pob_16_29: JSON.parse(req.body)['nro_lid_pob_16_29'],
+                nro_noid: JSON.parse(req.body)['nro_noid']
             }
         })
         res.json(response);

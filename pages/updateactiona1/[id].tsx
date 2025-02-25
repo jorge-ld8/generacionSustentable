@@ -67,7 +67,9 @@ const UpdateActionA1Page: React.FC<UpdateActionA1Props> = ({ action }) => {
         fecha_inicio: String(values.fecha_inicio),
         fecha_final: String(values.fecha_final)
       });
-      
+
+      console.log("got in here");
+      console.log(values);
       router.back();
     } catch (err) {
       console.error("Error updating action:", err);
