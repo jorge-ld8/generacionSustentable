@@ -67,7 +67,7 @@ export default function Home(props) {
     if (actionFound) {
         setAction(actionFound);
     }
-    Router.push(`\\updateactiona1\\[id]`, `\\updateactiona1\\${actionId}`);
+    Router.push(`/updateactiona1/[id]`, `/updateactiona1/${actionId}`);
   }
 
   const handleDeleteClick = async (actionId: number) => {
@@ -129,7 +129,7 @@ export default function Home(props) {
           <tbody>
             {filteredActions.map((action: actionA1) => {
               return (
-                <tr key={action.id} onClick={() => Router.push('\\actiona1\\[id]', `\\actiona1\\${action.id}`)}>
+                <tr key={action.id} onClick={() => Router.push('/actiona1/[id]', `/actiona1/${action.id}`)}>
                   <td>{action.nombre_real}</td>
                   <td>{action.organizacion}</td>
                   <td>{(new Date(action.fecha_inicio)).toISOString().substring(0, 10)}</td>

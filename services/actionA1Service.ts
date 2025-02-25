@@ -31,8 +31,8 @@ export async function getActionA1ById(id: number): Promise<actionA1> {
 
 // Update an action
 export async function updateActionA1(id: number, data: ActionA1FormData): Promise<actionA1> {
-  const response = await fetch(`/api/actiona1/${id}`, {
-    method: 'POST',
+  const response = await fetch(`/api/actions/${id}`, {
+    method: 'PUT',
     body: JSON.stringify(data)
   });
   
