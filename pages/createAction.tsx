@@ -91,7 +91,7 @@ const NewRole: React.FC<any> = (props)=>
   
       async function handleSubmit(e){
         e.preventDefault();
-        const response = await fetch(`/api/initiative`,{method: 'POST', 
+        const response = await fetch(`/api/actions`,{method: 'POST', 
         body: JSON.stringify({
                 "nombre": formik.values.nombre,
                 "nombre_real": formik.values.nombre_real,
@@ -118,32 +118,8 @@ const NewRole: React.FC<any> = (props)=>
           }
         ).catch(e => console.error(e))
         console.log(response);
-        console.log("holaaa" + JSON.stringify({
-          "nombre": formik.values.nombre,
-          "nombre_real": formik.values.nombre_real,
-          "descripcion": formik.values.descripcion,
-          "type": formik.values.type,
-          "fecha_inicio": String(formik.values.fecha_inicio),
-          "fecha_final": String(formik.values.fecha_final),
-          organizacion: formik.values.organizacion,
-          tipo_localidad: formik.values.tipo_localidad,
-          localidad: formik.values.localidad,
-          nro_participantes: formik.values.nro_participantes,
-          nro_noid: formik.values.nro_noid,
-          nro_mujeres: formik.values.nro_mujeres,
-          nro_pob_ind: formik.values.nro_pob_ind,
-          nro_pob_rural: formik.values.nro_pob_rural,
-          nro_pob_lgbtiq: formik.values.nro_pob_lgbtiq,
-          nro_pob_16_29: formik.values.nro_pob_16_29,
-          nro_lid_pob_16_29: formik.values.nro_lid_pob_16_29,
-          imgurl: formik.values.imgUrl
-      }))
         Router.push("/iniciativas");
       }
-
-      const handleImageChange = (event) => {
-        setSelectedImage(event.target.files[0]);
-      };
 
 
     return (

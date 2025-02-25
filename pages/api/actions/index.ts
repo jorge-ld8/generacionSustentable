@@ -26,7 +26,18 @@ async function getActions(req: NextApiRequest, res: NextApiResponse) {
 // Create a new action
 async function createAction(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const data = req.body;
+    const data = JSON.parse(req.body);
+
+    if (data.fecha_inicio){
+      data.fecha_inicio = new Date(Number(data.fecha_inicio.substring(0, 4)), 
+                                  Number(data.fecha_inicio.substring(5, 7))-1, 
+                                  Number(data.fecha_inicio.substring(8, 10))); 
+    }
+    if (data.fecha_final){
+        data.fecha_final = new Date(Number(data.fecha_final.substring(0, 4)), 
+                                  Number(data.fecha_final.substring(5, 7))-1, 
+                                  Number(data.fecha_final.substring(8, 10)));
+    }
     const action = await prisma.actionA1.create({ data });
     return res.status(201).json(action);
   } catch (error) {
