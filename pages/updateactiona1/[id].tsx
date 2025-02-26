@@ -54,7 +54,8 @@ const UpdateActionA1Page: React.FC<UpdateActionA1Props> = ({ action }) => {
     nro_pob_lgbtiq: action.nro_pob_lgbtiq,
     nro_pob_16_29: action.nro_pob_16_29,
     nro_lid_pob_16_29: action.nro_lid_pob_16_29,
-    nro_noid: action.nro_noid
+    nro_noid: action.nro_noid,
+    nombre_real: action.nombre_real,
   };
 
   const handleSubmit = async (values: ActionA1FormData) => {

@@ -142,17 +142,6 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                     }} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
                 </div>
                 <div className="chart-container">
-                    <Bar datasetIdKey='id' data={{
-                    labels: actionTypes,
-                    datasets:[{
-                        // id: 4,
-                        label: 'Participantes',
-                        backgroundColor: VIOLET,
-                        data: total.totalParticipantes,
-                        }]
-                    }} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
-                </div>
-                <div className="chart-container">
                 <Bar datasetIdKey='id' data={{
                     labels: actionTypes,
                     datasets:[{

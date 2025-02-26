@@ -52,4 +52,26 @@
   .container {
     padding: 1rem;
   }
+}
+
+/* Update the action column width to be smaller */
+.actionColumn {
+  width: 90px; /* Reduced from 120px */
+  white-space: nowrap;
+}
+
+/* Add new styles for compact action buttons */
+.actionButtons {
+  display: flex;
+  gap: 4px; /* Reduced spacing between buttons */
+  justify-content: center;
+}
+
+.actionButton {
+  min-width: 32px !important; /* Force smaller button width */
+  padding: 4px !important; /* Reduce padding */
+}
+
+.actionIcon {
+  font-size: 18px !important; /* Smaller icons */
 } 
