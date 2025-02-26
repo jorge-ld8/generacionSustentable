@@ -38,4 +38,10 @@ export const actionA1ValidationSchema = Yup.object({
       return value - nro_mujeres - nro_noid - nro_pob_lgbtiq >= 0;
     }
   ),
+  nombre_real: Yup.string().when('$isCreating', {
+    is: true,
+    then: schema => schema.required("Obligatorio"),
+    otherwise: schema => schema
+  }),
+  imgUrl: Yup.string()
 }); 
