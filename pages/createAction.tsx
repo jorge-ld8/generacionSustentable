@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { getCookie } from 'cookies-next';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import CreateActionA1Form from "../components/forms/CreateActionA1Form";
 import { ActionA1FormData, createActionA1 } from "../services/actionA1Service";
 import styles from "../styles/CreateActionA1.module.css";
@@ -67,22 +71,33 @@ const CreateActionPage: React.FC<CreateActionProps> = ({ organizacion }) => {
   };
 
   return (
-    <main className={styles.container}>
-      <h1 className={styles.pageTitle}>Actividad realizada</h1>
+    <div className={styles.container}>
+      <Paper elevation={0} className={styles.headerPaper}>
+        <Typography variant="h4" component="h1" className={styles.pageTitle}>
+          Crear Nueva Actividad
+        </Typography>
+      </Paper>
       
       {error && (
-        <div className={styles.errorContainer}>
-          <p className={styles.errorMessage}>{error}</p>
-        </div>
+        <Alert 
+          severity="error" 
+          className={styles.errorAlert}
+          variant="outlined"
+        >
+          <AlertTitle>Error</AlertTitle>
+          {error}
+        </Alert>
       )}
       
-      <CreateActionA1Form 
-        initialValues={initialValues}
-        onSubmit={handleSubmit}
-        isSubmitting={isSubmitting}
-        organizacionFromCookie={organizacion}
-      />
-    </main>
+      <Paper elevation={3} className={styles.formPaper}>
+        <CreateActionA1Form 
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+          organizacionFromCookie={organizacion}
+        />
+      </Paper>
+    </div>
   );
 };
 

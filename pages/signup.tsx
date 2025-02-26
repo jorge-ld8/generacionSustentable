@@ -1,189 +1,248 @@
+import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { useRouter } from 'next/router'
-import ErrorMessage from '../components/errormessage';
-import DropDownList from '../components/dropdownlist';
-import { organizaciones } from '../lib/constants';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 import Button from '@mui/material/Button';
-import { IconButton } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useState } from 'react';
+import MenuItem from '@mui/material/MenuItem';
+import Alert from '@mui/material/Alert';
+import { organizaciones } from '../lib/constants';
+import { signupValidationSchema } from '../utils/validationSchemas';
+import styles from '../styles/Signup.module.css';
 
-export default function SignupPage( {username} ) {
-    const router = useRouter()
-    const [isVisible, setIsVisible] = useState(false);
-    const [isVisible2, setIsVisible2] = useState(false);
-    const formik = useFormik({
-        initialValues:{
-            nombre: "",
-            apellido: "",
-            username: "",
-            organizacion: "",
-            password: "",
-            passwordagain: ""
-        },
-        onSubmit: values => {console.log(values);},
-      });
-  
-      async function handleSubmit(e){
-        e.preventDefault();
-        const response = await fetch(`/api/signup`,{method: 'POST', 
-        body: JSON.stringify({
-                nombre: formik.values.nombre,
-                apellido: formik.values.apellido,
-                username: formik.values.username,
-                organizacion: formik.values.organizacion,
-                password: formik.values.password,
-                passwordagain: formik.values.passwordagain
-            })
-        }).then(response =>{ 
-          if(response.ok)
-            return response.json()
-          }
-        ).catch(e => console.error(e))
-        console.log(response);
-        router.push("/login");
-      }
-
-    return (
-        <div>
-            <h2>Registrar Usuario</h2>
-            <form  onSubmit={handleSubmit}>
-                <ul>
-                  <li>
-                      <label htmlFor="nombre">Nombre:</label>
-                      <input type="text" id="nombre"
-                      {...formik.getFieldProps("nombre")}/>
-                      <ErrorMessage touched={formik.touched.nombre} errors={formik.errors.nombre}/>
-                  </li>
-                  <li>
-                      <label htmlFor="apellido">Apellido:</label>
-                      <input type="text" id="apellido"
-                      {...formik.getFieldProps("apellido")}/>
-                      <ErrorMessage touched={formik.touched.apellido} errors={formik.errors.apellido}/>
-                  </li>
-                  <li>
-                      <label htmlFor="username">Username:</label>
-                      <input type="text" id="username"
-                      {...formik.getFieldProps("username")}/>
-                      <ErrorMessage touched={formik.touched.username} errors={formik.errors.username}/>
-                  </li>
-                  <li>
-                      <label htmlFor="organizacion">Organizacion:</label>
-                      <DropDownList content={organizaciones} objType={"actiona1"} name={"organizacion"} onChange={formik.handleChange} value={formik.values.organizacion}/>
-                  </li>
-                  <li>
-                      <label htmlFor="password">Password:</label>
-                      <input type={isVisible ? "text" : "password"} id="password"
-                      {...formik.getFieldProps("password")}/>
-                      {isVisible ? 
-                      <IconButton aria-label="edit" size="small" onClick={(e) => {setIsVisible(false);}}>
-                        <VisibilityOffIcon sx={{ color: 'black' }} />
-                      </IconButton>
-                      :
-                      <IconButton aria-label="edit" size="small" onClick={(e) => {setIsVisible(true)}}>
-                        <VisibilityIcon sx={{ color: 'black' }} />
-                      </IconButton>
-                      }
-                      <ErrorMessage touched={formik.touched.password} errors={formik.errors.password}/>
-                  </li>
-                  <li>
-                      <label htmlFor="passwordagain">Password Again:</label>
-                      <input type={isVisible2 ? "text" : "password"} id="passwordagain"
-                      {...formik.getFieldProps("passwordagain")}/>
-                    {isVisible2 ? 
-                      <IconButton aria-label="edit" size="small" onClick={(e) => {setIsVisible2(false);}}>
-                        <VisibilityOffIcon sx={{ color: 'black' }} />
-                      </IconButton>
-                      :
-                      <IconButton aria-label="edit" size="small" onClick={(e) => {setIsVisible2(true)}}>
-                        <VisibilityIcon sx={{ color: 'black' }} />
-                      </IconButton>
-                      }
-                      <ErrorMessage touched={formik.touched.passwordagain} errors={formik.errors.passwordagain}/>
-                  </li>
-                </ul>
-                <div className="Button" style={{margin:"auto"}}>
-                      <Button type={"submit"} variant="contained" color={"success"} disabled={!(formik.isValid && formik.dirty)}>Registrar</Button>
-                </div>
-            </form>
-            <style jsx>{`
-            .page {
-              background: white;
-              padding: 2rem;
-            }
-    
-            .actions {
-              margin-top: 2rem;
-            }
-    
-            button {
-              background: #ececec;
-              border: 0;
-              border-radius: 0.125rem;
-              padding: 1rem 2rem;
-            }
-    
-            button + button {
-              margin-left: 1rem;
-            }
-  
-            form div{
-              margin: .5em;
-            }
-
-            ul{
-              list-style: none;
-            }
-
-            form li{
-                padding: .5em;
-            }
-
-            /*Form Styling*/
-            form{
-              margin: 0.1em auto;
-              padding: 1em;
-            }
-
-            form ul{
-              list-style: none;
-              padding: 0;
-              margin: 1em;
-              text-align: center;
-            }
-    
-            label{
-              display: inline-block;
-              width: 100px;
-              text-align: right;
-              margin-right: .5em;
-              font-weight: bold;
-              font-size: 0.90em;
-              overflow: clip;
-              white-space: nowrap;
-              overflow: visible;
-            }
-    
-            input,
-            textarea,
-            select
-            {
-              /* To make sure that all text fields have the same font settings
-                By default, textareas have a monospace font */
-              font: 1em sans-serif;
-    
-              /* Uniform text field size */
-              width: 300px;
-              box-sizing: border-box;
-              
-              border-radius: .5em;
-
-              /* Match form field borders */
-              border: 1px solid #999;
-              padding: 0.2em;
-            }
-          `}</style>
-        </div>
-    );
+interface SignupPageProps {
+  error?: string;
 }
+
+const SignupPage: React.FC<SignupPageProps> = ({ error: serverError }) => {
+  const router = useRouter();
+  const { msg } = router.query;
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(serverError || (typeof msg === 'string' ? msg : null));
+
+  const formik = useFormik({
+    initialValues: {
+      nombre: '',
+      apellido: '',
+      username: '',
+      organizacion: '',
+      password: '',
+      passwordagain: ''
+    },
+    validationSchema: signupValidationSchema,
+    onSubmit: async (values) => {
+      await handleSubmit(values);
+    },
+  });
+
+  const handleSubmit = async (values: typeof formik.values) => {
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al registrar el usuario');
+      }
+      
+      router.push('/login?msg=Registro exitoso. Por favor inicie sesión.');
+    } catch (err) {
+      console.error('Error en el registro:', err);
+      setError(err instanceof Error ? err.message : 'Error al registrar el usuario');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.title}>Registrar Usuario</h1>
+      
+      {error && (
+        <div className={styles.errorContainer}>
+          <p className={styles.errorMessage}>{error}</p>
+        </div>
+      )}
+      
+      <form onSubmit={formik.handleSubmit} className={styles.form}>
+        <ul className={styles.formList}>
+          <li className={styles.formItem}>
+            <TextField
+              fullWidth
+              id="nombre"
+              name="nombre"
+              label="Nombre"
+              variant="outlined"
+              value={formik.values.nombre}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.nombre && Boolean(formik.errors.nombre)}
+              helperText={formik.touched.nombre && formik.errors.nombre}
+            />
+          </li>
+          
+          <li className={styles.formItem}>
+            <TextField
+              fullWidth
+              id="apellido"
+              name="apellido"
+              label="Apellido"
+              variant="outlined"
+              value={formik.values.apellido}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.apellido && Boolean(formik.errors.apellido)}
+              helperText={formik.touched.apellido && formik.errors.apellido}
+            />
+          </li>
+          
+          <li className={styles.formItem}>
+            <TextField
+              fullWidth
+              id="username"
+              name="username"
+              label="Nombre de Usuario"
+              variant="outlined"
+              value={formik.values.username}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.username && Boolean(formik.errors.username)}
+              helperText={formik.touched.username && formik.errors.username}
+            />
+          </li>
+          
+          <li className={styles.formItem}>
+            <TextField
+              fullWidth
+              select
+              id="organizacion"
+              name="organizacion"
+              label="Organización"
+              variant="outlined"
+              value={formik.values.organizacion}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.organizacion && Boolean(formik.errors.organizacion)}
+              helperText={formik.touched.organizacion && formik.errors.organizacion}
+              InputProps={{
+                style: { textAlign: 'left' }
+              }}
+              SelectProps={{
+                MenuProps: {
+                  anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'left'
+                  }
+                }
+              }}
+            >
+              {organizaciones.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </li>
+          
+          <li className={styles.formItem}>
+            <TextField
+              fullWidth
+              id="password"
+              name="password"
+              label="Contraseña"
+              type={showPassword ? 'text' : 'password'}
+              variant="outlined"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={togglePasswordVisibility}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </li>
+          
+          <li className={styles.formItem}>
+            <TextField
+              fullWidth
+              id="passwordagain"
+              name="passwordagain"
+              label="Confirmar Contraseña"
+              type={showConfirmPassword ? 'text' : 'password'}
+              variant="outlined"
+              value={formik.values.passwordagain}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.passwordagain && Boolean(formik.errors.passwordagain)}
+              helperText={formik.touched.passwordagain && formik.errors.passwordagain}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={toggleConfirmPasswordVisibility}
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </li>
+        </ul>
+        
+        <div className={styles.buttonContainer}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="success"
+            disabled={!(formik.isValid && formik.dirty) || isSubmitting}
+            className={styles.submitButton}
+          >
+            {isSubmitting ? 'Registrando...' : 'Registrar'}
+          </Button>
+        </div>
+      </form>
+      
+      <div className={styles.loginLink}>
+        ¿Ya tienes una cuenta? <Link href="/login">Iniciar Sesión</Link>
+      </div>
+    </div>
+  );
+};
+
+export default SignupPage;

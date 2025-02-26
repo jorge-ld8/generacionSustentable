@@ -1,44 +1,92 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import prisma from '../../lib/prisma';
-const {createHash} = require('node:crypto');
+const { createHash } = require('node:crypto');
 
-export default async function handler(req, res) {
-  if (req.method == "POST"){
-    const username = JSON.parse(req.body)['username'];
-    const password = JSON.parse(req.body)['password'];
-    const passwordagain = JSON.parse(req.body)['passwordagain'];
-    const organizacion = JSON.parse(req.body)['organizacion'];
-    const nombre = JSON.parse(req.body)['nombre'];
-    const apellido = JSON.parse(req.body)['apellido'];
-    if (password != passwordagain){
-        res.redirect("/signup?msg=The two passwords don't match");
-        return;
+interface SignupRequestBody {
+  username: string;
+  password: string;
+  passwordagain: string;
+  organizacion: string;
+  nombre: string;
+  apellido: string;
+}
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Only allow POST method
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Método no permitido' });
+  }
+
+  try {
+
+    // const data = JSON.parse(req.body);
+    const data = req.body;
+
+    console.log(data);
+
+    // Validate required fields
+    if (!data.username || !data.password || !data.passwordagain || !data.organizacion || !data.nombre || !data.apellido) {
+      return res.status(400).json({ message: 'Todos los campos son obligatorios' });
     }
-    //query database to see if user is present
-    const response = await prisma.user.findFirst({
+
+    // Check if passwords match
+    if (data.password !== data.passwordagain) {
+      return res.status(400).json({ message: 'Las contraseñas no coinciden' });
+    }
+
+    // Check if username is already taken
+    const existingUser = await prisma.user.findFirst({
       where: {
-        username: username,
+        username: data.username,
       }
-    })
-    if (response){
-        res.redirect("/signup?msg=A user already has this username");
-        return;
+    });
+
+    if (existingUser) {
+      return res.status(409).json({ message: 'Este nombre de usuario ya está en uso' });
     }
-    const password_hash = createHash('sha256').update(password).digest('hex');
-    let user = {
-      username: username,
-      password: password_hash,
-      organizacion: organizacion,
-      nombre: nombre,
-      apellido: apellido
-    };
-    const createResponse = await prisma.user.create({ data: user });
-    res.json(createResponse);
-    const cookies = new Cookies(req, res)
-    cookies.set('username', username);
-    cookies.set('organizacion', organizacion);
-    res.redirect("/")
-  } else {
-    res.redirect("/")
+
+    // Hash password
+    const passwordHash = createHash('sha256').update(data.password).digest('hex');
+    
+    // Create user
+    const newUser = await prisma.user.create({
+      data: {
+        username: data.username,
+        password: passwordHash,
+        organizacion: data.organizacion,
+        nombre: data.nombre,
+        apellido: data.apellido
+      }
+    });
+
+    // Set cookies
+    const cookies = new Cookies(req, res);
+    cookies.set('username', data.username, { 
+      httpOnly: true,
+      sameSite: 'strict',
+      maxAge: 3600000 // 1 hour
+    });
+    
+    cookies.set('organizacion', data.organizacion, { 
+      httpOnly: true,
+      sameSite: 'strict',
+      maxAge: 3600000 // 1 hour
+    });
+
+    // Return success
+    return res.status(201).json({
+      message: 'Usuario creado exitosamente',
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+        organizacion: newUser.organizacion,
+        nombre: newUser.nombre,
+        apellido: newUser.apellido
+      }
+    });
+  } catch (error) {
+    console.error('Error al registrar usuario:', error);
+    return res.status(500).json({ message: 'Error interno del servidor' });
   }
 }

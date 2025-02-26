@@ -44,4 +44,29 @@ export const actionA1ValidationSchema = Yup.object({
     otherwise: schema => schema
   }),
   imgUrl: Yup.string()
+});
+
+export const signupValidationSchema = Yup.object({
+  nombre: Yup.string()
+    .required("El nombre es obligatorio")
+    .min(2, "El nombre debe tener al menos 2 caracteres"),
+  apellido: Yup.string()
+    .required("El apellido es obligatorio")
+    .min(2, "El apellido debe tener al menos 2 caracteres"),
+  username: Yup.string()
+    .required("El nombre de usuario es obligatorio")
+    .min(4, "El nombre de usuario debe tener al menos 4 caracteres")
+    .matches(/^[a-zA-Z0-9_]+$/, "Solo se permiten letras, números y guiones bajos"),
+  organizacion: Yup.string()
+    .required("La organización es obligatoria"),
+  password: Yup.string()
+    .required("La contraseña es obligatoria")
+    .min(6, "La contraseña debe tener al menos 6 caracteres")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{6,}$/,
+      "La contraseña debe contener al menos una letra mayúscula, una minúscula y un número"
+    ),
+  passwordagain: Yup.string()
+    .required("Debe confirmar la contraseña")
+    .oneOf([Yup.ref('password')], "Las contraseñas no coinciden")
 }); 
