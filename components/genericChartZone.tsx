@@ -93,16 +93,16 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 />
                 <br />
                 <h4>
-                    Número de líderes jóvenes 16-29 años
+                    Número de Participantes Totales
                 </h4>
                 <br />
                 <ProgressBar 
-                    completed= {`${sum_lid_16_29}`}
-                    bgColor="#f4c2c2"
+                    completed= {`${sumP}`}
+                    bgColor="#F6BF00"
                     labelAlignment="center"
                     labelColor="#ffffff"
-                    labelSize="14px"
-                    maxCompleted={sum16_29}
+                    labelSize="16px"
+                    maxCompleted={sumP}
                 />
                 <br />
                 <br />
