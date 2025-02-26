@@ -14,7 +14,11 @@ export default function ProfilePage({username, nombre, apellido, organizacion}) 
                   <br />
                   <p>Nombre: {nombre}</p>
                   <p>Apellido: {apellido}</p>
-                  <p>Organizacion: {organizacion}</p>
+                  {organizacion.length > 0 ?
+                    <p>Organizacion: {organizacion}</p>
+                  :
+                    null
+                  }
                   <br />
                   <div style={{marginBottom:"1em"}}>
                     <Button onClick={()=>Router.push("/api/logout")} variant='contained' style={{backgroundColor: "red"}}>Cerrar sesion</Button>
@@ -41,7 +45,7 @@ export async function getServerSideProps(context) {
     let username = getCookie('username', { req, res });
     let nombre = getCookie('nombre', { req, res });
     let apellido = getCookie('apellido', { req, res });
-    let organizacion = getCookie('organizacion', { req, res });
+    let organizacion = getCookie('organizacion', { req, res }) ?? "";
     if (username == undefined || username == null){
       username = "";
       nombre="";

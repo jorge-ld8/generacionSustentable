@@ -12,7 +12,7 @@ import styles from '../styles/Initiatives.module.css';
 
 interface InitiativesPageProps {
   organizacion: string;
-  username: string;
+  username: string;x
   initialActions: actionA1[];
 }
 
