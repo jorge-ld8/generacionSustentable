@@ -13,7 +13,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { es } from 'date-fns/locale';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { actionA1ValidationSchema } from "../../utils/validationSchemas";
 import { ActionA1FormData } from "../../services/actionA1Service";
 import { 
@@ -26,6 +25,7 @@ import {
   organizaciones, 
   tipoComunidad 
 } from "../../lib/constants";
+import { UploadButton } from "../../lib/uploadthing";
 import styles from "./ActionA1Form.module.css";
 
 interface ActionA1FormProps {
@@ -39,10 +39,9 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
   onSubmit, 
   isSubmitting 
 }) => {
-  // File upload state
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [filePreview, setFilePreview] = useState<string | null>(
-    initialValues.imgUrl ? initialValues.imgUrl : null
+  // Replace file upload state with selectedImage state
+  const [selectedImage, setSelectedImage] = useState<any>(
+    initialValues.imgUrl ? { url: initialValues.imgUrl } : null
   );
 
   const formik = useFormik({
@@ -69,21 +68,21 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
     formik.setFieldValue(name, date);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setSelectedFile(file);
-      
-      // Create a preview URL
-      const reader = new FileReader();
-      reader.onload = () => {
-        setFilePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      
-      // In a real app, you would upload this file to your server/storage
-      // and set the returned URL to formData.imgUrl
-      formik.setFieldValue('imgUrl', "placeholder-for-uploaded-image-url");
+  // Remove the handleFileChange function as we'll use UploadThing instead
+
+  // Determine which action list to show based on selected type
+  const getActionsList = () => {
+    switch(formik.values.type) {
+      case actionTypes[0]:
+        return actionsA1;
+      case actionTypes[1]:
+        return actionsA2;
+      case actionTypes[2]:
+        return actionsA3;
+      case actionTypes[3]:
+        return actionsA4;
+      default:
+        return [];
     }
   };
 
@@ -140,28 +139,11 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
               margin="normal"
               InputLabelProps={{ shrink: true }}
             >
-              {formik.values.type === actionTypes[0] ? 
-                actionsA1.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                )) : formik.values.type === actionTypes[1] ?
-                actionsA2.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                )) : formik.values.type === actionTypes[2] ?
-                actionsA3.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                )) :
-                actionsA4.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))
-              }
+              {getActionsList().map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
           
@@ -170,7 +152,7 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
               fullWidth
               id="nombre_real"
               name="nombre_real"
-              label="Nombre Real (opcional)"
+              label="Nombre Real*"
               value={formik.values.nombre_real}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -491,54 +473,61 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
             />
           </Grid>
           
-          {/* Image Upload */}
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
               Imagen
             </Typography>
             
-            <Box sx={{ mt: 2, mb: 2 }}>
-              <input
-                accept="image/*"
-                style={{ display: 'none' }}
-                id="image-upload"
-                type="file"
-                onChange={handleFileChange}
-              />
-              <label htmlFor="image-upload">
-                <Button
-                  variant="contained"
-                  component="span"
-                  startIcon={<CloudUploadIcon />}
-                >
-                  {initialValues.imgUrl ? 'Cambiar Imagen' : 'Subir Imagen'}
-                </Button>
-              </label>
-              
-              {(filePreview || initialValues.imgUrl) && (
-                <Box sx={{ mt: 2 }}>
-                  <img 
-                    src={filePreview || initialValues.imgUrl} 
-                    alt="Preview" 
-                    style={{ maxWidth: '100%', maxHeight: '200px' }} 
+            <div className={styles.imageUploadContainer}>
+              {selectedImage ? (
+                <div className={styles.selectedImage}>
+                  <Typography variant="body2">
+                    Imagen seleccionada
+                  </Typography>
+                  {selectedImage.url && (
+                    <img 
+                      src={selectedImage.url} 
+                      alt="Preview" 
+                      style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }} 
+                    />
+                  )}
+                </div>
+              ) : (
+                <div className={styles.customUploadButton}>
+                  <UploadButton
+                    endpoint="imageUploader"
+                    onClientUploadComplete={(res: any) => {
+                      console.log(res);
+                      formik.setFieldValue("imgUrl", res[0].url);
+                      setSelectedImage(res[0]);
+                      console.log("Files: ", res);
+                    }}
+                    onUploadProgress={(p: any) => {
+                      console.log("Upload in progress");
+                    }}
+                    onUploadError={(error: Error) => {
+                      console.error(`Upload error: ${error.message}`);
+                      alert(`ERROR! ${error.message}`);
+                    }}
                   />
-                </Box>
+                </div>
               )}
-            </Box>
+            </div>
           </Grid>
           
           {/* Submit Button */}
           <Grid item xs={12}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
               <Button
                 type="submit"
                 variant="contained"
                 color="primary"
                 disabled={!(formik.isValid && formik.dirty) || isSubmitting}
                 size="large"
-                className={styles.submitButton}
               >
                 {isSubmitting ? 'Actualizando...' : 'Actualizar'}
               </Button>
+            </Box>
           </Grid>
         </Grid>
       </form>

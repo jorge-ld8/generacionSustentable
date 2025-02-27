@@ -48,7 +48,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
   margin-bottom: 1rem;
 }
 
@@ -60,6 +60,16 @@
   background-color: #f5f5f5;
   color: #aaa;
   cursor: not-allowed;
+}
+
+/* Add this new class for valid form state */
+.submitButtonValid {
+  background-color: #1976d2; /* Material UI primary blue */
+  color: white;
+}
+
+.submitButtonValid:hover {
+  background-color: #1565c0; /* Darker blue on hover */
 }
 
 .selectedImage {
@@ -92,4 +102,45 @@
     flex-direction: column;
     gap: 1rem;
   }
+}
+
+/* Add these new styles for the upload button */
+.customUploadButton {
+  width: 100%;
+  max-width: 400px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+  margin: 0 auto;
+}
+
+.customUploadButton:hover {
+  border-color: #4CAF50;
+  background-color: #f0f8f0;
+}
+
+/* Style for the uploadthing button */
+.customUploadButton :global(.ut-button) {
+  background-color: #4CAF50 !important;
+  color: white !important;
+  padding: 10px 20px !important;
+  border-radius: 4px !important;
+  font-weight: 500 !important;
+  margin-top: 1rem !important;
+}
+
+.customUploadButton :global(.ut-button:hover) {
+  background-color: #45a049 !important;
+}
+
+.customUploadButton :global(.ut-upload-icon) {
+  color: #4CAF50 !important;
+}
+
+.customUploadButton :global(.ut-label) {
+  color: #555 !important;
+  font-size: 1rem !important;
 } 

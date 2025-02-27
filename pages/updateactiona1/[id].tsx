@@ -18,6 +18,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       id: Number(params?.id),
     },
   });
+
   
   if (!action) {
     return {
@@ -56,6 +57,7 @@ const UpdateActionA1Page: React.FC<UpdateActionA1Props> = ({ action }) => {
     nro_lid_pob_16_29: action.nro_lid_pob_16_29,
     nro_noid: action.nro_noid,
     nombre_real: action.nombre_real,
+    imgUrl: action.imgUrl,
   };
 
   const handleSubmit = async (values: ActionA1FormData) => {

@@ -436,24 +436,33 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
                 <Typography variant="body2">
                   Imagen seleccionada: {selectedImage.name}
                 </Typography>
+                {selectedImage.url && (
+                  <img 
+                    src={selectedImage.url} 
+                    alt="Preview" 
+                    style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }} 
+                  />
+                )}
               </div>
             ) : (
-              <UploadButton
-                endpoint="imageUploader"
-                onClientUploadComplete={(res: any) => {
-                  console.log(res);
-                  formik.setFieldValue("imgUrl", res[0].url);
-                  setSelectedImage(res[0]);
-                  console.log("Files: ", res);
-                }}
-                onUploadProgress={(p: any) => {
-                  console.log("Upload in progress");
-                }}
-                onUploadError={(error: Error) => {
-                  console.error(`Upload error: ${error.message}`);
-                  alert(`ERROR! ${error.message}`);
-                }}
-              />
+              <div className={styles.customUploadButton}>
+                <UploadButton
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res: any) => {
+                    console.log(res);
+                    formik.setFieldValue("imgUrl", res[0].url);
+                    setSelectedImage(res[0]);
+                    console.log("Files: ", res);
+                  }}
+                  onUploadProgress={(p: any) => {
+                    console.log("Upload in progress");
+                  }}
+                  onUploadError={(error: Error) => {
+                    console.error(`Upload error: ${error.message}`);
+                    alert(`ERROR! ${error.message}`);
+                  }}
+                />
+              </div>
             )}
           </div>
         </div>
@@ -462,7 +471,7 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
       <div className={styles.buttonContainer}>
         <button 
           type="submit" 
-          className={styles.submitButton}
+          className={`${styles.submitButton} ${formik.isValid && formik.dirty ? styles.submitButtonValid : ''}`}
           disabled={!(formik.isValid && formik.dirty) || isSubmitting}
         >
           {isSubmitting ? "CREANDO..." : "CREAR ACTIVIDAD"}
@@ -472,4 +481,4 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
   );
 };
 
-export default CreateActionA1Form; 
+export default CreateActionA1Form;  
