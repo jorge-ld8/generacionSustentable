@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useFormik, FormikHelpers } from "formik";
+import React from "react";
 import { 
   Button,
   TextField,
@@ -13,20 +12,16 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { es } from 'date-fns/locale';
-import { actionA1ValidationSchema } from "../../utils/validationSchemas";
 import { ActionA1FormData } from "../../services/actionA1Service";
-import { 
-  actionTypes, 
-  actionsA1, 
-  actionsA2, 
-  actionsA3, 
-  actionsA4, 
-  localidades, 
-  organizaciones, 
-  tipoComunidad 
-} from "../../lib/constants";
 import { UploadButton } from "../../lib/uploadthing";
 import styles from "./ActionA1Form.module.css";
+
+// Import custom hooks
+import { useActionForm } from "../../hooks/useActionForm";
+import { useImageUpload } from "../../hooks/useImageUpload";
+import { useActionTypes } from "../../hooks/useActionTypes";
+import { useFormFields } from "../../hooks/useFormFields";
+import { useDateHandling } from "../../hooks/useDateHandling";
 
 interface ActionA1FormProps {
   initialValues: ActionA1FormData;
@@ -39,51 +34,43 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
   onSubmit, 
   isSubmitting 
 }) => {
-  // Replace file upload state with selectedImage state
-  const [selectedImage, setSelectedImage] = useState<any>(
-    initialValues.imgUrl ? { url: initialValues.imgUrl } : null
-  );
+  // Use custom hooks
+  const { selectedImage, setImageData } = useImageUpload(initialValues.imgUrl);
+  const { actionTypes, getActionsList } = useActionTypes();
+  const { localidades, organizaciones, tipoComunidad } = useFormFields();
+  const { handleDateChange } = useDateHandling();
+  
 
-  const formik = useFormik({
-    initialValues: {
-      ...initialValues,
-      fecha_inicio: initialValues.fecha_inicio ? new Date(initialValues.fecha_inicio) : null,
-      fecha_final: initialValues.fecha_final ? new Date(initialValues.fecha_final) : null
-    },
-    validationSchema: actionA1ValidationSchema,
-    onSubmit: async (values, { setSubmitting }: FormikHelpers<ActionA1FormData>) => {
-      // Safely convert dates to ISO strings or null
-      const formattedValues = {
-        ...values,
-        fecha_inicio: values.fecha_inicio instanceof Date ? values.fecha_inicio.toISOString() : null,
-        fecha_final: values.fecha_final instanceof Date ? values.fecha_final.toISOString() : null
-      };
-      
-      await onSubmit(formattedValues);
-      setSubmitting(false);
-    },
-  });
-
-  const handleDateChange = (name: string) => (date: Date | null) => {
-    formik.setFieldValue(name, date);
+  // Initialize form with date objects
+  const initialFormValues = {
+    ...initialValues,
+    fecha_inicio: initialValues.fecha_inicio ? new Date(initialValues.fecha_inicio) : null,
+    fecha_final: initialValues.fecha_final ? new Date(initialValues.fecha_final) : null
   };
 
-  // Remove the handleFileChange function as we'll use UploadThing instead
+  initialFormValues.fecha_inicio.setHours(initialFormValues.fecha_inicio.getHours() + 4);
+  initialFormValues.fecha_final.setHours(initialFormValues.fecha_final.getHours() + 4);
 
-  // Determine which action list to show based on selected type
-  const getActionsList = () => {
-    switch(formik.values.type) {
-      case actionTypes[0]:
-        return actionsA1;
-      case actionTypes[1]:
-        return actionsA2;
-      case actionTypes[2]:
-        return actionsA3;
-      case actionTypes[3]:
-        return actionsA4;
-      default:
-        return [];
-    }
+
+  const formik = useActionForm(initialFormValues, async (values) => {
+    // Format dates for API
+    const formattedValues = {
+      ...values,
+      fecha_inicio: values.fecha_inicio instanceof Date ? values.fecha_inicio.toISOString() : null,
+      fecha_final: values.fecha_final instanceof Date ? values.fecha_final.toISOString() : null
+    };
+    
+    await onSubmit(formattedValues);
+  });
+
+  // Use date change handler from hook
+  const onDateChange = handleDateChange(formik.setFieldValue);
+
+  // Handle upload from UploadButton
+  const handleUploadComplete = (res: any) => {
+    console.log(res);
+    formik.setFieldValue("imgUrl", res[0].url);
+    setImageData(res[0]);
   };
 
   return (
@@ -139,7 +126,7 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
               margin="normal"
               InputLabelProps={{ shrink: true }}
             >
-              {getActionsList().map((option) => (
+              {getActionsList(formik.values.type).map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>
@@ -275,7 +262,7 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
             <DatePicker
               label="Fecha Inicio"
               value={formik.values.fecha_inicio instanceof Date ? formik.values.fecha_inicio : null}
-              onChange={handleDateChange('fecha_inicio')}
+              onChange={onDateChange('fecha_inicio')}
               slotProps={{
                 textField: {
                   fullWidth: true,
@@ -294,7 +281,7 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
             <DatePicker
               label="Fecha Final"
               value={formik.values.fecha_final instanceof Date ? formik.values.fecha_final : null}
-              onChange={handleDateChange('fecha_final')}
+              onChange={onDateChange('fecha_final')}
               slotProps={{
                 textField: {
                   fullWidth: true,
@@ -496,12 +483,7 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
                 <div className={styles.customUploadButton}>
                   <UploadButton
                     endpoint="imageUploader"
-                    onClientUploadComplete={(res: any) => {
-                      console.log(res);
-                      formik.setFieldValue("imgUrl", res[0].url);
-                      setSelectedImage(res[0]);
-                      console.log("Files: ", res);
-                    }}
+                    onClientUploadComplete={handleUploadComplete}
                     onUploadProgress={(p: any) => {
                       console.log("Upload in progress");
                     }}

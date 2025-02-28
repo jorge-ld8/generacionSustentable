@@ -1,15 +1,22 @@
-import React, { useState } from "react";
-import { useFormik, FormikHelpers } from "formik";
+import React from "react";
+import { FormikHelpers } from "formik";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
-import { actionA1ValidationSchema } from "../../utils/validationSchemas";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { ActionA1FormData } from "../../services/actionA1Service";
-import { actionTypes, actionsA1, actionsA2, actionsA3, actionsA4, localidades, organizaciones, tipoComunidad } from "../../lib/constants";
 import { UploadButton } from "../../lib/uploadthing";
 import styles from "./ActionA1Form.module.css";
+
+// Import custom hooks
+import { useActionForm } from "../../hooks/useActionForm";
+import { useImageUpload } from "../../hooks/useImageUpload";
+import { useActionTypes } from "../../hooks/useActionTypes";
+import { useFormFields } from "../../hooks/useFormFields";
 
 interface CreateActionA1FormProps {
   initialValues: ActionA1FormData;
@@ -24,33 +31,26 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
   isSubmitting,
   organizacionFromCookie 
 }) => {
-  const [selectedImage, setSelectedImage] = useState<any>(null);
+  // Use custom hooks
+  const { selectedImage, filePreview, handleFileChange, setImageData } = 
+    useImageUpload(initialValues.imgUrl);
   
-  const formik = useFormik({
-    initialValues,
-    validationSchema: actionA1ValidationSchema,
-    validateOnBlur: true,
-    validateOnChange: true,
-    onSubmit: async (values, { setSubmitting }: FormikHelpers<ActionA1FormData>) => {
-      await onSubmit(values);
-      setSubmitting(false);
-    },
+  const { actionTypes, getActionsList } = useActionTypes();
+  const { localidades, organizaciones, tipoComunidad } = useFormFields();
+  
+  const formik = useActionForm(initialValues, async (values) => {
+    // Update the imgUrl if we have a selected image
+    if (selectedImage && selectedImage.url) {
+      values.imgUrl = selectedImage.url;
+    }
+    await onSubmit(values);
   });
 
-  // Determine which action list to show based on selected type
-  const getActionsList = () => {
-    switch(formik.values.type) {
-      case actionTypes[0]:
-        return actionsA1;
-      case actionTypes[1]:
-        return actionsA2;
-      case actionTypes[2]:
-        return actionsA3;
-      case actionTypes[3]:
-        return actionsA4;
-      default:
-        return [];
-    }
+  // Handle upload from UploadButton
+  const handleUploadComplete = (res: any) => {
+    console.log(res);
+    formik.setFieldValue("imgUrl", res[0].url);
+    setImageData(res[0]);
   };
 
   return (
@@ -118,7 +118,7 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
                 displayEmpty
               >
                 <MenuItem value="" disabled>Seleccione una clasificación</MenuItem>
-                {getActionsList().map((action) => (
+                {getActionsList(formik.values.type).map((action) => (
                   <MenuItem key={action} value={action}>
                     {action}
                   </MenuItem>
@@ -448,12 +448,7 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
               <div className={styles.customUploadButton}>
                 <UploadButton
                   endpoint="imageUploader"
-                  onClientUploadComplete={(res: any) => {
-                    console.log(res);
-                    formik.setFieldValue("imgUrl", res[0].url);
-                    setSelectedImage(res[0]);
-                    console.log("Files: ", res);
-                  }}
+                  onClientUploadComplete={handleUploadComplete}
                   onUploadProgress={(p: any) => {
                     console.log("Upload in progress");
                   }}

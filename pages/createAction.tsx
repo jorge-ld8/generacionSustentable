@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { getCookie } from 'cookies-next';
@@ -9,6 +9,9 @@ import Typography from '@mui/material/Typography';
 import CreateActionA1Form from "../components/forms/CreateActionA1Form";
 import { ActionA1FormData, createActionA1 } from "../services/actionA1Service";
 import styles from "../styles/CreateActionA1.module.css";
+
+// Import custom hooks
+import { useSubmission } from "../hooks/useSubmission";
 
 interface CreateActionProps {
   organizacion: string;
@@ -24,11 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const CreateActionPage: React.FC<CreateActionProps> = ({ organizacion }) => {
-  const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // Prepare initial form values
+  // Initial values for the form
   const initialValues: ActionA1FormData = {
     nombre: "",
     nombre_real: "",
@@ -50,25 +49,17 @@ const CreateActionPage: React.FC<CreateActionProps> = ({ organizacion }) => {
     imgUrl: ""
   };
 
-  const handleSubmit = async (values: ActionA1FormData) => {
-    setIsSubmitting(true);
-    setError(null);
-    
-    try {
-      await createActionA1({
+  // Use submission hook
+  const { isSubmitting, error, handleSubmit } = useSubmission({
+    onSubmit: async (values) => {
+      return await createActionA1({
         ...values,
         fecha_inicio: String(values.fecha_inicio),
         fecha_final: String(values.fecha_final)
       });
-      
-      router.push("/iniciativas");
-    } catch (err) {
-      console.error("Error creating action:", err);
-      setError("Ha ocurrido un error al crear la acción. Por favor, inténtelo de nuevo.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    },
+    redirectPath: "/iniciativas"
+  });
 
   return (
     <div className={styles.container}>

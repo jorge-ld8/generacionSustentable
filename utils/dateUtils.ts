@@ -3,6 +3,9 @@
  */
 export function formatDateForInput(date: Date | string): string {
   const d = date instanceof Date ? date : new Date(date);
+
+  d.setHours(d.getHours() + 4);
+  
   return d.toISOString().split('T')[0];
 }
 
