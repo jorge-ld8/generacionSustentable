@@ -53,6 +53,7 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
     setImageData(res[0]);
   };
 
+
   return (
     <form onSubmit={formik.handleSubmit} className={styles.form}>
       <div className={styles.formGrid}>
@@ -334,7 +335,9 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
           </div>
           
           <div className={styles.fieldRow}>
-            <div className={styles.fieldCol}>
+            {
+              formik.values.tipo_localidad === "Indígena" &&
+              <div className={styles.fieldCol}>
               <label htmlFor="nro_pob_ind" className={styles.formLabel}>Población Indígena</label>
               <TextField
                 fullWidth
@@ -351,8 +354,11 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
                 inputProps={{ min: 0 }}
               />
             </div>
-            
-            <div className={styles.fieldCol}>
+            }
+
+            {
+              formik.values.tipo_localidad === "Rural" &&
+              <div className={styles.fieldCol}>
               <label htmlFor="nro_pob_rural" className={styles.formLabel}>Población Rural</label>
               <TextField
                 fullWidth
@@ -369,6 +375,7 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
                 inputProps={{ min: 0 }}
               />
             </div>
+            }
             
             <div className={styles.fieldCol}>
               <label htmlFor="nro_pob_lgbtiq" className={styles.formLabel}>Población LGBTIQ+</label>

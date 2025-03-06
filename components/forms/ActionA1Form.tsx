@@ -22,6 +22,7 @@ import { useImageUpload } from "../../hooks/useImageUpload";
 import { useActionTypes } from "../../hooks/useActionTypes";
 import { useFormFields } from "../../hooks/useFormFields";
 import { useDateHandling } from "../../hooks/useDateHandling";
+import { format } from "date-fns";
 
 interface ActionA1FormProps {
   initialValues: ActionA1FormData;
@@ -56,8 +57,10 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
     // Format dates for API
     const formattedValues = {
       ...values,
-      fecha_inicio: values.fecha_inicio instanceof Date ? values.fecha_inicio.toISOString() : null,
-      fecha_final: values.fecha_final instanceof Date ? values.fecha_final.toISOString() : null
+      fecha_inicio: values.fecha_inicio instanceof Date 
+      ? format(values.fecha_inicio, 'yyyy-MM-dd')
+      : null,
+      fecha_final: values.fecha_final instanceof Date ? format(values.fecha_final, 'yyyy-MM-dd') : null
     };
     
     await onSubmit(formattedValues);
@@ -361,7 +364,7 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
             />
           </Grid>
           
-          {formik.values.tipo_localidad === "Rural" && (
+          {formik.values.tipo_localidad === "Rural" &&
             <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
@@ -380,9 +383,9 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
                 InputProps={{ inputProps: { min: 0 } }}
               />
             </Grid>
-          )}
+        }
           
-          {formik.values.tipo_localidad === "Indígena" && (
+          {formik.values.tipo_localidad === "Indígena" && 
             <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
@@ -401,7 +404,7 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
                 InputProps={{ inputProps: { min: 0 } }}
               />
             </Grid>
-          )}
+          }
           
           <Grid item xs={12} md={4}>
             <TextField

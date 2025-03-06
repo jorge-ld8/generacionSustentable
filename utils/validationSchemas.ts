@@ -17,8 +17,16 @@ export const actionA1ValidationSchema = Yup.object({
   ),
   localidad: Yup.string().required("Obligatorio"),
   nro_mujeres: Yup.number().required("Obligatorio"),
-  nro_pob_ind: Yup.number().required("Obligatorio"),
-  nro_pob_rural: Yup.number().required("Obligatorio"),
+  nro_pob_ind: Yup.number().when('tipo_localidad', {
+    is: 'Indígena',
+    then: schema => schema.required("Obligatorio"),
+    otherwise: schema => schema.default(0).nullable()
+  }),
+  nro_pob_rural: Yup.number().when('tipo_localidad', {
+    is: 'Rural',
+    then: schema => schema.required("Obligatorio"),
+    otherwise: schema => schema.default(0).nullable()
+  }),
   nro_pob_lgbtiq: Yup.number().required("Obligatorio"),
   nro_pob_16_29: Yup.number().required("Obligatorio"),
   nro_noid: Yup.number().required("Obligatorio"),
@@ -43,7 +51,7 @@ export const actionA1ValidationSchema = Yup.object({
     then: schema => schema.required("Obligatorio"),
     otherwise: schema => schema
   }),
-  imgUrl: Yup.string()
+  imgUrl: Yup.string().nullable()
 });
 
 export const signupValidationSchema = Yup.object({
