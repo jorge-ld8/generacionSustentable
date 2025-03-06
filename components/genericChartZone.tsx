@@ -22,7 +22,6 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
     plugins: {
         datalabels: {
             formatter: (value, ctx) => {
-                // console.log(ctx);
                 const datapoints = ctx.chart.data.datasets[0].data
                 const total = datapoints.reduce((total, datapoint) => total + datapoint, 0)
                 const percentage = value / total * 100

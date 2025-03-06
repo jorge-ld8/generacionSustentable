@@ -7,6 +7,8 @@ import { actionsA2, actionsA3, actionsA4 } from "../../../lib/constants";
 import GenChartAction from "../../../components/genericChartAction";
 import prisma from "../../../lib/prisma";
 import { CleaningServices } from "@mui/icons-material";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 function normalizeResults(inputArr, type, att, initialValues, op){
     const keys = initialValues;
@@ -24,10 +26,26 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const req = ctx.req;
     const res = ctx.res;
     let org = getCookie('organizacion', { req, res });
-    console.log(`Organizacion: ${org}`);
-    console.log(`Tipo: ${ctx.params?.id}`);
-    console.log(actionTypes)
-     // Calculando numero de poblacion rural
+    
+    // Get filter from query params
+    // could be Beneficiarios directos o Beneficiarios indirectos
+    const filter = ctx.query.filter;
+
+    const actsBeneficiariosDir = ["Ciclos formativos en acción socioambiental /ciberactivismo","Salidas de campo / actividades al aire libre",
+        "Ciclo formativo moda sustentable", "Ciclo formativo reuso productivo", "Ciclo formativo ecoturismo", "Monitoreo equipos locales",
+        "Encuentros juveniles"
+    ];
+
+    const actsBeneficiariosInd = ["Acciones en áreas públicas","Festival, desfiles, marchas, rodadas, campañas de arte", 
+        "Reforestación / restauración", "Reuniones con autoridades locales", "Ferias de emprendimiento sostenbile",
+        "Campañas de ciberactivismo", "Formación y trabajo en redes"
+    ];
+
+    const allBeneficiarios = actsBeneficiariosDir.concat(actsBeneficiariosInd);
+
+    const beneficiariosList = filter === "Beneficiarios directos" ? actsBeneficiariosDir : filter === "Beneficiarios indirectos" ? actsBeneficiariosInd : allBeneficiarios;
+    
+    // Calculando numero de poblacion rural
     const totalGral = await prisma.actionA1.groupBy(
         {
             by:['nombre'],
@@ -47,6 +65,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             where:{
                 type:{
                     equals: String(ctx.params?.id)
+                },
+                nombre:{
+                    in: beneficiariosList
                 }
             }
         }
@@ -61,6 +82,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             where:{
                 type:{
                     equals: String(ctx.params?.id)
+                },
+                nombre:{
+                    in: beneficiariosList
                 }
             }
         }
@@ -75,6 +99,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             where:{
                 type:{
                     equals: String(ctx.params?.id)
+                },
+                nombre:{
+                    in: beneficiariosList
                 }
             }
         }
@@ -91,6 +118,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             where:{
                 type:{
                     equals: String(ctx.params?.id)
+                },
+                nombre:{
+                    in: beneficiariosList
                 }
             }
         }
@@ -106,6 +136,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             where:{
                 type:{
                     equals: String(ctx.params?.id)
+                },
+                nombre:{
+                    in: beneficiariosList
                 }
             }
         }
@@ -119,6 +152,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             where:{
                 type: {
                     equals: String(ctx.params?.id)
+                },
+                nombre:{
+                    in: beneficiariosList
                 }
             }
         }
@@ -160,8 +196,31 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function ChartFinal(props){
     Chart.register(CategoryScale);
-    console.log(props)
+    const router = useRouter();
+
+    const handleFilterChange = (newFilter) => {
+        console.log(`Filter: ${newFilter}`);
+        
+        // This will trigger a new getServerSideProps call
+        router.push({
+            pathname: router.pathname,
+            query: { ...router.query, filter: newFilter }
+        });
+    };
+
     return (
-        <GenChartAction name={props.actionType} iniNum={props.countIni._count.id} totals={props.totalnames} labels={props.actionsArr} color={ORANGE} totalLocTypes={props.totalActTypes} totalComunidad={props.totalComunidad} finalArr={props.finalArr} totalGenders={props.totalGenders} totalPobs={props.totalPobs}/>
+        <GenChartAction 
+            name={props.actionType} 
+            iniNum={props.countIni._count.id} 
+            totals={props.totalnames} 
+            labels={props.actionsArr} 
+            color={ORANGE} 
+            totalLocTypes={props.totalActTypes} 
+            totalComunidad={props.totalComunidad} 
+            finalArr={props.finalArr} 
+            totalGenders={props.totalGenders} 
+            totalPobs={props.totalPobs}
+            setFilter={handleFilterChange}
+        />
     );
 }

@@ -7,7 +7,7 @@ import styles from './genericChartAction.module.css';
 import { scales } from "chart.js";
 
 
-export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders, totalPobs}){
+export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders, totalPobs, setFilter}){
 
     let options = {
         tooltips: {
@@ -67,8 +67,19 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
 
     return (
         <div style={{padding: "0 60px"}}>
-        <h3>Tipo de acción: {name}</h3>
+        <h2>Apuestas Formativas</h2>
         <Typesnav/>
+        <h3>Tipo de acción: {name}</h3>
+        <br />
+        <select 
+            className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+            onChange={(e) => setFilter(e.target.value)}>
+            <option value="Todos">Todos</option>
+            <option value="Beneficiarios directos">Beneficiarios directos</option>
+            <option value="Beneficiarios indirectos">Beneficiarios indirectos</option>
+        </select>
+        <br />
+        <br />
         <p>
             Número de iniciativas: {iniNum}
         </p>
@@ -87,16 +98,16 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
         />
         <br />
         <h4>
-            Número de líderes jóvenes 16-29 años
+            Número de Participantes Totales
         </h4>
         <br />
         <ProgressBar 
-            completed= {`${sum_lid_16_29}`}
-            bgColor="#f4c2c2"
+            completed= {`${sumP}`}
+            bgColor="#F6BF00"
             labelAlignment="center"
             labelColor="#ffffff"
-            labelSize="14px"
-            maxCompleted={sum16_29}/>
+            labelSize="16px"
+            maxCompleted={sumP}/>
         <br />
         <br />
         <div style={{margin:"auto"}}>
@@ -205,6 +216,28 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                 }]}} options={options} />
             </div>
         </div>
+        <style jsx>{`
+            select {
+              padding: 8px 16px;
+              border-radius: 8px;
+              border: 1px solid #ccc;
+              font-size: 16px;
+              background-color: white;
+              cursor: pointer;
+              min-width: 200px;
+            }
+
+            select:hover {
+              border-color: #666;
+            }
+
+            select:focus {
+              outline: none;
+              border-color: #a7cb45;
+              box-shadow: 0 0 0 2px rgba(167, 203, 69, 0.2);
+            }
+          `}
+         </style>
     </div>
     );
 }

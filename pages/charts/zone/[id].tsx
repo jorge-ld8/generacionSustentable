@@ -147,7 +147,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function ChartFinal(props){
     Chart.register(CategoryScale);
-    const [filter, setFilter] = useState('Todos');
     const router = useRouter();
     const total = {"totalLGBT": props.totalLGBT, 
                    "totalMujeres": props.totalMujeres, 
@@ -160,7 +159,6 @@ export default function ChartFinal(props){
                 };
 
     const handleFilterChange = (newFilter) => {
-        setFilter(newFilter);
         console.log(`Filter: ${newFilter}`);
         
         // This will trigger a new getServerSideProps call
