@@ -1,8 +1,7 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN, PINK, ULTRALIGHTBLUE, LIGHTBLUE, ULTRALIGHTVIOLET, LIGHTVIOLET } from "../lib/constants";
-import Zonasnav from "./zonasnav";
+import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN, PINK, ULTRALIGHTBLUE, LIGHTBLUE, ULTRALIGHTVIOLET, LIGHTVIOLET, localidades } from "../lib/constants";
 import ProgressBar from "@ramonak/react-progress-bar";
-
+import ChartNav from "./ChartNav";  
 
 export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders,totalPobs, setFilter, isSubmitting }){
   let options = {
@@ -53,7 +52,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
     return (
             <div style={{padding: "0 60px"}}>
                 <h2>Apuestas Formativas</h2>
-                <Zonasnav/>
+                <ChartNav items={localidades} basePath="/charts/zone" />
                 <h3>Localidad: {name}</h3>
                 <br />
                 <select 

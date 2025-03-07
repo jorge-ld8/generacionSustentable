@@ -1,7 +1,8 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, GREEN, LIGHTBLUE, LIGHTVIOLET, ORANGE, ULTRALIGHTBLUE, ULTRALIGHTVIOLET, VIOLET, YELLOW, localidades, tipoComunidad } from "../lib/constants";
+import { BLUE, GREEN, LIGHTBLUE, LIGHTVIOLET, ORANGE, ULTRALIGHTBLUE, ULTRALIGHTVIOLET, VIOLET, YELLOW, actionTypes, localidades, tipoComunidad } from "../lib/constants";
 import Typesnav from "./typesnav";
 import ProgressBar from "@ramonak/react-progress-bar";
+import ChartNav from "./ChartNav";
 
 
 export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders, totalPobs, setFilter, isSubmitting, setIsSubmitting}){
@@ -64,7 +65,7 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
     return (
         <div style={{padding: "0 60px"}}>
         <h2>Apuestas Formativas</h2>
-        <Typesnav/>
+        <ChartNav items={actionTypes} basePath="/charts/action" />
         <h3>Tipo de acción: {name}</h3>
         <br />
         <select 

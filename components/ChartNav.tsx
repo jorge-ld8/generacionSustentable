@@ -15,7 +15,7 @@ function NavLink({ val, basePath, isActive }: NavLinkProps) {
     e.preventDefault();
     
     // Use shallow routing to avoid unnecessary data fetching
-    router.push(`${basePath}/${val}`, undefined, { shallow: true });
+    router.push(`${basePath}/${val}`, undefined, { shallow: false });
   };
   
   return (
