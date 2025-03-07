@@ -105,7 +105,7 @@ export default async function handler(
 
     // Calculate totals by locality type
     const totalLoc = await prisma.actionA1.groupBy({
-      by: ['tipo_localidad'],
+      by: ['tipo_localidad', 'organizacion'],
       _count: {
         id: true
       },
@@ -119,22 +119,7 @@ export default async function handler(
 
 
     const totalActTypes = normalizeResults(totalLoc, 'id', 'tipo_localidad', localidades, '_count');
-
-    // Calculate totals by community type
-    const totalCom = await prisma.actionA1.groupBy({
-      by: ['organizacion'],
-      _count: {
-        id: true
-      },
-      where: {
-        type: actionType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
-    });
-
-    const totalComunidad = normalizeResults(totalCom, 'id', 'organizacion', tipoComunidad, '_count');
+    const totalComunidad = normalizeResults(totalLoc, 'id', 'organizacion', tipoComunidad, '_count');
 
     // Prepare data for response
     const finalArr = {
