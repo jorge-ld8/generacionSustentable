@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { getCookie } from 'cookies-next';
@@ -7,13 +7,13 @@ import { Add } from '@mui/icons-material';
 import { actionA1 } from '@prisma/client';
 import prisma from '../lib/prisma';
 import ActionList from '../components/ActionList';
-import { getAllActions, deleteActionA1 } from '../services/actionA1Service';
+import { useActions, deleteAction } from '../hooks/useActions';
 import styles from '../styles/Initiatives.module.css';
 
 interface InitiativesPageProps {
   organizacion: string;
-  username: string;x
-  initialActions: actionA1[];
+  username: string;
+  fallbackData: actionA1[];
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: { 
         organizacion, 
         username, 
-        initialActions: JSON.parse(JSON.stringify(actions))
+        fallbackData: JSON.parse(JSON.stringify(actions))
       } 
     };
   } catch (error) {
@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: { 
         organizacion, 
         username, 
-        initialActions: [] 
+        fallbackData: [] 
       } 
     };
   }
@@ -46,33 +46,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const InitiativesPage: React.FC<InitiativesPageProps> = ({ 
   organizacion, 
-  username, 
-  initialActions 
+  username,
+  fallbackData 
 }) => {
   const router = useRouter();
-  const [actions, setActions] = useState<actionA1[]>(initialActions);
+  const { actions, isLoading, isError, mutateActions } = useActions();
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const isAdmin = username === 'admin';
-
-  useEffect(() => {
-    fetchActions();
-  }, []);
-
-  const fetchActions = async () => {
-    setIsLoading(true);
-    setError(null);
-    
-    try {
-      const fetchedActions = await getAllActions();
-      setActions(fetchedActions);
-    } catch (err) {
-      console.error('Error fetching actions:', err);
-      setError('Error al cargar las iniciativas. Por favor, intente nuevamente.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleEditAction = (id: number) => {
     router.push(`/updateactiona1/${id}`);
@@ -82,17 +62,14 @@ const InitiativesPage: React.FC<InitiativesPageProps> = ({
     const confirmed = window.confirm('¿Está seguro que desea eliminar esta iniciativa?');
     
     if (confirmed) {
-      setIsLoading(true);
       setError(null);
       
       try {
-        await deleteActionA1(id);
-        // Refresh the action list after deletion
-        fetchActions();
+        await deleteAction(id);
+        // The SWR cache will be automatically updated by the deleteAction function
       } catch (err) {
         console.error('Error deleting action:', err);
         setError('Error al eliminar la iniciativa. Por favor, intente nuevamente.');
-        setIsLoading(false);
       }
     }
   };
@@ -100,6 +77,18 @@ const InitiativesPage: React.FC<InitiativesPageProps> = ({
   const handleAddAction = () => {
     router.push('/createAction');
   };
+
+  // If there's an error fetching the data
+  if (isError) {
+    return (
+      <div className={styles.container}>
+        <h1 className={styles.title}>Apuestas Formativas</h1>
+        <div className={styles.errorContainer}>
+          <p className={styles.errorMessage}>Error al cargar las iniciativas. Por favor, intente nuevamente.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -129,6 +118,7 @@ const InitiativesPage: React.FC<InitiativesPageProps> = ({
         isAdmin={isAdmin}
         onEdit={handleEditAction}
         onDelete={handleDeleteAction}
+        isLoading={isLoading}
       />
     </div>
   );

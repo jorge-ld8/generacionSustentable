@@ -83,4 +83,18 @@
   .searchInput {
     width: 80%;
   }
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  width: 100%;
+}
+
+.loadingContainer p {
+  margin-top: 1rem;
+  color: #666;
 } 

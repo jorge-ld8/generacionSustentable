@@ -7,11 +7,12 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import CreateActionA1Form from "../components/forms/CreateActionA1Form";
-import { ActionA1FormData, createActionA1 } from "../services/actionA1Service";
+import { ActionA1FormData } from "../services/actionA1Service";
 import styles from "../styles/CreateActionA1.module.css";
 
 // Import custom hooks
 import { useSubmission } from "../hooks/useSubmission";
+import { createAction } from "../hooks/useActions";
 
 interface CreateActionProps {
   organizacion: string;
@@ -52,7 +53,7 @@ const CreateActionPage: React.FC<CreateActionProps> = ({ organizacion }) => {
   // Use submission hook
   const { isSubmitting, error, handleSubmit } = useSubmission({
     onSubmit: async (values) => {
-      return await createActionA1({
+      return await createAction({
         ...values,
         fecha_inicio: String(values.fecha_inicio),
         fecha_final: String(values.fecha_final)

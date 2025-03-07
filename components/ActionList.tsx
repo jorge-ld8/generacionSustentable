@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { actionA1 } from "@prisma/client";
-import { IconButton } from '@mui/material';
+import { IconButton, CircularProgress } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import styles from './ActionList.module.css';
 
@@ -11,6 +11,7 @@ interface ActionListProps {
   isAdmin: boolean;
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
+  isLoading?: boolean;
 }
 
 const ActionList: React.FC<ActionListProps> = ({ 
@@ -18,7 +19,8 @@ const ActionList: React.FC<ActionListProps> = ({
   userOrganization, 
   isAdmin, 
   onEdit, 
-  onDelete 
+  onDelete,
+  isLoading = false
 }) => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
@@ -59,58 +61,65 @@ const ActionList: React.FC<ActionListProps> = ({
       </div>
       
       <div className={styles.tableContainer}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Organización</th>
-              <th>Fecha Inicio</th>
-              <th>Fecha Final</th>
-              <th>Localidad</th>
-              {(isAdmin || actions.some(a => a.organizacion === userOrganization)) && (
-                <th colSpan={2}>Acciones</th>
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {filteredActions.map((action) => (
-              <tr 
-                key={action.id} 
-                onClick={() => handleRowClick(action.id)}
-                className={styles.actionRow}
-              >
-                <td>{action.nombre_real}</td>
-                <td>{action.organizacion}</td>
-                <td>{new Date(action.fecha_inicio).toISOString().substring(0, 10)}</td>
-                <td>{new Date(action.fecha_final).toISOString().substring(0, 10)}</td>
-                <td>{action.localidad}</td>
-                
-                {(userOrganization === action.organizacion || isAdmin) && (
-                  <>
-                    <td>
-                      <IconButton 
-                        aria-label="edit" 
-                        size="small" 
-                        onClick={(e) => handleEditClick(e, action.id)}
-                      >
-                        <Edit sx={{ color: 'black' }} />
-                      </IconButton>
-                    </td>
-                    <td>
-                      <IconButton 
-                        aria-label="delete" 
-                        size="small" 
-                        onClick={(e) => handleDeleteClick(e, action.id)}
-                      >
-                        <Delete sx={{ color: 'red' }} />
-                      </IconButton>
-                    </td>
-                  </>
+        {isLoading ? (
+          <div className={styles.loadingContainer}>
+            <CircularProgress />
+            <p>Cargando iniciativas...</p>
+          </div>
+        ) : (
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Organización</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Final</th>
+                <th>Localidad</th>
+                {(isAdmin || actions.some(a => a.organizacion === userOrganization)) && (
+                  <th colSpan={2}>Acciones</th>
                 )}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredActions.map((action) => (
+                <tr 
+                  key={action.id} 
+                  onClick={() => handleRowClick(action.id)}
+                  className={styles.actionRow}
+                >
+                  <td>{action.nombre_real}</td>
+                  <td>{action.organizacion}</td>
+                  <td>{new Date(action.fecha_inicio).toISOString().substring(0, 10)}</td>
+                  <td>{new Date(action.fecha_final).toISOString().substring(0, 10)}</td>
+                  <td>{action.localidad}</td>
+                  
+                  {(userOrganization === action.organizacion || isAdmin) && (
+                    <>
+                      <td>
+                        <IconButton 
+                          aria-label="edit" 
+                          size="small" 
+                          onClick={(e) => handleEditClick(e, action.id)}
+                        >
+                          <Edit sx={{ color: 'black' }} />
+                        </IconButton>
+                      </td>
+                      <td>
+                        <IconButton 
+                          aria-label="delete" 
+                          size="small" 
+                          onClick={(e) => handleDeleteClick(e, action.id)}
+                        >
+                          <Delete sx={{ color: 'red' }} />
+                        </IconButton>
+                      </td>
+                    </>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

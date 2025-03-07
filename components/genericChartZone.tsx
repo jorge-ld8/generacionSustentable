@@ -4,7 +4,7 @@ import Zonasnav from "./zonasnav";
 import ProgressBar from "@ramonak/react-progress-bar";
 
 
-export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders,totalPobs, setFilter}){
+export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders,totalPobs, setFilter, isSubmitting }){
   let options = {
     tooltips: {
         enabled: false,
@@ -35,26 +35,17 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
         }
     }
   };
-          // create a variable for the sum and initialize it
           let sumP = 0;
-
-          // calculate sum using forEach() method
           total.totalParticipantes.forEach( num => {
               sumP += num;
           })
   
-          // create a variable for the sum and initialize it
           let sum16_29 = 0;
-  
-          // calculate sum using forEach() method
           total.total1629.forEach( num => {
               sum16_29 += num;
           });
 
-                  // create a variable for the sum and initialize it
         let sum_lid_16_29 = 0;
-
-        // calculate sum using forEach() method
         total.totallid1629.forEach( num => {
             sum_lid_16_29 += num;
         });
@@ -74,6 +65,36 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 </select>
                 <br />
                 <br />
+                {isSubmitting ? (
+                  <>
+                  <p>Cargando...</p>
+                  <div style={{ width: '100%', display: 'flex', justifyContent: 'center', margin: '15px 0' }}>
+                  <div style={{ 
+                      width: '250px', 
+                      height: '4px', 
+                      backgroundColor: '#e2e8f0', 
+                      borderRadius: '9999px', 
+                      overflow: 'hidden',
+                      position: 'relative'
+                  }}>
+                  <div 
+                      style={{ 
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          height: '100%', 
+                          width: '30%', 
+                          backgroundColor: '#3b82f6', 
+                          borderRadius: '9999px',
+                          animation: 'loading 1.5s infinite ease-in-out'
+                      }} 
+                      />
+                  </div>
+                  </div>
+                  </>
+                ) : (
+                  <>
+                  <br />
                 <p>
                     Número de iniciativas: {iniNum}
                 </p>
@@ -228,7 +249,14 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 }
             ]
           }} style={{display:"inline-block"}} />
+          </>
+          )}
           <style jsx>{`
+            @keyframes loading {
+                0% { left: -30%; }
+                100% { left: 100%; }
+            }
+            
             select {
               padding: 8px 16px;
               border-radius: 8px;

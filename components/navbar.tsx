@@ -4,7 +4,6 @@ import Link from "next/link";
 import IconButton from "@mui/material/IconButton";
 import { ArrowBack, Person } from "@mui/icons-material";
 import Router, { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { getCookie } from "cookies-next";
 import Button from "@mui/material/Button";
 
@@ -20,8 +19,7 @@ export async function getServerSideProps(context) {
 
 export default function Navbar({username}){
     const router = useRouter();
-    const {data: session } = useSession();
-    console.log("Re render");
+    console.log("render navbar");
     return (
         <nav className={styles.mainav}>
             <Link href={"/"}>
