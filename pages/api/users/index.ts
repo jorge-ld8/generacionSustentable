@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../lib/prisma';
-const { createHash } = require('node:crypto');
+import { createHash } from 'node:crypto';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {

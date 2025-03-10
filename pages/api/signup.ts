@@ -1,16 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import prisma from '../../lib/prisma';
-const { createHash } = require('node:crypto');
+import { createHash } from 'node:crypto';
 
-interface SignupRequestBody {
-  username: string;
-  password: string;
-  passwordagain: string;
-  organizacion: string;
-  nombre: string;
-  apellido: string;
-}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Only allow POST method

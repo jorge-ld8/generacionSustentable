@@ -4,9 +4,9 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import ChartNav from "./ChartNav";
 
 
-export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders, totalPobs, setFilter, isSubmitting, setIsSubmitting}){
+export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders, totalPobs, setFilter, isSubmitting}){
     
-    let options = {
+    const options = {
         tooltips: {
             enabled: false,
             callbacks: {
@@ -51,14 +51,6 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
         // calculate sum using forEach() method
         finalArr["pob_16_29"].forEach( num => {
             sum16_29 += num;
-        });
-
-        // create a variable for the sum and initialize it
-        let sum_lid_16_29 = 0;
-
-        // calculate sum using forEach() method
-        finalArr["lid_pob_16_29"].forEach( num => {
-            sum_lid_16_29 += num;
         });
 
     return (

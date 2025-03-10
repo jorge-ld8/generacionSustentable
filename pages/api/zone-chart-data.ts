@@ -1,15 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../lib/prisma';
-import { actionTypes } from '../../lib/constants';
 
 // Helper function to normalize results by action type - matches the original implementation
 function normalizeResults(inputArr, type, att) {
-  let finalArr = new Array(4).fill(0);
+  const finalArr = new Array(4).fill(0);
   
   // Process each element in the input array
   for(const elem of inputArr) {
-    let arrType = elem["type"]; /* A1, A2, A3 o A4 */
-    let sumElem = elem[att][type];
+    const arrType = elem["type"]; /* A1, A2, A3 o A4 */
+    const sumElem = elem[att][type];
     finalArr[+arrType[1] - 1] = sumElem;
   }
   

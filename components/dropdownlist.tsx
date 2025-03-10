@@ -1,23 +1,23 @@
-import React, { ReactNode } from "react";
+import React from "react";
 
-export type DropDownListProps<ArbType extends Object> = {
-    content: ArbType[]
+export type DropDownListProps = {
+    content: string[]
     objType: string
     name: string
-    onChange: any
-    value: any
+    onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
+    value: string | number
     multiple?: boolean
     message?: string  //en DropDownList no se usa pero en  DataList si :)
     disabled?: boolean
 }
 
-const DropDownList: React.FC<DropDownListProps<any>> = (props)=>
+const DropDownList: React.FC<DropDownListProps> = (props)=>
 {
     return(
         <select name={props.name} onChange={props.onChange} value={props.value} id={props.name} multiple={props.multiple} disabled={props.disabled}>
             <option value="">N/A</option>
-            {props.content.map((option)=>{               
-                return (<option value={option}>{option}</option>);
+            {props.content.map((option, index)=>{               
+                return (<option key={index} value={option}>{option}</option>);
             })}
             <style jsx>{`
                 input,

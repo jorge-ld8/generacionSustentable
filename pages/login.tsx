@@ -8,7 +8,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import Alert from '@mui/material/Alert';
 import { toast } from 'react-toastify';
 import { loginValidationSchema } from '../utils/validationSchemas';
 import styles from '../styles/Login.module.css';

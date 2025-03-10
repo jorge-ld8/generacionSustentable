@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
 
 export default prisma;
 
-export type Props<ArbType extends Object> = {
+export type Props<ArbType extends object> = {
     feed: ArbType[]
   }
   

@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { Chart } from 'chart.js/auto';
 import { CategoryScale } from 'chart.js';
-import { ORANGE, localidades } from "../../../lib/constants";
+import { ORANGE } from "../../../lib/constants";
 import GenChartComunidad from "../../../components/genericChartComunidad";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';

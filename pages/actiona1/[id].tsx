@@ -2,13 +2,13 @@ import { GetServerSideProps } from "next";
 import React from 'react';
 import IconButton from "@mui/material/IconButton";
 import { ArrowBack } from "@mui/icons-material";
-import Router, { useRouter } from "next/router";
+import Router from "next/router";
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import prisma from "../../lib/prisma";
 import { useAction } from "../../hooks/useActions";
-
+import { ActionA1 } from "@prisma/client";
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const action = await prisma.actionA1.findUnique({
     where: {
@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 
-const ActionDetail: React.FC<{ fallbackData: any, id: number }> = ({ fallbackData, id }) => {
+const ActionDetail: React.FC<{ fallbackData: ActionA1, id: number }> = ({ fallbackData, id }) => {
   const { action, isLoading, isError } = useAction(id);
   
   if (isLoading) {

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../lib/prisma';
-const { createHash } = require('node:crypto');
+import { createHash } from 'node:crypto';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
@@ -53,7 +53,13 @@ async function updateUser(id: number, req: NextApiRequest, res: NextApiResponse)
     const { username, password, nombre, apellido, organizacion } = req.body;
     
     // Prepare update data
-    const updateData: any = {};
+    const updateData: {
+      username?: string;
+      password?: string;
+      nombre?: string;
+      apellido?: string;
+      organizacion?: string;
+    } = {};
     if (username) updateData.username = username;
     if (nombre) updateData.nombre = nombre;
     if (apellido) updateData.apellido = apellido;

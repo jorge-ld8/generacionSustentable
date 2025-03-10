@@ -1,13 +1,9 @@
 import React from "react";
-import { FormikHelpers } from "formik";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { ActionA1FormData } from "../../services/actionA1Service";
 import { UploadButton } from "../../lib/uploadthing";
 import styles from "./ActionA1Form.module.css";
@@ -32,7 +28,7 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
   organizacionFromCookie 
 }) => {
   // Use custom hooks
-  const { selectedImage, filePreview, handleFileChange, setImageData } = 
+  const { selectedImage, setImageData } = 
     useImageUpload(initialValues.imgUrl);
   
   const { actionTypes, getActionsList } = useActionTypes();
@@ -47,7 +43,7 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
   });
 
   // Handle upload from UploadButton
-  const handleUploadComplete = (res: any) => {
+  const handleUploadComplete = (res: {url: string}[]) => {
     console.log(res);
     formik.setFieldValue("imgUrl", res[0].url);
     setImageData(res[0]);
@@ -456,7 +452,8 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
                 <UploadButton
                   endpoint="imageUploader"
                   onClientUploadComplete={handleUploadComplete}
-                  onUploadProgress={(p: any) => {
+                  onUploadProgress={(p: number) => {
+                    console.log(p);
                     console.log("Upload in progress");
                   }}
                   onUploadError={(error: Error) => {

@@ -18,8 +18,8 @@ interface InitiativesPageProps {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req, res } = context;
-  let organizacion = getCookie('organizacion', { req, res }) as string || '';
-  let username = getCookie('username', { req, res }) as string || '';
+  const organizacion = getCookie('organizacion', { req, res }) as string || '';
+  const username = getCookie('username', { req, res }) as string || '';
   
   try {
     // Pre-fetch actions for initial server-side rendering
@@ -47,10 +47,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const InitiativesPage: React.FC<InitiativesPageProps> = ({ 
   organizacion, 
   username,
-  fallbackData 
 }) => {
   const router = useRouter();
-  const { actions, isLoading, isError, mutateActions } = useActions();
+  const { actions, isLoading, isError } = useActions();
   const [error, setError] = useState<string | null>(null);
   const isAdmin = username === 'admin';
 

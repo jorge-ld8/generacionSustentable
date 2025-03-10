@@ -13,7 +13,7 @@ export const config = {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
-      const uploadData:any = await new Promise((resolve, reject) => {
+      const uploadData: {originalname: string, path: string} = await new Promise((resolve, reject) => {
         upload.single('image')(req, res, (err, data) => {
           if (err) return reject(err);
           resolve(data);

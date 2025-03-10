@@ -1,8 +1,6 @@
 import useSWR, { mutate } from 'swr';
 import { actionA1 } from '@prisma/client';
 import { 
-  getAllActions, 
-  getActionA1ById, 
   createActionA1, 
   updateActionA1, 
   deleteActionA1,

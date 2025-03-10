@@ -1,5 +1,4 @@
 import React from "react";
-import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { getCookie } from 'cookies-next';
 import Alert from '@mui/material/Alert';
@@ -20,7 +19,7 @@ interface CreateActionProps {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req, res } = context;
-  let organizacion = getCookie('organizacion', { req, res }) as string || "";
+  const organizacion = getCookie('organizacion', { req, res }) as string || "";
   
   return { 
     props: { organizacion } 

@@ -1,7 +1,7 @@
 import Cookies from 'cookies'
 import prisma from '../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
-const {createHash} = require('node:crypto');
+import { createHash } from 'node:crypto';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method == "POST"){

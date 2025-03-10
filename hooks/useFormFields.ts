@@ -2,7 +2,7 @@ import { localidades, organizaciones, tipoComunidad } from '../lib/constants';
 
 export const useFormFields = () => {
   // Helper for determining if a field should be disabled based on dependencies
-  const isFieldDisabled = (fieldName: string, formValues: any) => {
+  const isFieldDisabled = (fieldName: string, formValues: {type: string, organizacion: string, tipo_localidad: string, nro_pob_rural: string, nro_pob_ind: string}) => {
     switch (fieldName) {
       case 'nombre':
         return !formValues.type;

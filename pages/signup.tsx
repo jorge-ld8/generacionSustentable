@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -9,7 +9,6 @@ import TextField from '@mui/material/TextField';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import MenuItem from '@mui/material/MenuItem';
-import Alert from '@mui/material/Alert';
 import { organizaciones } from '../lib/constants';
 import { signupValidationSchema } from '../utils/validationSchemas';
 import styles from '../styles/Signup.module.css';

@@ -6,7 +6,6 @@ import {
   Grid,
   Typography,
   Box,
-  Paper
 } from "@mui/material";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -70,7 +69,7 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
   const onDateChange = handleDateChange(formik.setFieldValue);
 
   // Handle upload from UploadButton
-  const handleUploadComplete = (res: any) => {
+  const handleUploadComplete = (res: {url: string}[]) => {
     console.log(res);
     formik.setFieldValue("imgUrl", res[0].url);
     setImageData(res[0]);
@@ -487,7 +486,8 @@ const ActionA1Form: React.FC<ActionA1FormProps> = ({
                   <UploadButton
                     endpoint="imageUploader"
                     onClientUploadComplete={handleUploadComplete}
-                    onUploadProgress={(p: any) => {
+                    onUploadProgress={(p: number) => {
+                      console.log(p);
                       console.log("Upload in progress");
                     }}
                     onUploadError={(error: Error) => {

@@ -1,7 +1,7 @@
 import { formatDateForInput, formatDateForAPI } from '../utils/dateUtils';
 
 export const useDateHandling = () => {
-  const formatDates = (values: any, direction: 'toAPI' | 'fromAPI') => {
+  const formatDates = (values: {fecha_inicio: Date | string, fecha_final: Date | string}, direction: 'toAPI' | 'fromAPI') => {
     if (direction === 'toAPI') {
       return {
         ...values,
@@ -21,7 +21,7 @@ export const useDateHandling = () => {
     }
   };
 
-  const handleDateChange = (setFieldValue: (field: string, value: any) => void) => 
+  const handleDateChange = (setFieldValue: (field: string, value: Date | string) => void) => 
     (name: string) => (date: Date | null) => {
       setFieldValue(name, date);
     };

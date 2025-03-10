@@ -19,7 +19,7 @@ export async function getServerSideProps(context) {
     }
     return { props: {username} };
 };
-export default function App({ Component, pageProps, username}) {
+export default function App({ Component, pageProps}) {
     Chart.register(ChartDataLabels);
     const [user, setUser] = useState("");
     

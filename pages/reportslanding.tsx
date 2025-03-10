@@ -6,7 +6,7 @@ import Link from 'next/link';
 import styles from './reportslanding.module.css';
 import { actionTypes, localidades, tipoComunidad } from '../lib/constants';
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async () => {
   const iniciativas = await prisma.actionA1.findMany();
 
   return {
@@ -17,7 +17,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   }
 }
 
-export default function Home(props) {
+export default function Home() {
   Chart.register(CategoryScale);
   return (
       <div className={styles.container}>

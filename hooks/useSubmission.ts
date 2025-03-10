@@ -9,9 +9,9 @@ interface SubmissionHook {
 }
 
 interface SubmissionOptions {
-  onSubmit: (values: ActionA1FormData) => Promise<any>;
+  onSubmit: (values: ActionA1FormData) => Promise<void>;
   onSuccess?: () => void;
-  onError?: (error: any) => void;
+  onError?: (error: Error) => void;
   redirectPath?: string;
 }
 

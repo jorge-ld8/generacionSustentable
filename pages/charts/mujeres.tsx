@@ -8,17 +8,17 @@ import { BLUE, actionTypes } from "../../lib/constants";
 
 
 function normalizeResults(inputArr){
-    let finalArr = new Array(4).fill(0);
+    const finalArr = new Array(4).fill(0);
     //hacerlo para el array inicial
     for(const elem of inputArr){
-        let arrType = elem["type"]; /* A1, A2, A3 o A4 */
-        let sumElem =  elem["_sum"]["nro_mujeres"];
+        const arrType = elem["type"]; /* A1, A2, A3 o A4 */
+        const sumElem =  elem["_sum"]["nro_mujeres"];
         finalArr[+arrType[1] - 1] = sumElem;
     }
     return finalArr;
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async () => {
      // Calculando numero de poblacion rural
     const totalMujeres = await prisma.actionA1.groupBy(
         {

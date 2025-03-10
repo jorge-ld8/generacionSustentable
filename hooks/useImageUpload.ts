@@ -1,15 +1,15 @@
 import { useState } from 'react';
 
 interface ImageUploadHook {
-  selectedImage: any | null;
+  selectedImage: {url: string, name: string, size: number} | null;
   filePreview: string | null;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setImageData: (data: any) => void;
+  setImageData: (data: {url: string, name: string, size: number}) => void;
 }
 
 export const useImageUpload = (initialImageUrl?: string): ImageUploadHook => {
-  const [selectedImage, setSelectedImage] = useState<any | null>(
-    initialImageUrl ? { url: initialImageUrl } : null
+  const [selectedImage, setSelectedImage] = useState<{url: string, name: string, size: number} | null>(
+    initialImageUrl ? { url: initialImageUrl, name: '', size: 0 } : null
   );
   const [filePreview, setFilePreview] = useState<string | null>(initialImageUrl || null);
 
@@ -33,7 +33,7 @@ export const useImageUpload = (initialImageUrl?: string): ImageUploadHook => {
     }
   };
 
-  const setImageData = (data: any) => {
+  const setImageData = (data: {url: string, name: string, size: number}) => {
     setSelectedImage(data);
     if (data && data.url) {
       setFilePreview(data.url);

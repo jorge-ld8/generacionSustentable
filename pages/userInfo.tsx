@@ -10,7 +10,7 @@ export default function ProfilePage({username, nombre, apellido, organizacion}) 
             {
               (username.length > 0) ?
                 <div style={{textAlign:"justify"}}>
-                  <h2>{username}'s Profile</h2>
+                  <h2>{username}&apos;s Profile</h2>
                   <br />
                   <p>Nombre: {nombre}</p>
                   <p>Apellido: {apellido}</p>

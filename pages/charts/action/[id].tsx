@@ -1,26 +1,11 @@
 import { GetServerSideProps } from "next";
 import { Chart } from 'chart.js/auto';
 import { CategoryScale } from 'chart.js';
-import { ORANGE, actionTypes, actionsA1, localidades, tipoComunidad } from "../../../lib/constants";
-import { getCookie } from 'cookies-next';
-import { actionsA2, actionsA3, actionsA4 } from "../../../lib/constants";
+import { ORANGE } from "../../../lib/constants";
 import GenChartAction from "../../../components/genericChartAction";
-import prisma from "../../../lib/prisma";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useChartData } from "../../../hooks/useChartData";
-
-function normalizeResults(inputArr, type, att, initialValues, op){
-    const keys = initialValues;
-    const myDict = Object.fromEntries(keys.map(key => [key, 0]));
-    //hacerlo para el array inicial
-    for(const elem of inputArr){
-        let arrType = elem[att]; /* diferentes nombres de actividades */
-        let sumElem =  elem[op][type];
-        myDict[arrType] = sumElem;
-    }
-    return Object.values(myDict);
-}
+import { useActividadChartData } from "../../../hooks/useActividadChartData";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
@@ -50,7 +35,7 @@ export default function ChartFinal({ actionType, initialFilter, error }) {
   const [filter, setFilter] = useState(initialFilter);
   
   // Use our custom SWR hook for chart data
-  const { chartData, isLoading, isError } = useChartData(
+  const { chartData, isLoading, isError } = useActividadChartData(
     actionType,
     filter
   );
@@ -116,7 +101,6 @@ export default function ChartFinal({ actionType, initialFilter, error }) {
       totalPobs={chartData?.totalPobs || [0, 0, 0]}
       setFilter={handleFilterChange}
       isSubmitting={isLoading}
-      setIsSubmitting={() => {}}
     />
   );
 }

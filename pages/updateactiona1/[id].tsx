@@ -4,7 +4,6 @@ import { GetServerSideProps } from "next";
 import { actionA1 } from "@prisma/client";
 import prisma from "../../lib/prisma";
 import ActionA1Form from "../../components/forms/ActionA1Form";
-import { ActionA1FormData } from "../../services/actionA1Service";
 import styles from "../../styles/UpdateActionA1.module.css";
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from '@mui/material/Alert';

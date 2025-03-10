@@ -7,7 +7,7 @@ import prisma from '../lib/prisma';
 import { actionA1 } from '@prisma/client';
 import { actionTypes } from '../lib/constants';
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async () => {
   const iniciativas = await prisma.actionA1.findMany();
 
   return {
@@ -20,22 +20,22 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
 export default function Home(props) {
   Chart.register(CategoryScale);
-  let partList = [], mujList = [], indList = [], rurList = [];
+  const partList = [], mujList = [], indList = [], rurList = [];
 
   // Calculando numero de participantes
-  for (let type of ["A1", "A2", "A3", "A4"]){
+  for (const type of ["A1", "A2", "A3", "A4"]){
     console.log(type);
     partList.push(props.iniciativas.reduce((sum, action: actionA1) => (action.type === type) ? sum + action.nro_participantes : sum, 0))
   }
 
   // Calculando numero de mujeres
-  for (let type of ["A1", "A2", "A3", "A4"]){
+  for (const type of ["A1", "A2", "A3", "A4"]){
     console.log(type);
     mujList.push(props.iniciativas.reduce((sum, action: actionA1) => (action.type === type) ? sum + action.nro_mujeres : sum, 0))
   }
   
   // Calculando numero de poblacion indigena
-  for (let type of ["A1", "A2", "A3", "A4"]){
+  for (const type of ["A1", "A2", "A3", "A4"]){
     console.log(type);
     indList.push(props.iniciativas.reduce((sum, action: actionA1) => (action.type === type) ? sum + action.nro_pob_ind : sum, 0))
   }

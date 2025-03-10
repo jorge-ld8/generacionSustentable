@@ -8,8 +8,8 @@ function normalizeResults(inputArr, type, att, initialValues, op) {
   const myDict = Object.fromEntries(keys.map(key => [key, 0]));
   //hacerlo para el array inicial
   for(const elem of inputArr){
-    let arrType = elem[att]; /* diferentes nombres de actividades */
-    let sumElem =  elem[op][type];
+    const arrType = elem[att]; /* diferentes nombres de actividades */
+    const sumElem =  elem[op][type];
     myDict[arrType] = sumElem;
   }
   return Object.values(myDict);
