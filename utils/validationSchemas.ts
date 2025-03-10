@@ -77,4 +77,13 @@ export const signupValidationSchema = Yup.object({
   passwordagain: Yup.string()
     .required("Debe confirmar la contraseña")
     .oneOf([Yup.ref('password')], "Las contraseñas no coinciden")
+});
+
+export const loginValidationSchema = Yup.object({
+  username: Yup.string()
+    .required("El nombre de usuario es obligatorio")
+    .min(4, "El nombre de usuario debe tener al menos 4 caracteres"),
+  password: Yup.string()
+    .required("La contraseña es obligatoria")
+    .min(6, "La contraseña debe tener al menos 6 caracteres")
 }); 

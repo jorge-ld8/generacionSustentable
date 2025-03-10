@@ -5,8 +5,8 @@ const {createHash} = require('node:crypto');
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method == "POST"){
-    const username = JSON.parse(req.body)['username']
-    const guess = JSON.parse(req.body)['password'];
+    const username = req.body['username']
+    const guess = req.body['password'];
     const response = await prisma.user.findFirst({
         where: {
           username: username,
