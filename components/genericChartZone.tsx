@@ -171,6 +171,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                       }]}} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
                 </div>
                 <div className="chart-container">
+                <h4>Resumen por actividad</h4>
                 <Doughnut data={{labels:actionTypes, datasets: [{
                         // id: 1,
                         label: '# iniciativas',
