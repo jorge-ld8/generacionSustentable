@@ -1,7 +1,8 @@
+import { ActionA1FormData } from '../services/actionA1Service';
 import { formatDateForInput, formatDateForAPI } from '../utils/dateUtils';
 
 export const useDateHandling = () => {
-  const formatDates = (values: {fecha_inicio: Date | string, fecha_final: Date | string}, direction: 'toAPI' | 'fromAPI') => {
+  const formatDates = (values: ActionA1FormData, direction: 'toAPI' | 'fromAPI') => {
     if (direction === 'toAPI') {
       return {
         ...values,

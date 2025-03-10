@@ -43,10 +43,10 @@ const CreateActionA1Form: React.FC<CreateActionA1FormProps> = ({
   });
 
   // Handle upload from UploadButton
-  const handleUploadComplete = (res: {url: string}[]) => {
+  const handleUploadComplete = (res: {url: string, name: string, size: number }[]) => {
     console.log(res);
     formik.setFieldValue("imgUrl", res[0].url);
-    setImageData(res[0]);
+    setImageData({url: res[0].url, name: res[0].name, size: res[0].size});
   };
 
 

@@ -76,6 +76,8 @@ export default function ChartFinal({ actionType, initialFilter, error }) {
     );
   }
 
+  console.log(chartData);
+
   // If data is still loading, pass the loading state to GenChartAction
   // which will display a loading indicator
   return (

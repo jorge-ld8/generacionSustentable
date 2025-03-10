@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { ActionA1FormData } from '../services/actionA1Service';
+import { actionA1 } from '@prisma/client';
 
 interface SubmissionHook {
   isSubmitting: boolean;
@@ -9,7 +10,7 @@ interface SubmissionHook {
 }
 
 interface SubmissionOptions {
-  onSubmit: (values: ActionA1FormData) => Promise<void>;
+  onSubmit: (values: ActionA1FormData) => Promise<actionA1>;
   onSuccess?: () => void;
   onError?: (error: Error) => void;
   redirectPath?: string;

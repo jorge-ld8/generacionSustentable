@@ -49,6 +49,8 @@ export default async function handler(
         return res.status(400).json({ message: 'Invalid action type' });
     }
 
+    console.log(actionsArr);
+
     // Filter logic based on Beneficiarios type
     const actsBeneficiariosDir = ["Ciclos formativos en acción socioambiental /ciberactivismo","Salidas de campo / actividades al aire libre",
       "Ciclo formativo moda sustentable", "Ciclo formativo reuso productivo", "Ciclo formativo ecoturismo", "Monitoreo equipos locales",
@@ -132,6 +134,9 @@ export default async function handler(
       "pob_16_29": normalizeResults(totalGral, 'nro_pob_16_29', 'nombre', actionsArr, '_sum'),
       "lid_pob_16_29": normalizeResults(totalGral, 'nro_lid_pob_16_29', 'nombre', actionsArr, '_sum')
     };
+
+    console.log(finalArr);
+    
 
     // Summary data
     const totalGenres = await prisma.actionA1.aggregate({
