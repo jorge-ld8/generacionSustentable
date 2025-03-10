@@ -54,7 +54,10 @@ export default function ChartFinal(props){
     console.log(props.totalGeneral);
     return (
         <div>
+            <h2>Apuestas Formativas</h2>
             <Reportsnav/>
+            <h3>Resumen General</h3>
+            <br />
             <Bar datasetIdKey='id' data={{
               labels: actionTypes,
               datasets:[
