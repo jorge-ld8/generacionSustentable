@@ -9,13 +9,31 @@
 }
 
 /* 2. Establish Overall Layout Structure */
-body {
+html, body {
   width: 100%;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 .container{
   position: relative;
   display: flex;
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+}
+
+.mobile-menu-overlay.active {
+  display: block;
 }
 
 /* 3. Style the Navbar */
@@ -31,6 +49,8 @@ body {
 main {
   flex: 1 auto; /* Take up remaining space */
   padding: 20px;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .slick-slider {
@@ -65,16 +85,70 @@ main {
   background-color: #000;
 }
 
+/* Responsive styles */
+img {
+  max-width: 100%;
+  height: auto;
+}
 
-/* 5. Optional: Responsive Handling */
+/* 5. Responsive Handling */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+  }
+  
+  main {
+    width: 100%;
+    padding: 15px;
+  }
+  
+  /* Adjust font sizes for better readability on smaller screens */
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  p, li, a {
+    font-size: 16px;
+  }
+}
+
 @media (max-width: 768px) {
-  /* Stack the Navbar and Content vertically on smaller screens */
-  body {
+  /* Stack the layout vertically on smaller screens */
+  .container {
     flex-direction: column;
   }
 
-  nav {
-    width: 100%; /* Full width on smaller screens */
+  /* Adjust sizing for smaller screens */
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.2rem;
+  }
+  
+  /* Reduce padding for mobile */
+  main {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.3rem;
+  }
+  
+  h2 {
+    font-size: 1.1rem;
+  }
+  
+  /* Further adjust for very small screens */
+  main {
+    padding: 8px;
   }
 }
 

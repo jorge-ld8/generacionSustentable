@@ -71,17 +71,59 @@
 @media (max-width: 768px) {
   .table {
     width: 100%;
-    font-size: 0.9em;
+    font-size: 0.85em;
   }
   
   .table th,
   .table td {
-    padding: 0.6em;
+    padding: 10px 8px;
     min-width: auto;
   }
   
+  .table th:nth-child(1), /* Nombre */
+  .table td:nth-child(1) {
+    min-width: 100px;
+    max-width: 120px;
+  }
+  
+  .table th:nth-child(2), /* Organización */
+  .table td:nth-child(2) {
+    min-width: 90px;
+  }
+  
+  .table th:nth-child(3), /* Localidad */
+  .table td:nth-child(3) {
+    min-width: 80px;
+  }
+  
+  /* Acciones columns */
+  .table th:nth-child(4),
+  .table td:nth-child(4),
+  .table th:nth-child(5),
+  .table td:nth-child(5) {
+    padding: 5px;
+    min-width: 40px;
+  }
+  
   .searchInput {
-    width: 80%;
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .table {
+    font-size: 0.75em;
+  }
+  
+  .table th,
+  .table td {
+    padding: 8px 5px;
+  }
+  
+  .searchInput {
+    width: 95%;
+    font-size: 13px;
+    padding: 6px 10px;
   }
 }
 

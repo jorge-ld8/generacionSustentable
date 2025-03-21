@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { actionA1 } from "@prisma/client";
 import { IconButton, CircularProgress } from '@mui/material';
@@ -24,6 +24,23 @@ const ActionList: React.FC<ActionListProps> = ({
 }) => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Check if we're on a mobile device
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    // Set initial value
+    handleResize();
+    
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+    
+    // Clean up
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleRowClick = (id: number) => {
     router.push(`/actiona1/${id}`);
@@ -72,8 +89,8 @@ const ActionList: React.FC<ActionListProps> = ({
               <tr>
                 <th>Nombre</th>
                 <th>Organización</th>
-                <th>Fecha Inicio</th>
-                <th>Fecha Final</th>
+                {!isMobile && <th>Fecha Inicio</th>}
+                {!isMobile && <th>Fecha Final</th>}
                 <th>Localidad</th>
                 {(isAdmin || actions.some(a => a.organizacion === userOrganization)) && (
                   <th colSpan={2}>Acciones</th>
@@ -89,8 +106,8 @@ const ActionList: React.FC<ActionListProps> = ({
                 >
                   <td>{action.nombre_real}</td>
                   <td>{action.organizacion}</td>
-                  <td>{new Date(action.fecha_inicio).toISOString().substring(0, 10)}</td>
-                  <td>{new Date(action.fecha_final).toISOString().substring(0, 10)}</td>
+                  {!isMobile && <td>{new Date(action.fecha_inicio).toISOString().substring(0, 10)}</td>}
+                  {!isMobile && <td>{new Date(action.fecha_final).toISOString().substring(0, 10)}</td>}
                   <td>{action.localidad}</td>
                   
                   {(userOrganization === action.organizacion || isAdmin) && (
