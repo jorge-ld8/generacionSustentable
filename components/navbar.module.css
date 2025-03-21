@@ -66,6 +66,14 @@
         margin: 1.5em 0;
         width: 90%;
     }
+    
+    .mainav {
+        padding-top: 60px;  /* Increase top padding to accommodate close button */
+    }
+    
+    .closeButton {
+        display: block;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -119,5 +127,18 @@
         font-size: 14px;
         padding: 8px;
         margin: 1em 0;
+    }
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 200;
+}
+
+@media screen and (min-width: 1025px) {
+    .closeButton {
+        display: none;  /* Hide on desktop */
     }
 }

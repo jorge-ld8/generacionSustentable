@@ -26,6 +26,11 @@ export default function Layout({ children, user}) {
         setMobileMenuOpen(!mobileMenuOpen);
     };
     
+    // Add this function to close the menu
+    const closeMobileMenu = () => {
+        setMobileMenuOpen(false);
+    };
+    
     return (
         <div className="container">
             {/* Mobile menu toggle button - only visible on small screens */}
@@ -47,7 +52,11 @@ export default function Layout({ children, user}) {
             
             {/* Left sidebar with navigation */}
             <div className={`${styles.left} ${mobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
-                <Navbar username={user} mobileMenuOpen={mobileMenuOpen} />
+                <Navbar 
+                    username={user} 
+                    mobileMenuOpen={mobileMenuOpen} 
+                    closeMobileMenu={closeMobileMenu} // Pass the close function to Navbar
+                />
             </div>
             
             {/* Main content area */}
