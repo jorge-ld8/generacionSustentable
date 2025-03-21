@@ -10,17 +10,33 @@ const settings = {
   speed: 400,
   slidesToShow: 1,
   slidesToScroll: 1,
+  adaptiveHeight: true
 };
 
 const ImageCarousel = ({ images }) => {
   return (
-    <Slider {...settings}>
-      {images.map((image) => (
-        <div key={image.id} style={{padding: "1px", textAlign:"center"}}>
-          <Image src={image.url} alt={image.alt} width={780} height={440} style={{margin: "0 auto"}} unoptimized/>
-        </div>
-      ))}
-    </Slider>
+    <div style={{ width: '100%', maxWidth: '900px', margin: '0 auto', overflow: 'hidden' }}>
+      <Slider {...settings}>
+        {images.map((image) => (
+          <div key={image.id} style={{padding: "5px", textAlign:"center", height: "auto"}}>
+            <div style={{ position: 'relative', width: '100%', height: '0', paddingBottom: '56.25%' }}>
+              <Image 
+                src={image.url} 
+                alt={image.alt}
+                fill={true}
+                style={{
+                  objectFit: "contain",
+                  position: "absolute",
+                  top: 0,
+                  left: 0
+                }} 
+                unoptimized
+              />
+            </div>
+          </div>
+        ))}
+      </Slider>
+    </div>
   );
 };
 

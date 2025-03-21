@@ -12,3 +12,38 @@
     color: #333;
   }
   
+.chartContainer {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.chartWrapper {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 1024px) {
+    .chartContainer {
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .chartContainer {
+        padding: 8px;
+        margin: 15px auto;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .chartContainer {
+        padding: 5px;
+        margin: 10px auto;
+    }
+}
+  

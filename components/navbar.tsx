@@ -18,17 +18,16 @@ export async function getServerSideProps(context) {
     return { props: {username} };
 };
 
-export default function Navbar({username}){
+export default function Navbar({username, mobileMenuOpen}){
     const router = useRouter();
-    const {data: session } = useSession();
-    console.log("Re render");
+    
     return (
-        <nav className={styles.mainav}>
+        <nav className={`${styles.mainav} ${mobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
             <Link href={"/"}>
                 <Image src="/generacion_sustentable_nobg.png" alt={''} width={380} height={170} unoptimized sizes="(max-width: 1400px) 290px"/>
             </Link>
             <div className={styles.user}>
-                <span style={{color: "white", fontWeight: "bold"}}>
+                <span className={styles.userInfo} style={{color: "white", fontWeight: "bold"}}>
                 {username?
                  `User: ${username}`
                     :
