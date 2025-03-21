@@ -60,16 +60,31 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .left {
-    flex: 0 0 30%;
+  .mobileMenuToggle {
+    display: block;
   }
-
+  
+  .left {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    width: 80%;
+    transition: left 0.3s ease;
+  }
+  
   .mobileMenuOpen {
     left: 0;
+    z-index: 200;
   }
   
   .container {
-    padding: 15px;
+    width: 100%;
+    padding: 10px;
+    margin-top: 40px; /* Space for the mobile menu toggle */
+  }
+  
+  .logoContainer {
+    margin-top: 10px;
   }
 }
 
