@@ -1,0 +1,31 @@
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.pageTitle {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.errorContainer {
+  background-color: #ffebee;
+  border: 1px solid #f44336;
+  border-radius: 4px;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.errorMessage {
+  color: #d32f2f;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+} 

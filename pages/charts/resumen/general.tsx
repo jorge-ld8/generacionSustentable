@@ -4,21 +4,21 @@ import Reportsnav from "../../../components/reportsnav";
 import {CategoryScale} from 'chart.js';
 import { Bar } from "react-chartjs-2";
 import prisma from "../../../lib/prisma";
-import { BLUE, GREEN, LIGHTBLUE, LIGHTVIOLET, ORANGE, ULTRALIGHTBLUE, ULTRALIGHTVIOLET, VIOLET, YELLOW, actionTypes } from "../../../lib/constants";
+import { BLUE, LIGHTBLUE, LIGHTVIOLET, ULTRALIGHTBLUE, ULTRALIGHTVIOLET, VIOLET, YELLOW, actionTypes } from "../../../lib/constants";
 
 
 function normalizeResults(inputArr, att){
-    let finalArr = new Array(4).fill(0);
+    const finalArr = new Array(4).fill(0);
     //hacerlo para el array inicial
     for(const elem of inputArr){
-        let arrType = elem["type"]; /* A1, A2, A3 o A4 */
-        let sumElem =  elem["_sum"][att];
+        const arrType = elem["type"]; /* A1, A2, A3 o A4 */
+        const sumElem =  elem["_sum"][att];
         finalArr[+arrType[1] - 1] = sumElem;
     }
     return finalArr;
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async () => {
      // Calculando numero de poblacion rural
     const totalGral = await prisma.actionA1.groupBy(
         {
@@ -54,7 +54,10 @@ export default function ChartFinal(props){
     console.log(props.totalGeneral);
     return (
         <div>
+            <h2>Apuestas Formativas</h2>
             <Reportsnav/>
+            <h3>Resumen General</h3>
+            <br />
             <Bar datasetIdKey='id' data={{
               labels: actionTypes,
               datasets:[

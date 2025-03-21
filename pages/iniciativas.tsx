@@ -1,187 +1,126 @@
-import prisma from '../lib/prisma';
-import { actionA1 } from "@prisma/client";
-import React, {useEffect, useState } from 'react';
-import axios from 'axios';
-import Router from 'next/router';
-import { IconButton } from '@mui/material';
-import { CleaningServices, Delete, Edit } from '@mui/icons-material';
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
 import { getCookie } from 'cookies-next';
+import { Button } from '@mui/material';
+import { Add } from '@mui/icons-material';
+import { actionA1 } from '@prisma/client';
+import prisma from '../lib/prisma';
+import ActionList from '../components/ActionList';
+import { useActions, deleteAction } from '../hooks/useActions';
+import styles from '../styles/Initiatives.module.css';
 
-export async function getServerSideProps(context) {
-  const req = context.req
-  const res = context.res
-  let organizacion = getCookie('organizacion', { req, res });
-  let username = getCookie('username', { req, res });
-  if (organizacion == undefined){
-      organizacion = "";
+interface InitiativesPageProps {
+  organizacion: string;
+  username: string;
+  fallbackData: actionA1[];
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req, res } = context;
+  const organizacion = getCookie('organizacion', { req, res }) as string || '';
+  const username = getCookie('username', { req, res }) as string || '';
+  
+  try {
+    // Pre-fetch actions for initial server-side rendering
+    const actions = await prisma.actionA1.findMany();
+    
+    return { 
+      props: { 
+        organizacion, 
+        username, 
+        fallbackData: JSON.parse(JSON.stringify(actions))
+      } 
+    };
+  } catch (error) {
+    console.error('Error fetching actions for server-side rendering:', error);
+    return { 
+      props: { 
+        organizacion, 
+        username, 
+        fallbackData: [] 
+      } 
+    };
   }
-  if (username == undefined){
-     username = "";
-  }
-  const iniciativas = await prisma.actionA1.findMany();
-  return { props: {organizacion, username, iniciativas: JSON.parse(JSON.stringify(iniciativas))} };
 };
 
-export default function Home(props) {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [actions, setActions] = useState<actionA1[]>([]);
-  const [action, setAction] = useState<any>({
-    id: 0,
-    nombre: "",
-    descripcion: "",
-    type: "",
-    fecha_inicio: new Date(),
-    fecha_final: new Date(),
-    localidad: "",
-    nro_participantes: 0,
-    nro_mujeres: 0,
-    nro_pob_ind: 0,
-    nro_pob_lgbtiq: 0,
-    nro_pob_rural: 0,
-    nro_noid: 0,
-    nro_pob_16_29: 0,
-    nombre_real: "",
-    imgUrl: "",
-    organizacion: "",
-    tipo_localidad: ""
-  });
+const InitiativesPage: React.FC<InitiativesPageProps> = ({ 
+  organizacion, 
+  username,
+}) => {
+  const router = useRouter();
+  const { actions, isLoading, isError } = useActions();
+  const [error, setError] = useState<string | null>(null);
+  const isAdmin = username === 'admin';
 
-  const GetActions = async () => {
-    const res = await axios.get('/api/initiative')
-      .catch((error) => {
-        console.log('catch: ', error.message);
-      });
+  const handleEditAction = (id: number) => {
+    router.push(`/updateactiona1/${id}`);
+  };
+
+  const handleDeleteAction = async (id: number) => {
+    const confirmed = window.confirm('¿Está seguro que desea eliminar esta iniciativa?');
     
-    if (res && res.data) {
-      setActions(res.data);
-      console.log('GetUsers->res.data: ', res.data);
+    if (confirmed) {
+      setError(null);
+      
+      try {
+        await deleteAction(id);
+        // The SWR cache will be automatically updated by the deleteAction function
+      } catch (err) {
+        console.error('Error deleting action:', err);
+        setError('Error al eliminar la iniciativa. Por favor, intente nuevamente.');
+      }
     }
   };
 
-  useEffect(() => {
-    GetActions();
-  }, []);
+  const handleAddAction = () => {
+    router.push('/createAction');
+  };
 
-  const EditInitiative = async (actionId: number) => {
-    const actionFound = actions.find(action => action.id === actionId);
-    if (actionFound) {
-        setAction(actionFound);
-    }
-    Router.push(`\\updateactiona1\\[id]`, `\\updateactiona1\\${actionId}`);
+  // If there's an error fetching the data
+  if (isError) {
+    return (
+      <div className={styles.container}>
+        <h1 className={styles.title}>Apuestas Formativas</h1>
+        <div className={styles.errorContainer}>
+          <p className={styles.errorMessage}>Error al cargar las iniciativas. Por favor, intente nuevamente.</p>
+        </div>
+      </div>
+    );
   }
 
-  const handleDeleteClick = async (actionId: number) => {
-    const confirmed = window.confirm("¿Está seguro que desea eliminar esta iniciativa?");
-    console.log(`Confirmed value: ${confirmed}`)
-    if (confirmed) {
-      await DeleteInitiative(actionId);
-    }
-  };
-
-  const DeleteInitiative = async (actionId: number) => {
-    const resp = await axios.delete("/api/initiative", {
-      params: {id: actionId }
-    }).catch((error) => {
-      console.log("catch: ", error.message);
-    });
-
-    if (resp && resp.data) {
-      console.log('DeleteUser->resp.data: ', resp.data);
-      GetActions();
-    }
-  };
-
-  const filteredActions = actions.filter((action) => {
-    const searchRegex = new RegExp(searchTerm.toLowerCase(), 'i'); // Case-insensitive search
-    return (
-      searchRegex.test(action.nombre_real) ||
-      searchRegex.test(action.organizacion) ||
-      searchRegex.test(action.localidad) // Search in relevant fields
-    );
-  });
-
   return (
-    <div style={{marginTop: "15px"}}>
-      <h2>Apuestas Formativas</h2>
-      <br />
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <input type="text" placeholder="Ingrese texto para filtrar..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}         
-        style={{
-          borderRadius: '5px', // Add border radius
-          fontSize: '14px', // Adjust font size
-          padding: '8px 12px', // Adjust padding
-          border: '1px solid #ccc' // Add a thin border
-        }} />
+    <div className={styles.container}>
+      <h1 className={styles.title}>Apuestas Formativas</h1>
+      
+      {error && (
+        <div className={styles.errorContainer}>
+          <p className={styles.errorMessage}>{error}</p>
+        </div>
+      )}
+      
+      <div className={styles.addButtonContainer}>
+        <Button
+          variant="contained"
+          color="success"
+          startIcon={<Add />}
+          onClick={handleAddAction}
+          className={styles.addButton}
+        >
+          Nueva Iniciativa
+        </Button>
       </div>
-      <br />
-      <div style={{display: 'flex', justifyContent: 'center'}}>
-        <table style={{padding: '5px', marginTop: '12px', tableLayout: 'fixed', letterSpacing: '0.8px'}}>
-          <thead>
-            <tr style={{marginBottom: '5px'}} onClick={() => Router.push('\\actiona1\\[id]', `\\actiona1\\${action.id}`)}>
-              <th style={{minWidth:'9em'}}>Nombre</th>
-              <th style={{minWidth:'6em'}}>Organización</th>
-              <th style={{minWidth:'9em'}}>Fecha Inicio</th>
-              <th style={{minWidth:'9em'}}>Fecha Final</th>
-              <th style={{minWidth:'9em'}}>Localidad</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredActions.map((action: actionA1) => {
-              return (
-                <tr key={action.id} onClick={() => Router.push('\\actiona1\\[id]', `\\actiona1\\${action.id}`)}>
-                  <td>{action.nombre_real}</td>
-                  <td>{action.organizacion}</td>
-                  <td>{(new Date(action.fecha_inicio)).toISOString().substring(0, 10)}</td>
-                  <td>{(new Date(action.fecha_final)).toISOString().substring(0, 10)}</td>
-                  <td>{action.localidad}</td>
-                  {props.organizacion === action.organizacion || props.username === "admin" ?
-                    <>
-                      <td>
-                        <IconButton aria-label="edit" size="small" onClick={(e) => { e.stopPropagation(); EditInitiative(action.id); } }>
-                          <Edit sx={{ color: 'black' }} />
-                        </IconButton>
-                      </td>
-                      <td>
-                        <IconButton aria-label="delete" size="small" onClick={(e) => { e.stopPropagation(); handleDeleteClick(action.id);} }>
-                          <Delete sx={{ color: 'red' }} />
-                      </IconButton>
-                      </td>
-                    </>
-                    :
-                    null
-                  }
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <style jsx>{`
-          table td{
-            word-wrap: break-word;
-            border: none; 
-            text-align: center;
-            padding: .5em;
-          }
-
-          tbody tr:hover {
-            background-color: #f5f5f5;
-            cursor: pointer;
-          }
-
-          table {
-            border-spacing: 0;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-          }
-
-          tbody tr{
-            font-size: 0.9em;
-          }
-
-          th{
-            padding:1em;
-          }
-          `}</style>
+      
+      <ActionList 
+        actions={actions}
+        userOrganization={organizacion}
+        isAdmin={isAdmin}
+        onEdit={handleEditAction}
+        onDelete={handleDeleteAction}
+        isLoading={isLoading}
+      />
     </div>
   );
-}
+};
+
+export default InitiativesPage;

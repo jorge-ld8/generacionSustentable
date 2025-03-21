@@ -13,8 +13,8 @@ model actionA1 {
   id                Int      @id @default(autoincrement())
   nombre            String
   type              String
-  fecha_inicio      DateTime
-  fecha_final       DateTime
+  fecha_inicio      DateTime @db.Date
+  fecha_final       DateTime @db.Date
   localidad         String
   nro_participantes Int
   nro_mujeres       Int

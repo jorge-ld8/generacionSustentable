@@ -1,12 +1,12 @@
 import Cookies from 'cookies'
 import prisma from '../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
-const {createHash} = require('node:crypto');
+import { createHash } from 'node:crypto';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method == "POST"){
-    const username = JSON.parse(req.body)['username']
-    const guess = JSON.parse(req.body)['password'];
+    const username = req.body['username']
+    const guess = req.body['password'];
     const response = await prisma.user.findFirst({
         where: {
           username: username,
@@ -19,6 +19,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const guess_hash = createHash('sha256').update(guess).digest('hex');
     console.log(`guess_hash: ${guess_hash}`);
     console.log(`response.password: ${response.password}`)
+
+    console.log(response);
+    
     if (guess_hash == response.password){
         const cookies = new Cookies(req, res)
         cookies.set('username', username);

@@ -8,7 +8,7 @@ import { actionA1 } from '@prisma/client';
 import { actionTypes } from '../lib/constants';
 import { useState, useEffect } from 'react';
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async () => {
   const iniciativas = await prisma.actionA1.findMany();
 
   return {

@@ -1,11 +1,10 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN, PINK, ULTRALIGHTBLUE, LIGHTBLUE, ULTRALIGHTVIOLET, LIGHTVIOLET } from "../lib/constants";
-import Zonasnav from "./zonasnav";
+import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN, ULTRALIGHTBLUE, LIGHTBLUE, ULTRALIGHTVIOLET, LIGHTVIOLET, localidades } from "../lib/constants";
 import ProgressBar from "@ramonak/react-progress-bar";
+import ChartNav from "./ChartNav";  
 
-
-export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders,totalPobs}){
-  let options = {
+export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders,totalPobs, setFilter, isSubmitting }){
+  const options = {
     tooltips: {
         enabled: false,
         callbacks: {
@@ -22,7 +21,6 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
     plugins: {
         datalabels: {
             formatter: (value, ctx) => {
-                console.log(ctx);
                 const datapoints = ctx.chart.data.datasets[0].data
                 const total = datapoints.reduce((total, datapoint) => total + datapoint, 0)
                 const percentage = value / total * 100
@@ -36,36 +34,61 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
         }
     }
   };
-          // create a variable for the sum and initialize it
           let sumP = 0;
-
-          // calculate sum using forEach() method
           total.totalParticipantes.forEach( num => {
               sumP += num;
           })
   
-          // create a variable for the sum and initialize it
           let sum16_29 = 0;
-  
-          // calculate sum using forEach() method
           total.total1629.forEach( num => {
               sum16_29 += num;
           });
 
-                  // create a variable for the sum and initialize it
-        let sum_lid_16_29 = 0;
-
-        // calculate sum using forEach() method
-        total.totallid1629.forEach( num => {
-            sum_lid_16_29 += num;
-        });
-
     return (
             <div style={{padding: "0 60px"}}>
                 <h2>Apuestas Formativas</h2>
-                <Zonasnav/>
+                <ChartNav items={localidades} basePath="/charts/zone" />
                 <h3>Localidad: {name}</h3>
                 <br />
+                <select 
+                  className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                  onChange={(e) => setFilter(e.target.value)}>
+                  <option value="Todos">Todos</option>
+                  <option value="Beneficiarios directos">Beneficiarios directos</option>
+                  <option value="Beneficiarios indirectos">Beneficiarios indirectos</option>
+                </select>
+                <br />
+                <br />
+                {isSubmitting ? (
+                  <>
+                  <p>Cargando...</p>
+                  <div style={{ width: '100%', display: 'flex', justifyContent: 'center', margin: '15px 0' }}>
+                  <div style={{ 
+                      width: '250px', 
+                      height: '4px', 
+                      backgroundColor: '#e2e8f0', 
+                      borderRadius: '9999px', 
+                      overflow: 'hidden',
+                      position: 'relative'
+                  }}>
+                  <div 
+                      style={{ 
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          height: '100%', 
+                          width: '30%', 
+                          backgroundColor: '#3b82f6', 
+                          borderRadius: '9999px',
+                          animation: 'loading 1.5s infinite ease-in-out'
+                      }} 
+                      />
+                  </div>
+                  </div>
+                  </>
+                ) : (
+                  <>
+                  <br />
                 <p>
                     Número de iniciativas: {iniNum}
                 </p>
@@ -84,16 +107,16 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 />
                 <br />
                 <h4>
-                    Número de líderes jóvenes 16-29 años
+                    Número de Participantes Totales
                 </h4>
                 <br />
                 <ProgressBar 
-                    completed= {`${sum_lid_16_29}`}
-                    bgColor="#f4c2c2"
+                    completed= {`${sumP}`}
+                    bgColor="#F6BF00"
                     labelAlignment="center"
                     labelColor="#ffffff"
-                    labelSize="14px"
-                    maxCompleted={sum16_29}
+                    labelSize="16px"
+                    maxCompleted={sumP}
                 />
                 <br />
                 <br />
@@ -133,17 +156,6 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                     }} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
                 </div>
                 <div className="chart-container">
-                    <Bar datasetIdKey='id' data={{
-                    labels: actionTypes,
-                    datasets:[{
-                        // id: 4,
-                        label: 'Participantes',
-                        backgroundColor: VIOLET,
-                        data: total.totalParticipantes,
-                        }]
-                    }} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
-                </div>
-                <div className="chart-container">
                 <Bar datasetIdKey='id' data={{
                     labels: actionTypes,
                     datasets:[{
@@ -154,6 +166,7 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                       }]}} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
                 </div>
                 <div className="chart-container">
+                <h4>Resumen por actividad</h4>
                 <Doughnut data={{labels:actionTypes, datasets: [{
                         // id: 1,
                         label: '# iniciativas',
@@ -231,6 +244,35 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 }
             ]
           }} style={{display:"inline-block"}} />
+          </>
+          )}
+          <style jsx>{`
+            @keyframes loading {
+                0% { left: -30%; }
+                100% { left: 100%; }
+            }
+            
+            select {
+              padding: 8px 16px;
+              border-radius: 8px;
+              border: 1px solid #ccc;
+              font-size: 16px;
+              background-color: white;
+              cursor: pointer;
+              min-width: 200px;
+            }
+
+            select:hover {
+              border-color: #666;
+            }
+
+            select:focus {
+              outline: none;
+              border-color: #a7cb45;
+              box-shadow: 0 0 0 2px rgba(167, 203, 69, 0.2);
+            }
+          `}
+         </style>
     </div>
     );
 }

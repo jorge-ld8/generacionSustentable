@@ -7,17 +7,17 @@ import { Bar } from "react-chartjs-2";
 import { VIOLET, actionTypes } from "../../lib/constants";
 
 function normalizeResults(inputArr){
-    let finalArr = new Array(4).fill(0);
+    const finalArr = new Array(4).fill(0);
     //hacerlo para el array inicial
     for(const elem of inputArr){
-        let arrType = elem["type"]; /* A1, A2, A3 o A4 */
-        let sumElem =  elem["_sum"]["nro_pob_rural"];
+        const arrType = elem["type"]; /* A1, A2, A3 o A4 */
+        const sumElem =  elem["_sum"]["nro_pob_rural"];
         finalArr[+arrType[1] - 1] = sumElem;
     }
     return finalArr;
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async () => {
      // Calculando numero de poblacion rural
     const totalP = await prisma.actionA1.groupBy(
         {

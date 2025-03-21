@@ -1,167 +1,108 @@
-import { GetServerSideProps, GetStaticProps } from "next";
-import {Chart } from 'chart.js/auto';
-import {CategoryScale} from 'chart.js';
-import { ORANGE, actionTypes, actionsA1, localidades, tipoComunidad } from "../../../lib/constants";
-import { getCookie } from 'cookies-next';
-import { actionsA2, actionsA3, actionsA4 } from "../../../lib/constants";
+import { GetServerSideProps } from "next";
+import { Chart } from 'chart.js/auto';
+import { CategoryScale } from 'chart.js';
+import { ORANGE } from "../../../lib/constants";
 import GenChartAction from "../../../components/genericChartAction";
-import prisma from "../../../lib/prisma";
-import { CleaningServices } from "@mui/icons-material";
-
-function normalizeResults(inputArr, type, att, initialValues, op){
-    const keys = initialValues;
-    const myDict = Object.fromEntries(keys.map(key => [key, 0]));
-    //hacerlo para el array inicial
-    for(const elem of inputArr){
-        let arrType = elem[att]; /* diferentes nombres de actividades */
-        let sumElem =  elem[op][type];
-        myDict[arrType] = sumElem;
-    }
-    return Object.values(myDict);
-}
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useActividadChartData } from "../../../hooks/useActividadChartData";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const req = ctx.req;
-    const res = ctx.res;
-    let org = getCookie('organizacion', { req, res });
-    console.log(`Organizacion: ${org}`);
-    console.log(`Tipo: ${ctx.params?.id}`);
-    console.log(actionTypes)
-     // Calculando numero de poblacion rural
-    const totalGral = await prisma.actionA1.groupBy(
-        {
-            by:['nombre'],
-            _count:{
-                id: true
-            },
-            _sum:{
-                nro_pob_lgbtiq: true,
-                nro_mujeres: true,
-                nro_pob_ind: true,
-                nro_participantes: true,
-                nro_pob_rural: true,
-                nro_noid: true,
-                nro_pob_16_29: true,
-                nro_lid_pob_16_29: true,
-            },
-            where:{
-                type:{
-                    equals: String(ctx.params?.id)
-                }
-            }
-        }
-    );
+  try {
+    const actionType = ctx.params?.id as string;
+    const filter = ctx.query.filter as string | undefined;
 
-    const totalLocalidad = await prisma.actionA1.groupBy(
-        {
-            by:['localidad'],
-            _count:{
-                id: true
-            },
-            where:{
-                type:{
-                    equals: String(ctx.params?.id)
-                }
-            }
-        }
-    );
-
-    const totalComunidad = await prisma.actionA1.groupBy(
-        {
-            by:['tipo_localidad'],
-            _count:{
-                id: true
-            },
-            where:{
-                type:{
-                    equals: String(ctx.params?.id)
-                }
-            }
-        }
-    );
-
-    const totalGenres = await prisma.actionA1.aggregate(
-        {
-            _sum:{
-                nro_mujeres: true,
-                nro_noid: true,
-                nro_participantes: true,
-                nro_pob_lgbtiq: true
-            },
-            where:{
-                type:{
-                    equals: String(ctx.params?.id)
-                }
-            }
-        }
-    );
-
-    const totalPob = await prisma.actionA1.aggregate(
-        {
-            _sum:{
-                nro_participantes: true,
-                nro_pob_ind: true,
-                nro_pob_rural: true,
-            },
-            where:{
-                type:{
-                    equals: String(ctx.params?.id)
-                }
-            }
-        }
-    );
-
-    const countIni = await prisma.actionA1.aggregate(
-        {
-            _count:{
-                id: true
-            },
-            where:{
-                type: {
-                    equals: String(ctx.params?.id)
-                }
-            }
-        }
-    );
-    let actionsArr = actionsA1;
-    if (ctx.params?.id === actionTypes[1]){
-        actionsArr = actionsA2;
-    }
-    else if (ctx.params?.id === actionTypes[2]){
-        actionsArr = actionsA3;
-    }
-    else if (ctx.params?.id === actionTypes[3]){
-        actionsArr = actionsA4;
-    }
-
+    // This is just for initial server-side rendering
+    // We'll fetch data client-side with SWR
     return {
-        props:{
-            totalnames: normalizeResults(totalGral, "id", "nombre", actionsArr, "_count"),
-            totalActTypes: normalizeResults(totalLocalidad, "id", "localidad", localidades, "_count"),
-            totalComunidad: normalizeResults(totalComunidad, "id", "tipo_localidad", tipoComunidad, "_count"),
-            finalArr: {
-                "lgbtiq": normalizeResults(totalGral, "nro_pob_lgbtiq", "nombre", actionsArr, "_sum"),
-                "mujeres": normalizeResults(totalGral, "nro_mujeres","nombre", actionsArr, "_sum"),
-                "indigena": normalizeResults(totalGral, "nro_pob_ind", "nombre", actionsArr, "_sum"),
-                "participantes": normalizeResults(totalGral, "nro_participantes", "nombre", actionsArr, "_sum"),
-                "rural": normalizeResults(totalGral, "nro_pob_rural", "nombre", actionsArr, "_sum"),
-                "noid": normalizeResults(totalGral, "nro_noid", "nombre", actionsArr, "_sum"),
-                "pob_16_29": normalizeResults(totalGral, "nro_pob_16_29", "nombre", actionsArr, "_sum"),
-                "lid_pob_16_29": normalizeResults(totalGral, "nro_lid_pob_16_29", "nombre", actionsArr, "_sum"),
-            },
-            countIni,
-            actionType: String(ctx.params?.id),
-            actionsArr,
-            totalGenders: [totalGenres._sum.nro_mujeres, totalGenres._sum.nro_participantes - totalGenres._sum.nro_noid - totalGenres._sum.nro_mujeres, totalGenres._sum.nro_pob_lgbtiq, totalGenres._sum.nro_noid],
-            totalPobs:[totalPob._sum.nro_participantes-totalPob._sum.nro_pob_ind-totalPob._sum.nro_pob_rural, totalPob._sum.nro_pob_ind, totalPob._sum.nro_pob_rural]
-        }
+      props: {
+        actionType,
+        initialFilter: filter || 'Todos'
+      }
+    };
+  } catch (error) {
+    console.error('Error in getServerSideProps:', error);
+    return {
+      props: { 
+        error: 'Failed to load data' 
+      }
+    };
+  }
+};
+
+export default function ChartFinal({ actionType, initialFilter, error }) {
+  const router = useRouter();
+  const [filter, setFilter] = useState(initialFilter);
+  
+  // Use our custom SWR hook for chart data
+  const { chartData, isLoading, isError } = useActividadChartData(
+    actionType,
+    filter
+  );
+
+  // Register necessary Chart.js components
+  Chart.register(CategoryScale);
+
+  // Update filter state when query param changes
+  useEffect(() => {
+    if (router.query.filter) {
+      setFilter(router.query.filter as string);
     }
+  }, [router.query.filter]);
+
+  // Handle filter change
+  const handleFilterChange = async (newFilter) => {
+    if (newFilter === filter) return; // Prevent duplicate submissions
+    
+    setFilter(newFilter);
+    
+    // Update URL to reflect the current filter
+    await router.push({
+      pathname: router.pathname,
+      query: { 
+        ...router.query, 
+        filter: newFilter 
+      }
+    }, undefined, { shallow: true });
+  };
+
+  // Handle errors
+  if (isError || error) {
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        <h2>Error loading chart data</h2>
+        <p>Please try again later or contact support.</p>
+      </div>
+    );
   }
 
-export default function ChartFinal(props){
-    Chart.register(CategoryScale);
-    console.log(props)
-    return (
-        <GenChartAction name={props.actionType} iniNum={props.countIni._count.id} totals={props.totalnames} labels={props.actionsArr} color={ORANGE} totalLocTypes={props.totalActTypes} totalComunidad={props.totalComunidad} finalArr={props.finalArr} totalGenders={props.totalGenders} totalPobs={props.totalPobs}/>
-    );
+  console.log(chartData);
+
+  // If data is still loading, pass the loading state to GenChartAction
+  // which will display a loading indicator
+  return (
+    <GenChartAction 
+      name={actionType} 
+      iniNum={chartData?.countIni?._count?.id || 0} 
+      totals={chartData?.totalnames || []} 
+      labels={chartData?.actionsArr || []} 
+      color={ORANGE} 
+      totalLocTypes={chartData?.totalActTypes || []} 
+      totalComunidad={chartData?.totalComunidad || []} 
+      finalArr={chartData?.finalArr || {
+        participantes: [],
+        mujeres: [],
+        noid: [],
+        pob_ind: [],
+        pob_rural: [],
+        lgbtiq: [],
+        pob_16_29: [],
+        lid_pob_16_29: []
+      }} 
+      totalGenders={chartData?.totalGenders || [0, 0, 0, 0]} 
+      totalPobs={chartData?.totalPobs || [0, 0, 0]}
+      setFilter={handleFilterChange}
+      isSubmitting={isLoading}
+    />
+  );
 }

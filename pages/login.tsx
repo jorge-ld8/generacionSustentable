@@ -1,156 +1,152 @@
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
-import ErrorMessage from '../components/errormessage';
-import Button from '@mui/material/Button';
-import { useState } from 'react';
 import Link from 'next/link';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { toast } from 'react-toastify';
+import { loginValidationSchema } from '../utils/validationSchemas';
+import styles from '../styles/Login.module.css';
 
-
-export default function LoginPage({setUser}) {
-    const [message, setMessage] = useState('');
-    const router = useRouter()
-
-    const formik = useFormik({
-        initialValues:{
-            username: "",
-            password: "",
-        },
-        onSubmit: values => {console.log(values);},
-      });
-  
-      async function handleSubmit(e){
-        e.preventDefault();
-        const response = await fetch(`/api/login`,{method: 'POST', 
-        body: JSON.stringify({
-                username: formik.values.username,
-                password: formik.values.password,
-            })
-        }).then(response =>{ 
-          if(response.ok){
-              setUser(formik.values.username)
-              toast.success("Inicio de sesion exitoso", 
-              { 
-                autoClose: 5000,
-                position: "top-right",
-                theme: "light",
-              });
-              router.push("/");
-              return response.json()
-            }
-          else{
-              setMessage("Usuario o contraseña incorrecta intente nuevamente");
-              formik.values.username = "";
-              formik.values.password = "";
-          }
-          }
-        ).catch(e => console.error(e))
-      }
-
-    return (
-        
-        <div>
-            {/* <ToastContainer autoClose={5000}/> */}
-            <h2>Log in</h2>
-            <form onSubmit={handleSubmit}>
-                <ul>
-                  <li>
-                      <label htmlFor="username">Username:</label>
-                      <input type="text" id="username"
-                      {...formik.getFieldProps("username")}/>
-                      <ErrorMessage touched={formik.touched.username} errors={formik.errors.username}/>
-                  </li>
-                  <li>
-                      <label htmlFor="password">Password:</label>
-                      <input type="password" id="password"
-                      {...formik.getFieldProps("password")}/>
-                      <ErrorMessage touched={formik.touched.password} errors={formik.errors.password}/>
-                  </li>
-                </ul>
-                <p style={{color:"red"}}>{message}</p>
-                <p>¿No estás registrado? <Link href={"/signup"}>Regístrate</Link></p>
-                <br />
-                <div className="Button" style={{margin:"auto"}}>
-                      <Button type={"submit"} variant="contained" color={"success"} disabled={!(formik.isValid && formik.dirty)}>Iniciar Sesión</Button>
-                </div>
-            </form>
-            <style jsx>{`
-            .page {
-              background: white;
-              padding: 2rem;
-            }
-    
-            .actions {
-              margin-top: 2rem;
-            }
-    
-            button {
-              background: #ececec;
-              border: 0;
-              border-radius: 0.125rem;
-              padding: 1rem 2rem;
-            }
-    
-            button + button {
-              margin-left: 1rem;
-            }
-  
-            form div{
-              margin: .5em;
-            }
-
-            ul{
-              list-style: none;
-            }
-
-            form li{
-                padding: .5em;
-            }
-
-            /*Form Styling*/
-            form{
-              margin: 0.1em auto;
-              padding: 1em;
-            }
-
-            form ul{
-              list-style: none;
-              padding: 0;
-              margin: 1em;
-              text-align: center;
-            }
-    
-            label{
-              display: inline-block;
-              width: 100px;
-              text-align: right;
-              margin-right: .5em;
-              font-weight: bold;
-              font-size: 0.90em;
-              overflow: clip;
-              white-space: nowrap;
-              overflow: visible;
-            }
-    
-            input,
-            textarea,
-            select
-            {
-              /* To make sure that all text fields have the same font settings
-                By default, textareas have a monospace font */
-              font: 1em sans-serif;
-    
-              /* Uniform text field size */
-              width: 300px;
-              box-sizing: border-box;
-              
-              border-radius: .5em;
-
-              /* Match form field borders */
-              border: 1px solid #999;
-              padding: 0.2em;
-            }
-          `}</style>
-        </div>
-    );
+interface LoginPageProps {
+  setUser: (username: string) => void;
+  error?: string;
 }
+
+const LoginPage: React.FC<LoginPageProps> = ({ setUser, error: serverError }) => {
+  const router = useRouter();
+  const { msg } = router.query;
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(serverError || (typeof msg === 'string' ? msg : null));
+
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validationSchema: loginValidationSchema,
+    onSubmit: async (values) => {
+      await handleSubmit(values);
+    },
+  });
+
+  const handleSubmit = async (values: typeof formik.values) => {
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values)
+      });
+
+      if (!response.ok) {
+        throw new Error("Usuario o contraseña incorrecta. Intente nuevamente.");
+      }
+      
+      setUser(values.username);
+      toast.success("Inicio de sesión exitoso", { 
+        autoClose: 5000,
+        position: "top-right",
+        theme: "light",
+      });
+      router.push("/");
+    } catch (err) {
+      console.error('Error en el login:', err);
+      setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
+      formik.resetForm();
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.title}>Iniciar Sesión</h1>
+      
+      {error && (
+        <div className={styles.errorContainer}>
+          <p className={styles.errorMessage}>{error}</p>
+        </div>
+      )}
+      
+      <form onSubmit={formik.handleSubmit} className={styles.form}>
+        <ul className={styles.formList}>
+          <li className={styles.formItem}>
+            <TextField
+              fullWidth
+              id="username"
+              name="username"
+              label="Nombre de Usuario"
+              variant="outlined"
+              value={formik.values.username}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.username && Boolean(formik.errors.username)}
+              helperText={formik.touched.username && formik.errors.username}
+            />
+          </li>
+          
+          <li className={styles.formItem}>
+            <TextField
+              fullWidth
+              id="password"
+              name="password"
+              label="Contraseña"
+              type={showPassword ? 'text' : 'password'}
+              variant="outlined"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={togglePasswordVisibility}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </li>
+        </ul>
+        
+        <div className={styles.buttonContainer}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="success"
+            disabled={!(formik.isValid && formik.dirty) || isSubmitting}
+            className={styles.submitButton}
+          >
+            {isSubmitting ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+          </Button>
+        </div>
+      </form>
+      
+      <div className={styles.signupLink}>
+        ¿No tienes una cuenta? <Link href="/signup">Regístrate</Link>
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage;
