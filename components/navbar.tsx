@@ -113,7 +113,7 @@ export default function Navbar({ username, mobileMenuOpen, closeMobileMenu }) {
                 </Link>
                 <Link href={"/createAction"} onClick={(e) => handleNavClick(e, "/createAction")}>
                     Introducir actividad
-                </Link>8
+                </Link>
                 <Link href={"/reportslanding"} onClick={(e) => handleNavClick(e, "/reportslanding")}>
                     Ver Reportes de indicadores
                 </Link>
