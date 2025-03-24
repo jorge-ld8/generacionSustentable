@@ -105,7 +105,7 @@ export default function Navbar({ username, mobileMenuOpen, closeMobileMenu }) {
                 null
                 }
             </div>
-            <div style={{position: "fixed", bottom: 6, left: 10, textAlign: "center", color: "rgba(250,250,250,.9)", fontSize: ".75em"}}>Made by <a href="https://github.com/jorge-ld8">Jorge León</a></div>
+            <div style={{visibility: isMobile ? (mobileMenuOpen ? "visible" : "hidden") : "visible", position: "fixed", bottom: 6, left: 10, textAlign: "center", color: "rgba(250,250,250,.9)", fontSize: ".8rem"}}>Made by <a href="https://github.com/jorge-ld8" style={{fontSize: ".8rem"}}>Jorge León</a></div>
             {username ?
             <div className={styles.navbar}>
                 <Link href={"/iniciativas"} onClick={(e) => handleNavClick(e, "/iniciativas")}>
@@ -113,7 +113,7 @@ export default function Navbar({ username, mobileMenuOpen, closeMobileMenu }) {
                 </Link>
                 <Link href={"/createAction"} onClick={(e) => handleNavClick(e, "/createAction")}>
                     Introducir actividad
-                </Link>
+                </Link>8
                 <Link href={"/reportslanding"} onClick={(e) => handleNavClick(e, "/reportslanding")}>
                     Ver Reportes de indicadores
                 </Link>
