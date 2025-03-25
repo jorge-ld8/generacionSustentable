@@ -4,7 +4,7 @@ import { GetServerSideProps } from 'next';
 import { getCookie } from 'cookies-next';
 import { Button } from '@mui/material';
 import { Add } from '@mui/icons-material';
-import { actionA1 } from '@prisma/client';
+import { ActionA1 } from '@prisma/client';
 import prisma from '../lib/prisma';
 import ActionList from '../components/ActionList';
 import { useActions, deleteAction } from '../hooks/useActions';
@@ -13,7 +13,7 @@ import styles from '../styles/Initiatives.module.css';
 interface InitiativesPageProps {
   organizacion: string;
   username: string;
-  fallbackData: actionA1[];
+  fallbackData: ActionA1[];
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

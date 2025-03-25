@@ -40,7 +40,7 @@ const NewRole: React.FC<User> = (props)=>
   
       async function handleSubmit(e){
         e.preventDefault();
-        const response = await fetch(`/api/actiona1/${props.id}`,{method: 'POST', 
+        const response = await fetch(`/api/ActionA1/${props.id}`,{method: 'POST', 
         body: JSON.stringify({
                 "nombre": formik.values.nombre,
                 "apellido": formik.values.apellido,

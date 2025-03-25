@@ -45,7 +45,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ error: serverError }) => {
     setError(null);
 
     try {
-      const response = await fetch('/api/signup', {
+      const response = await fetch('/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

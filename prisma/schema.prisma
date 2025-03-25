@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,14 +7,36 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
-        
-model actionA1 {
-  id                Int      @id @default(autoincrement())
+
+model Localidad {
+  id            Int        @id @default(autoincrement())
+  estado        String
+  nombre        String     @unique
+  acciones      ActionA1[] // Relation to actions
+}
+
+model Organizacion {
+  id            Int        @id @default(autoincrement())
+  nombre        String     @unique
+  acciones      ActionA1[] // Relation to actions
+  usuarios      User[]     // Relation to users
+}
+
+model ActionA1 {
+  id                Int           @id @default(autoincrement())
   nombre            String
   type              String
-  fecha_inicio      DateTime @db.Date
-  fecha_final       DateTime @db.Date
-  localidad         String
+  fecha_inicio      DateTime      @db.Date
+  fecha_final       DateTime      @db.Date
+  
+  localidadId       Int
+  localidad         Localidad     @relation(fields: [localidadId], references: [id])
+
+  tipo_localidad   String?
+  
+  organizacionId    Int
+  organizacion      Organizacion  @relation(fields: [organizacionId], references: [id])
+  
   nro_participantes Int
   nro_mujeres       Int
   nro_noid          Int
@@ -24,18 +45,18 @@ model actionA1 {
   nro_pob_rural     Int?
   nro_pob_16_29     Int?
   nro_lid_pob_16_29 Int
-  organizacion      String
-  tipo_localidad    String
   descripcion       String
   nombre_real       String
   imgUrl            String?
 }
 
+
 model User {
   id           Int    @id @default(autoincrement())
-  username     String @unique
+  username     String 
   password     String
-  organizacion String
+  organizacionId   Int?
+  organizacion  Organizacion? @relation(fields: [organizacionId], references: [id])
   nombre       String
   apellido     String
 }

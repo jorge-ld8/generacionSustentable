@@ -25,7 +25,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 async function getAction(id: number, res: NextApiResponse) {
   try {
     const action = await prisma.actionA1.findUnique({
-      where: { id }
+      where: { id },
+      include: {
+        organizacion: true,
+        localidad: true,
+      },
     });
     
     if (!action) {
@@ -54,10 +58,41 @@ async function updateAction(id: number, req: NextApiRequest, res: NextApiRespons
                                   Number(data.fecha_final.substring(5, 7))-1, 
                                   Number(data.fecha_final.substring(8, 10)));
     }
+    const { organizacion, localidad, organizacionId, localidadId, id, ...realdata} = data;
+
+    if (organizacionId){
+      const organizacion = await prisma.organizacion.findUnique({
+        where: { id: organizacionId },
+        select: {
+          id: true,
+          nombre: true,
+        }
+      });
+      if (organizacion) {
+          realdata.organizacion = { connect: { id: organizacion.id } };
+      }
+    }
+
+    if (localidadId){
+      const localidad = await prisma.localidad.findUnique({
+        where: { id: localidadId },
+        select: {
+          id: true,
+          nombre: true,
+          estado: true
+        }
+      });
+      if (localidad) {
+        realdata.localidad = { connect: { id: localidad.id } };
+      }
+    }
+    
 
     const action = await prisma.actionA1.update({
       where: { id },
-      data
+      data: {
+        ...realdata,
+      }
     });
     
     return res.status(200).json(action);

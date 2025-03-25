@@ -8,11 +8,16 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import prisma from "../../lib/prisma";
 import { useAction } from "../../hooks/useActions";
-import { actionA1 } from "@prisma/client";
+import { ActionA1 } from "@prisma/client";
+
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const action = await prisma.actionA1.findUnique({
     where: {
       id: Number(params?.id),
+    },
+    include: {
+      organizacion: true,
+      localidad: true,
     },
   });
   return {
@@ -23,7 +28,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 
-const ActionDetail: React.FC<{ fallbackData: actionA1, id: number }> = ({ fallbackData, id }) => {
+const ActionDetail: React.FC<{ fallbackData: ActionA1 & {
+  organizacion: { id: number; nombre: string };
+  localidad: { id: number; nombre?: string; estado?: string };
+}, id: number }> = ({ fallbackData, id }) => {
   const { action, isLoading, isError } = useAction(id);
   
   if (isLoading) {
@@ -61,10 +69,10 @@ const ActionDetail: React.FC<{ fallbackData: actionA1, id: number }> = ({ fallba
         <img src={data.imgUrl} alt="image" width={300} style={{float:'right', borderRadius:'12px', marginLeft: '2.5em'}}/>
         <p style={{overflow:'hidden'}}><b>Descripción: </b>{data.descripcion}</p>
         <p><b>Tipo: </b>{data.type}</p>
-        <p><b>Organización: </b>{data.organizacion}</p>
+        <p><b>Organización: </b>{data.organizacion.nombre}</p>
         <p><b>Fecha de inicio: </b>{String(data.fecha_inicio).substring(0,10)}</p>
         <p><b>Fecha final: </b>{String(data.fecha_final).substring(0, 10)}</p>
-        <p><b>Localidad: </b>{data.localidad}</p>
+        <p><b>Localidad: </b>{data.localidad.estado}</p>
         <p><b>Tipo de localidad: </b>{data.tipo_localidad}</p> 
         <br style={{border:"1px solid black"}}/>
         <h4>POR TIPO DE POBLACIÓN</h4>

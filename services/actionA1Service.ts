@@ -1,4 +1,4 @@
-import { actionA1 } from "@prisma/client";
+import { ActionA1 } from "@prisma/client";
 
 // Interface for the ActionA1 data we send to the API
 export interface ActionA1FormData {
@@ -23,7 +23,7 @@ export interface ActionA1FormData {
 }
 
 // Get all actions
-export async function getAllActions(): Promise<actionA1[]> {
+export async function getAllActions(): Promise<ActionA1[]> {
   const response = await fetch('/api/actions');
   if (!response.ok) {
     throw new Error(`Error fetching actions: ${response.statusText}`);
@@ -32,7 +32,7 @@ export async function getAllActions(): Promise<actionA1[]> {
 }
 
 // Get an action by ID
-export async function getActionA1ById(id: number): Promise<actionA1> {
+export async function getActionA1ById(id: number): Promise<ActionA1> {
   const response = await fetch(`/api/actions/${id}`);
   if (!response.ok) {
     throw new Error(`Error fetching action: ${response.statusText}`);
@@ -41,7 +41,7 @@ export async function getActionA1ById(id: number): Promise<actionA1> {
 }
 
 // Create a new action
-export async function createActionA1(data: ActionA1FormData): Promise<actionA1> {
+export async function createActionA1(data: ActionA1FormData): Promise<ActionA1> {
   const response = await fetch(`/api/actions`, {
     method: 'POST',
     body: JSON.stringify(data)
@@ -55,7 +55,7 @@ export async function createActionA1(data: ActionA1FormData): Promise<actionA1> 
 }
 
 // Update an action
-export async function updateActionA1(id: number, data: ActionA1FormData): Promise<actionA1> {
+export async function updateActionA1(id: number, data: ActionA1FormData): Promise<ActionA1> {
   const response = await fetch(`/api/actions/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data)
@@ -69,7 +69,7 @@ export async function updateActionA1(id: number, data: ActionA1FormData): Promis
 }
 
 // Delete an action
-export async function deleteActionA1(id: number): Promise<actionA1> {
+export async function deleteActionA1(id: number): Promise<ActionA1> {
   const response = await fetch(`/api/actions/${id}`, {
     method: 'DELETE'
   });

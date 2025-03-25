@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { actionA1 } from "@prisma/client";
+import { ActionA1 } from "@prisma/client";
 import { IconButton, CircularProgress } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import styles from './ActionList.module.css';
 
 interface ActionListProps {
-  actions: actionA1[];
+  actions: (ActionA1 & {
+    organizacion: { id: number; nombre: string };
+    localidad: { id: number; nombre?: string; estado?: string };
+  })[];
   userOrganization: string;
   isAdmin: boolean;
   onEdit: (id: number) => void;
@@ -60,8 +63,8 @@ const ActionList: React.FC<ActionListProps> = ({
     const searchRegex = new RegExp(searchTerm.toLowerCase(), 'i'); // Case-insensitive search
     return (
       searchRegex.test(action.nombre_real || '') ||
-      searchRegex.test(action.organizacion) ||
-      searchRegex.test(action.localidad)
+      searchRegex.test(action.organizacion.nombre || '') ||
+      searchRegex.test(action.localidad.nombre || '')
     );
   });
 
@@ -92,7 +95,7 @@ const ActionList: React.FC<ActionListProps> = ({
                 {!isMobile && <th>Fecha Inicio</th>}
                 {!isMobile && <th>Fecha Final</th>}
                 <th>Localidad</th>
-                {(isAdmin || actions.some(a => a.organizacion === userOrganization)) && (
+                {(isAdmin || actions.some(a => a.organizacion.nombre === userOrganization)) && (
                   <th colSpan={2}>Acciones</th>
                 )}
               </tr>
@@ -105,12 +108,12 @@ const ActionList: React.FC<ActionListProps> = ({
                   className={styles.actionRow}
                 >
                   <td>{action.nombre_real}</td>
-                  <td>{action.organizacion}</td>
+                  <td>{action.organizacion.nombre}</td>
                   {!isMobile && <td>{new Date(action.fecha_inicio).toISOString().substring(0, 10)}</td>}
                   {!isMobile && <td>{new Date(action.fecha_final).toISOString().substring(0, 10)}</td>}
-                  <td>{action.localidad}</td>
+                  <td>{action.localidad.estado}</td>
                   
-                  {(userOrganization === action.organizacion || isAdmin) && (
+                  {(userOrganization === action.organizacion.nombre || isAdmin) && (
                     <>
                       <td>
                         <IconButton 

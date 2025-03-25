@@ -52,18 +52,29 @@ async function updateUser(id: number, req: NextApiRequest, res: NextApiResponse)
   try {
     const { username, password, nombre, apellido, organizacion } = req.body;
     
-    // Prepare update data
+    // Find the organizacion ID if provided
+    let organizacionId;
+    if (organizacion) {
+      const org = await prisma.organizacion.findUnique({
+        where: { nombre: organizacion }
+      });
+      if (org) {
+        organizacionId = org.id;
+      }
+    }
+    
+    // Prepare update data with relations
     const updateData: {
       username?: string;
       password?: string;
       nombre?: string;
       apellido?: string;
-      organizacion?: string;
+      organizacionId?: number;
     } = {};
     if (username) updateData.username = username;
     if (nombre) updateData.nombre = nombre;
     if (apellido) updateData.apellido = apellido;
-    if (organizacion) updateData.organizacion = organizacion;
+    if (organizacionId) updateData.organizacionId = organizacionId;
     
     if (password) {
       updateData.password = createHash('sha256').update(password).digest('hex');
@@ -78,12 +89,17 @@ async function updateUser(id: number, req: NextApiRequest, res: NextApiResponse)
         username: true,
         nombre: true,
         apellido: true,
-        organizacion: true,
-        // Exclude password from response
+        organizacion: {
+          select: { nombre: true }
+        }
       }
     });
     
-    return res.status(200).json(user);
+    // Transform response to maintain backward compatibility
+    return res.status(200).json({
+      ...user,
+      organizacion: user.organizacion?.nombre
+    });
   } catch (error) {
     console.error('Error updating user:', error);
     return res.status(500).json({ message: 'Error updating user' });

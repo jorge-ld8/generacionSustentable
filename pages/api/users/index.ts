@@ -50,6 +50,19 @@ async function createUser(req: NextApiRequest, res: NextApiResponse) {
     // Hash the password
     const password_hash = createHash('sha256').update(password).digest('hex');
     
+    // Check if organizacion exists
+    const existingOrganizacion = await prisma.organizacion.findFirst({
+      where: { nombre: organizacion }
+    });
+
+    console.log("existingOrganizacion");
+    console.log(existingOrganizacion);
+
+    if (!existingOrganizacion) {
+      return res.status(400).json({ message: 'Organizacion not found' });
+    }
+    
+
     // Create the user
     const user = await prisma.user.create({
       data: {
@@ -57,7 +70,7 @@ async function createUser(req: NextApiRequest, res: NextApiResponse) {
         password: password_hash,
         nombre,
         apellido,
-        organizacion
+        organizacionId: existingOrganizacion.id
       },
       select: {
         id: true,

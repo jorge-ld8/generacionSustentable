@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
-import { actionA1 } from "@prisma/client";
+import { ActionA1 } from "@prisma/client";
 import prisma from "../../lib/prisma";
 import ActionA1Form from "../../components/forms/ActionA1Form";
 import styles from "../../styles/UpdateActionA1.module.css";
@@ -15,7 +15,10 @@ import { useDateHandling } from "../../hooks/useDateHandling";
 import { useAction, updateAction } from "../../hooks/useActions";
 
 interface UpdateActionA1Props {
-  fallbackData: actionA1;
+  fallbackData: ActionA1 & {
+    organizacion: { id: number; nombre: string };
+    localidad: { id: number; nombre: string; estado: string };
+  };
   id: number;
 }
 
@@ -49,6 +52,9 @@ const UpdateActionA1Page: React.FC<UpdateActionA1Props> = ({ fallbackData, id })
   const { isSubmitting, error, handleSubmit } = useSubmission({
     onSubmit: async (values) => {
       const formattedValues = formatDates(values, 'toAPI');
+      console.log("formatted values");
+      console.log(formattedValues);
+      
       return await updateAction(id, formattedValues);
     },
     onSuccess: () => router.back()
@@ -78,7 +84,15 @@ const UpdateActionA1Page: React.FC<UpdateActionA1Props> = ({ fallbackData, id })
   const actionData = action || fallbackData;
   
   // Prepare initial form values using date formatting hook
-  const initialValues = formatDates(actionData, 'fromAPI');
+  const initialValues = formatDates({
+    ...actionData,
+    // Add missing fields expected by ActionA1FormData type
+    organizacion: actionData.organizacion.nombre,
+    localidad: actionData.localidad.estado
+  }, 'fromAPI');
+
+  console.log("initial values");
+  console.log(initialValues);
 
   return (
     <main className={styles.container}>

@@ -11,7 +11,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { es } from 'date-fns/locale';
-import { ActionA1FormData } from "../../services/actionA1Service";
+import { ActionA1FormData } from "../../services/ActionA1Service";
 import { UploadButton } from "../../lib/uploadthing";
 import styles from "./ActionA1Form.module.css";
 

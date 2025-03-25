@@ -4,7 +4,7 @@ import { Bar} from 'react-chartjs-2';
 import {CategoryScale} from 'chart.js';
 import { GetStaticProps } from 'next';
 import prisma from '../lib/prisma';
-import { actionA1 } from '@prisma/client';
+import { ActionA1 } from '@prisma/client';
 import { actionTypes } from '../lib/constants';
 import { useState, useEffect } from 'react';
 
@@ -42,17 +42,17 @@ export default function Home(props) {
 
   // Calculando numero de participantes
   for (const type of ["A1", "A2", "A3", "A4"]){
-    partList.push(props.iniciativas.reduce((sum, action: actionA1) => (action.type === type) ? sum + action.nro_participantes : sum, 0))
+    partList.push(props.iniciativas.reduce((sum, action: ActionA1) => (action.type === type) ? sum + action.nro_participantes : sum, 0))
   }
 
   // Calculando numero de mujeres
   for (const type of ["A1", "A2", "A3", "A4"]){
-    mujList.push(props.iniciativas.reduce((sum, action: actionA1) => (action.type === type) ? sum + action.nro_mujeres : sum, 0))
+    mujList.push(props.iniciativas.reduce((sum, action: ActionA1) => (action.type === type) ? sum + action.nro_mujeres : sum, 0))
   }
   
   // Calculando numero de poblacion indigena
   for (const type of ["A1", "A2", "A3", "A4"]){
-    indList.push(props.iniciativas.reduce((sum, action: actionA1) => (action.type === type) ? sum + action.nro_pob_ind : sum, 0))
+    indList.push(props.iniciativas.reduce((sum, action: ActionA1) => (action.type === type) ? sum + action.nro_pob_ind : sum, 0))
   }
 
   return (

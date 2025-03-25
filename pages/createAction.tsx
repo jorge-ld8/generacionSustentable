@@ -6,7 +6,7 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import CreateActionA1Form from "../components/forms/CreateActionA1Form";
-import { ActionA1FormData } from "../services/actionA1Service";
+import { ActionA1FormData } from "../services/ActionA1Service";
 import styles from "../styles/CreateActionA1.module.css";
 
 // Import custom hooks

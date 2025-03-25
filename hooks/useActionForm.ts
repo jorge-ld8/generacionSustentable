@@ -1,6 +1,6 @@
 import { useFormik, FormikHelpers } from 'formik';
-import { actionA1ValidationSchema } from '../utils/validationSchemas';
-import { ActionA1FormData } from '../services/actionA1Service';
+import { ActionA1ValidationSchema } from '../utils/validationSchemas';
+import { ActionA1FormData } from '../services/ActionA1Service';
 
 export const useActionForm = (
   initialValues: ActionA1FormData,
@@ -8,7 +8,7 @@ export const useActionForm = (
 ) => {
   return useFormik({
     initialValues,
-    validationSchema: actionA1ValidationSchema,
+    validationSchema: ActionA1ValidationSchema,
     validateOnBlur: true,
     validateOnChange: true,
     onSubmit: async (values, helpers: FormikHelpers<ActionA1FormData>) => {

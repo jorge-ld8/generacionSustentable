@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-export const actionA1ValidationSchema = Yup.object({
+export const ActionA1ValidationSchema = Yup.object({
   nombre: Yup.string().required("Obligatorio"),
   descripcion: Yup.string().required("Obligatorio"),
   type: Yup.string().required("Obligatorio"),
@@ -71,8 +71,8 @@ export const signupValidationSchema = Yup.object({
     .required("La contraseña es obligatoria")
     .min(6, "La contraseña debe tener al menos 6 caracteres")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{6,}$/,
-      "La contraseña debe contener al menos una letra mayúscula, una minúscula y un número"
+      /^(?=.*[a-z])(?=.*\d)[a-zA-Z\d\w\W]{6,}$/,
+      "La contraseña debe contener al menos una letra minúscula y un número"
     ),
   passwordagain: Yup.string()
     .required("Debe confirmar la contraseña")

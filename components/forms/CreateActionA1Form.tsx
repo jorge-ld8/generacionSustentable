@@ -4,7 +4,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
-import { ActionA1FormData } from "../../services/actionA1Service";
+import { ActionA1FormData } from "../../services/ActionA1Service";
 import { UploadButton } from "../../lib/uploadthing";
 import styles from "./ActionA1Form.module.css";
 
