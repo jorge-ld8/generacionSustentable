@@ -2,8 +2,9 @@
   "private": true,
   "scripts": {
     "build": "prisma generate && next build",
+    "build:prod": "NODE_ENV=production dotenv -e .env.production -- npx prisma generate && next build",
     "dev": "next dev",
-    "start": "next start",
+    "start": "dotenv -e .env.production -- next start",
     "prisma:dev:deploy": "prisma migrate deploy",
     "prisma:prod:deploy": "dotenv -e .env.production -- prisma migrate deploy",
     "test": "jest",
@@ -32,6 +33,7 @@
     "csv-parse": "^5.6.0",
     "date-fns": "^2.29.3",
     "dotenv": "^16.4.7",
+    "dotenv-cli": "^8.0.0",
     "express": "^4.18.2",
     "formik": "^2.4.5",
     "heroku": "^7.15.2",

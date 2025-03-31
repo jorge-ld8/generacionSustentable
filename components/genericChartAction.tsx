@@ -1,10 +1,10 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, GREEN, LIGHTBLUE, LIGHTVIOLET, ORANGE, ULTRALIGHTBLUE, ULTRALIGHTVIOLET, VIOLET, YELLOW, actionTypes, localidades, tipoComunidad } from "../lib/constants";
+import { BLUE, GREEN, LIGHTBLUE, LIGHTVIOLET, ORANGE, ULTRALIGHTBLUE, ULTRALIGHTVIOLET, VIOLET, YELLOW, actionTypes, localidades, tipoComunidad, organizaciones } from "../lib/constants";
 import ProgressBar from "@ramonak/react-progress-bar";
 import ChartNav from "./ChartNav";
 
 
-export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders, totalPobs, setFilter, isSubmitting}){
+export default function GenChartAction({name, iniNum, totals, labels, color, totalLocTypes, totalComunidad, finalArr, totalGenders, totalPobs, setFilter, isSubmitting, organizations = organizaciones, currentFilter = 'Todos'}){
     
     const options = {
         tooltips: {
@@ -63,10 +63,12 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
             className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
             onChange={(e) => {
                 setFilter(e.target.value);
-            }}>
-            <option value="Todos">Todos</option>
-            <option value="Beneficiarios directos">Beneficiarios directos</option>
-            <option value="Beneficiarios indirectos">Beneficiarios indirectos</option>
+            }}
+            value={currentFilter}>
+            <option value="Todos">Todas las organizaciones</option>
+            {organizations.map((org, index) => (
+              <option key={index} value={org}>{org}</option>
+            ))}
         </select>
         <br />
         <br />
@@ -180,8 +182,9 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                         ]
                         }} style={{display:"inline-block"}} />
                     </div>
-                    <br />
-                    <br />
+                    
+                    <div style={{margin: "40px 0"}}></div>
+                    
                     <h4>Iniciativas por tipo de actividad</h4>
                     <div className="chart-container">
                         <Bar datasetIdKey='id' data={{
@@ -194,8 +197,10 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                                 }]
                             }} style={{display:"inline-block"}} options={{ maintainAspectRatio: true }}/>
                     </div>
-                    <br />
-                    <br />
+                    
+                    <div style={{margin: "40px 0"}}></div>
+                    
+                    <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly'}}>
                     <div className="chart-container" style={{width:"45%", display:"inline-block"}} >
                     <h4>Resumen por localidad</h4>
                     <Doughnut data={{labels:localidades, datasets: [{
@@ -214,9 +219,11 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                             data: totalComunidad
                             }]}} style={{display:"inline-block"}}/>
                     </div>
-                    <br />
-                    <br />
-                    <br />
+                    </div>
+                    
+                    <div style={{margin: "40px 0"}}></div>
+                    
+                    <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly'}}>
                     <div className="chart-container" style={{width:"45%", display:"inline-block"}}>
                         <h4>Resumen por género</h4>
                         <Doughnut data={{labels:["mujeres", "hombres", "LGBTIQ+" ,"NI"], datasets: [{
@@ -234,6 +241,7 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
                                 backgroundColor: [BLUE, ORANGE, GREEN],
                                 data: totalPobs,
                         }]}} options={options} />
+                    </div>
                     </div>
                 </div>
             </>
@@ -262,6 +270,10 @@ export default function GenChartAction({name, iniNum, totals, labels, color, tot
               outline: none;
               border-color: #a7cb45;
               box-shadow: 0 0 0 2px rgba(167, 203, 69, 0.2);
+            }
+            
+            .chart-container {
+              margin-bottom: 30px;
             }
           `}
          </style>

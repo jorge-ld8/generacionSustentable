@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../lib/prisma';
+import { organizaciones } from '../../lib/constants';
 
 // Helper function to normalize results by action type - matches the original implementation
 function normalizeResults(inputArr, type, att) {
@@ -30,35 +31,15 @@ export default async function handler(
       return res.status(400).json({ message: 'Zone type is required' });
     }
 
-    // Define beneficiarios lists (same as original implementation)
-    const actsBeneficiariosDir = [
-      "Ciclos formativos en acción socioambiental /ciberactivismo",
-      "Salidas de campo / actividades al aire libre",
-      "Ciclo formativo moda sustentable", 
-      "Ciclo formativo reuso productivo", 
-      "Ciclo formativo ecoturismo", 
-      "Monitoreo equipos locales",
-      "Encuentros juveniles"
-    ];
-
-    const actsBeneficiariosInd = [
-      "Acciones en áreas públicas",
-      "Festival, desfiles, marchas, rodadas, campañas de arte", 
-      "Reforestación / restauración", 
-      "Reuniones con autoridades locales", 
-      "Ferias de emprendimiento sostenbile",
-      "Campañas de ciberactivismo", 
-      "Formación y trabajo en redes"
-    ];
-
-    const allBeneficiarios = actsBeneficiariosDir.concat(actsBeneficiariosInd);
-
-    // Filter based on the "filter" query parameter
-    const beneficiariosList = filter === "Beneficiarios directos" 
-      ? actsBeneficiariosDir 
-      : filter === "Beneficiarios indirectos" 
-        ? actsBeneficiariosInd 
-        : allBeneficiarios;
+    // Create where clause with zoneType
+    const whereClause: Record<string, string> = {
+      localidad: zoneType as string,
+    };
+    
+    // If filter is specified and not 'Todos', filter by organization
+    if (filter && filter !== 'Todos') {
+      whereClause.organizacion = filter as string;
+    }
 
     // Get total by LGBT and other metrics - exactly like the original
     const totalLGBT = await prisma.actionA1.groupBy({
@@ -76,12 +57,7 @@ export default async function handler(
       _count: {
         id: true
       },
-      where: {
-        localidad: zoneType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     // Gender distribution - exactly like the original
@@ -92,12 +68,7 @@ export default async function handler(
         nro_participantes: true,
         nro_pob_lgbtiq: true
       },
-      where: {
-        localidad: zoneType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     // Population distribution - exactly like the original
@@ -107,12 +78,7 @@ export default async function handler(
         nro_pob_ind: true,
         nro_pob_rural: true
       },
-      where: {
-        localidad: zoneType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     // Count total initiatives - exactly like the original
@@ -120,12 +86,7 @@ export default async function handler(
       _count: {
         id: true
       },
-      where: {
-        localidad: zoneType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     // Create the response object with all the metrics from the original implementation
@@ -151,7 +112,8 @@ export default async function handler(
         (totalPob._sum.nro_participantes || 0) - (totalPob._sum.nro_pob_ind || 0) - (totalPob._sum.nro_pob_rural || 0),
         totalPob._sum.nro_pob_ind || 0,
         totalPob._sum.nro_pob_rural || 0
-      ]
+      ],
+      organizations: organizaciones
     });
   } catch (error) {
     console.error('Error fetching zone chart data:', error);

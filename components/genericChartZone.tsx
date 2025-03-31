@@ -1,9 +1,9 @@
 import { Bar, Doughnut } from "react-chartjs-2";
-import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN, ULTRALIGHTBLUE, LIGHTBLUE, ULTRALIGHTVIOLET, LIGHTVIOLET, localidades } from "../lib/constants";
+import { BLUE, ORANGE, YELLOW, VIOLET, actionTypes, GREEN, ULTRALIGHTBLUE, LIGHTBLUE, ULTRALIGHTVIOLET, LIGHTVIOLET, localidades, organizaciones } from "../lib/constants";
 import ProgressBar from "@ramonak/react-progress-bar";
 import ChartNav from "./ChartNav";  
 
-export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders,totalPobs, setFilter, isSubmitting }){
+export default function GenChartZone({name, iniNum, total, totalActionTypes, totalGenders,totalPobs, setFilter, isSubmitting, organizations = organizaciones, currentFilter = 'Todos' }){
   const options = {
     tooltips: {
         enabled: false,
@@ -52,10 +52,12 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 <br />
                 <select 
                   className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                  onChange={(e) => setFilter(e.target.value)}>
-                  <option value="Todos">Todos</option>
-                  <option value="Beneficiarios directos">Beneficiarios directos</option>
-                  <option value="Beneficiarios indirectos">Beneficiarios indirectos</option>
+                  onChange={(e) => setFilter(e.target.value)}
+                  value={currentFilter}>
+                  <option value="Todos">Todas las organizaciones</option>
+                  {organizations.map((org, index) => (
+                    <option key={index} value={org}>{org}</option>
+                  ))}
                 </select>
                 <br />
                 <br />
@@ -120,51 +122,47 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                 />
                 <br />
                 <br />
-                <h4>Resumen general</h4>
                 <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly'}}>
                 <div className="chart-container">
+                <h4>Resumen LGBTIQ</h4>
                     <Bar datasetIdKey='id' data={{
                         labels: actionTypes,
                         datasets:[{
                             // id: 1,
                             label: 'LGBTIQ',
-                            backgroundColor: ORANGE,
+                            backgroundColor: ULTRALIGHTVIOLET,
                             data: total.totalLGBT,
                             }]
                         }} style={{display:"inline-block"}} options={{ maintainAspectRatio: true }}/>
                 </div>
                 <div className="chart-container">
+                 <h4>Resumen Mujeres</h4>
                     <Bar datasetIdKey='id' data={{
                     labels: actionTypes,
                     datasets:[{
                         // id: 2,
                         label: 'Mujeres',
-                        backgroundColor: BLUE,
+                        backgroundColor: LIGHTVIOLET,
                         data: total.totalMujeres,
                         }]
                     }} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
                 </div>
                 <div className="chart-container">
-                    <Bar datasetIdKey='id' data={{
-                    labels: actionTypes,
-                    datasets:[{
-                        // id: 3,
-                        label: 'Indigena',
-                        backgroundColor: GREEN,
-                        data: total.totalInd,
-                        }]
-                    }} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
+                 <h4>Resumen Hombres</h4>
+                   <Bar datasetIdKey='id' data={{
+                       labels: actionTypes,
+                       datasets:[{
+                           // id: 2,
+                           label: 'Hombres',
+                           backgroundColor: VIOLET,
+                           data: total.totalParticipantes.map((x, index)=>{return x-total.totalMujeres[index]-total.totalNoId[index]-total.totalLGBT[index]}),
+                           }]
+                       }} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
                 </div>
-                <div className="chart-container">
-                <Bar datasetIdKey='id' data={{
-                    labels: actionTypes,
-                    datasets:[{
-                        // id: 5,
-                        label: 'Rural',
-                        backgroundColor: YELLOW,
-                        data: total.totalRural,
-                      }]}} style={{display:"inline-block"}}  options={{ maintainAspectRatio: true }}/>
-                </div>
+        </div>
+                <div style={{margin: "40px 0"}}></div>
+
+                <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly'}}>
                 <div className="chart-container">
                 <h4>Resumen por actividad</h4>
                 <Doughnut data={{labels:actionTypes, datasets: [{
@@ -174,8 +172,6 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                         data: totalActionTypes,
                 }]}} options={options} />
                 </div>
-                <br />
-                <br />
                 <div className="chart-container">
                 <h4>Resumen por género</h4>
                 <Doughnut data={{labels:["mujeres", "hombres", "LGBTIQ+", "NI"], datasets: [{
@@ -194,8 +190,10 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
                         data: totalPobs,
                 }]}} options={options} />
                 </div>
-        </div>
-                <br />
+                </div>
+                
+                <div style={{margin: "40px 0"}}></div>
+                
                 <h4>Comparación General</h4>
                 <br />
                 <Bar datasetIdKey='id' data={{
@@ -270,6 +268,10 @@ export default function GenChartZone({name, iniNum, total, totalActionTypes, tot
               outline: none;
               border-color: #a7cb45;
               box-shadow: 0 0 0 2px rgba(167, 203, 69, 0.2);
+            }
+            
+            .chart-container {
+              margin-bottom: 30px;
             }
           `}
          </style>

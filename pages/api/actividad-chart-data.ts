@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../lib/prisma';
-import { actionsA1, actionsA2, actionsA3, actionsA4, actionTypes, localidades, tipoComunidad } from '../../lib/constants';
+import { actionsA1, actionsA2, actionsA3, actionsA4, actionTypes, localidades, tipoComunidad, organizaciones } from '../../lib/constants';
 
 // Helper function to normalize results
 function normalizeResults(inputArr, type, att, initialValues, op) {
@@ -51,22 +51,15 @@ export default async function handler(
 
     console.log(actionsArr);
 
-    // Filter logic based on Beneficiarios type
-    const actsBeneficiariosDir = ["Ciclos formativos en acción socioambiental /ciberactivismo","Salidas de campo / actividades al aire libre",
-      "Ciclo formativo moda sustentable", "Ciclo formativo reuso productivo", "Ciclo formativo ecoturismo", "Monitoreo equipos locales",
-      "Encuentros juveniles"
-    ];
-
-    const actsBeneficiariosInd = ["Acciones en áreas públicas","Festival, desfiles, marchas, rodadas, campañas de arte", 
-      "Reforestación / restauración", "Reuniones con autoridades locales", "Ferias de emprendimiento sostenbile",
-      "Campañas de ciberactivismo", "Formación y trabajo en redes"
-    ];
-
-    const allBeneficiarios = actsBeneficiariosDir.concat(actsBeneficiariosInd);
-
-    const beneficiariosList = filter === "Beneficiarios directos" ? actsBeneficiariosDir : 
-                             filter === "Beneficiarios indirectos" ? actsBeneficiariosInd : 
-                             allBeneficiarios;
+    // Create where clause with actionType
+    const whereClause: { type: string; organizacion?: string } = {
+      type: actionType as string,
+    };
+    
+    // If filter is specified and not 'Todos', filter by organization
+    if (filter && filter !== 'Todos') {
+      whereClause.organizacion = filter as string;
+    }
 
     // Calculate number of rural population
     const totalGral = await prisma.actionA1.groupBy({
@@ -84,12 +77,7 @@ export default async function handler(
         nro_pob_16_29: true,
         nro_lid_pob_16_29: true
       },
-      where: {
-        type: actionType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     // Count initiatives
@@ -97,12 +85,7 @@ export default async function handler(
       _count: {
         id: true
       },
-      where: {
-        type: actionType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     // Calculate totals by locality type
@@ -111,12 +94,7 @@ export default async function handler(
       _count: {
         id: true
       },
-      where: {
-        type: actionType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
 
@@ -146,12 +124,7 @@ export default async function handler(
         nro_noid: true,
         nro_participantes: true
       },
-      where: {
-        type: actionType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     const totalPob = await prisma.actionA1.aggregate({
@@ -160,12 +133,7 @@ export default async function handler(
         nro_pob_rural: true,
         nro_participantes: true
       },
-      where: {
-        type: actionType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     // Total participants by action type
@@ -190,7 +158,8 @@ export default async function handler(
         totalPob._sum.nro_participantes - totalPob._sum.nro_pob_ind - totalPob._sum.nro_pob_rural,
         totalPob._sum.nro_pob_ind,
         totalPob._sum.nro_pob_rural
-      ]
+      ],
+      organizations: organizaciones
     });
   } catch (error) {
     console.error('Error fetching chart data:', error);

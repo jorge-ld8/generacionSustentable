@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../lib/prisma';
-import { actionTypes, localidades, tipoComunidad } from '../../lib/constants';
+import { actionTypes, localidades, tipoComunidad, organizaciones } from '../../lib/constants';
 
 // Helper function to normalize results by attribute
 function normalizeResults(inputArr, type, att, initialValues, op) {
@@ -31,35 +31,15 @@ export default async function handler(
       return res.status(400).json({ message: 'Comunidad type is required' });
     }
 
-    // Define beneficiarios lists (same as original implementation)
-    const actsBeneficiariosDir = [
-      "Ciclos formativos en acción socioambiental /ciberactivismo",
-      "Salidas de campo / actividades al aire libre",
-      "Ciclo formativo moda sustentable", 
-      "Ciclo formativo reuso productivo", 
-      "Ciclo formativo ecoturismo", 
-      "Monitoreo equipos locales",
-      "Encuentros juveniles"
-    ];
-
-    const actsBeneficiariosInd = [
-      "Acciones en áreas públicas",
-      "Festival, desfiles, marchas, rodadas, campañas de arte", 
-      "Reforestación / restauración", 
-      "Reuniones con autoridades locales", 
-      "Ferias de emprendimiento sostenbile",
-      "Campañas de ciberactivismo", 
-      "Formación y trabajo en redes"
-    ];
-
-    const allBeneficiarios = actsBeneficiariosDir.concat(actsBeneficiariosInd);
-
-    // Filter based on the "filter" query parameter
-    const beneficiariosList = filter === "Beneficiarios directos" 
-      ? actsBeneficiariosDir 
-      : filter === "Beneficiarios indirectos" 
-        ? actsBeneficiariosInd 
-        : allBeneficiarios;
+    // Create where clause with comunidadType
+    const whereClause: Record<string, string> = {
+      tipo_localidad: comunidadType as string,
+    };
+    
+    // If filter is specified and not 'Todos', filter by organization
+    if (filter && filter !== 'Todos') {
+      whereClause.organizacion = filter as string;
+    }
 
     // Detailed data by action type with all population metrics - USING tipo_localidad instead of organizacion
     const totalGral = await prisma.actionA1.groupBy({
@@ -77,12 +57,7 @@ export default async function handler(
         nro_pob_16_29: true,
         nro_lid_pob_16_29: true
       },
-      where: {
-        tipo_localidad: comunidadType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     // Total by localidad - matching the original implementation
@@ -91,12 +66,7 @@ export default async function handler(
       _count: {
         id: true
       },
-      where: {
-        tipo_localidad: comunidadType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     // Format the totalnames data (initiatives by action type)
@@ -125,12 +95,7 @@ export default async function handler(
         nro_noid: true,
         nro_participantes: true
       },
-      where: {
-        tipo_localidad: comunidadType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     // Population distribution for the pie chart
@@ -140,12 +105,7 @@ export default async function handler(
         nro_pob_rural: true,
         nro_participantes: true
       },
-      where: {
-        tipo_localidad: comunidadType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     // Count total initiatives
@@ -153,12 +113,7 @@ export default async function handler(
       _count: {
         id: true
       },
-      where: {
-        tipo_localidad: comunidadType as string,
-        nombre: {
-          in: beneficiariosList
-        }
-      }
+      where: whereClause
     });
 
     // Return the chart data in the same format as the original implementation
@@ -180,7 +135,8 @@ export default async function handler(
         totalPob._sum.nro_pob_ind || 0,
         totalPob._sum.nro_pob_rural || 0
       ],
-      countIni
+      countIni,
+      organizations: organizaciones
     });
   } catch (error) {
     console.error('Error fetching comunidad chart data:', error);

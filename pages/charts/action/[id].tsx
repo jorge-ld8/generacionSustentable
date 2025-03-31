@@ -103,6 +103,8 @@ export default function ChartFinal({ actionType, initialFilter, error }) {
       totalPobs={chartData?.totalPobs || [0, 0, 0]}
       setFilter={handleFilterChange}
       isSubmitting={isLoading}
+      organizations={chartData?.organizations || []}
+      currentFilter={filter}
     />
   );
 }

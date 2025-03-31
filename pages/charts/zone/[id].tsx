@@ -104,6 +104,8 @@ export default function ChartFinal({ zoneType, initialFilter, error }) {
       totalPobs={chartData?.totalPobs || [0, 0, 0]}
       isSubmitting={isLoading}
       setFilter={handleFilterChange}
+      organizations={chartData?.organizations || []}
+      currentFilter={filter}
     />
   );
 }
